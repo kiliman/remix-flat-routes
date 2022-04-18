@@ -1,0 +1,43 @@
+{
+  "name": "remix-flat-routes",
+  "version": "0.0.1",
+  "description": "Package for generating routes using flat convention",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc --project tsconfig.json --module CommonJS --outDir ./dist",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "remix"
+  ],
+  "author": {
+    "name": "Kiliman",
+    "email": "kiliman@gmail.com",
+    "url": "https://kiliman.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiliman/remix-flat-routes.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "all-contributors-cli": "^6.20.0",
+    "esbuild": "^0.14.36",
+    "esbuild-register": "^3.3.2",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.2"
+  }
+}

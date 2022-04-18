@@ -1,0 +1,34 @@
+{
+  "projectName": "remix-mount-routes",
+  "projectOwner": "kiliman",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "gitmoji",
+  "contributors": [
+    {
+      "login": "kiliman",
+      "name": "Kiliman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47168?v=4",
+      "profile": "https://kiliman.dev/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "ryanflorence",
+      "name": "Ryan Florence",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100200?v=4",
+      "profile": "http://remix.run/",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
