@@ -17,7 +17,7 @@ This package enables you to define your routes using the flat-routes convention.
 Update your _remix.config.js_ file and use the custom routes config option.
 
 ```ts
-const flatRoutes = require('remix-flat-routes')
+const { flatRoutes } = require('remix-flat-routes')
 module.exports = {
   // ignore all files in routes folder
   ignoredRouteFiles: ['**/*'],
