@@ -88,7 +88,7 @@ function parseRouteFile(baseDir: string, routeFile: string) {
       return null
     }
     name = path.dirname(routeFile)
-    isIndex = name.endsWith('/index')
+    isIndex = name.endsWith('/index') || name.endsWith('.index')
   }
   let index = 0
   let segment = ''
