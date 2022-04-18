@@ -1,7 +1,9 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the flat-routes convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -116,6 +118,7 @@ Individual explanations:
 | `users.$userId.jsx`     | leading $              | URL param                       |
 | `docs.$.jsx`            | bare $                 | splat route                     |
 | `dashboard.route.jsx`   | route suffix           | optional, ignored completely    |
+| `_layout.jsx`           | explict layout file    | optional, same as parent folder |
 | `investors/[index].jsx` | brackets               | escapes conventional characters |
 
 ## Justification
@@ -146,28 +149,36 @@ Could be folders holding their own modules inside:
 
 ```
 routes/
+  _auth/
+    login/
+      index.tsx <- route file (same as _auth.login.tsx)
+    signup/
+      index.tsx <- route file (same as _auth.index.tsx)
+    _layout.tsx <- explicit layout file (same as _auth.tsx)
   _landing.about/
-    index.tsx
+    index.tsx   <- route file (same as _landing.about.tsx)
     employee-profile-card.tsx
     get-employee-data.server.tsx
     team-photo.jpg
   _landing.index/
-    index.tsx
+    index.tsx   <- route file (same as _landing.index.tsx)
     scroll-experience.tsx
   _landing/
-    index.tsx
+    index.tsx   <- route file (same as _landing.tsx)
     header.tsx
     footer.tsx
   app.projects/
+    $id/
+      index.tsx <- route file (same as app.projects.$id.tsx)
     project-card.tsx
     get-projects.server.tsx
     project-buttons.tsx
   app/
-    index.tsx
+    index.tsx   <- route file (same as app.tsx)
     primary-nav.tsx
     footer.tsx
   app_.projects.$id.roadmap/
-    index.tsx
+    index.tsx   <- route file (same as app_.projects.$id.roadmap.tsx)
     chart.tsx
     update-timeline.server.tsx
 ```

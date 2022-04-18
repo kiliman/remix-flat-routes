@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-export function flatRoutes(
+export default function flatRoutes(
   baseDir: string,
   defineRoutes: (route: (...args: any) => void) => any,
 ) {
@@ -84,11 +84,11 @@ function parseRouteFile(baseDir: string, routeFile: string) {
   let name = routeFile.substring(0, routeFile.length - ext.length)
   // route module so only process index routes
   if (routeFile.includes('/')) {
-    if (!name.endsWith('/index')) {
+    if (!name.endsWith('/index') && !name.endsWith('/_layout')) {
       return null
     }
     name = path.dirname(routeFile)
-    isIndex = true
+    isIndex = name.endsWith('/index')
   }
   let index = 0
   let segment = ''
@@ -187,3 +187,5 @@ function visitFiles(
     }
   }
 }
+
+export { flatRoutes }
