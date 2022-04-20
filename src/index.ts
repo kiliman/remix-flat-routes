@@ -94,7 +94,7 @@ function parseRouteFile(baseDir: string, routeFile: string) {
   let segment = ''
   while (index < name.length) {
     let char = name[index]
-    //console.log({ char, state, subState, segment, url })
+    // console.log({ char, state, subState, segment, url })
     switch (state) {
       case 'START':
         // process existing segment
@@ -106,6 +106,9 @@ function parseRouteFile(baseDir: string, routeFile: string) {
         if (parentState === 'APPEND') {
           if (parent) {
             parent += '.'
+          }
+          if (segment.includes(':')) {
+            segment = segment.replace(':', '$')
           }
           parent += segment
         }
