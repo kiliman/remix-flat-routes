@@ -67,7 +67,18 @@ function getRoutes(
   }
 }
 
-function parseRouteFile(baseDir: string, routeFile: string) {
+export type RouteInfo = {
+  path: string
+  file: string
+  name: string
+  parent: string
+  isIndex: boolean
+}
+
+export function parseRouteFile(
+  baseDir: string,
+  routeFile: string,
+): RouteInfo | null {
   let state = 'START'
   let subState = 'NORMAL'
   let parentState = 'APPEND'
@@ -84,58 +95,62 @@ function parseRouteFile(baseDir: string, routeFile: string) {
   let name = routeFile.substring(0, routeFile.length - ext.length)
   // route module so only process index routes
   if (routeFile.includes('/')) {
-    if (!name.endsWith('/index') && !name.endsWith('/_layout')) {
+    if (
+      !name.endsWith('/index') &&
+      !name.endsWith('/_layout') &&
+      !name.endsWith('/_route')
+    ) {
       return null
     }
     name = path.dirname(routeFile)
     isIndex = name.endsWith('/index') || name.endsWith('.index')
   }
   let index = 0
-  let segment = ''
+  let pathSegment = ''
+  let routeSegment = ''
   while (index < name.length) {
     let char = name[index]
     //console.log({ char, state, subState, segment, url })
     switch (state) {
       case 'START':
         // process existing segment
-        url = appendSegment(url, segment)
+        url = appendPathSegment(url, pathSegment)
 
-        if (segment.endsWith('_')) {
+        if (routeSegment.endsWith('_')) {
           parentState = 'IGNORE'
         }
         if (parentState === 'APPEND') {
           if (parent) {
             parent += '.'
           }
-          parent += segment
+          parent += routeSegment
         }
-        if (segment === 'index') isIndex = true
-        segment = '' // reset segment
+        if (routeSegment === 'index') isIndex = true
+        pathSegment = '' // reset segment
+        routeSegment = ''
         state = 'PATH'
         continue // restart without advancing index
       case 'PATH':
         if (isPathSeparator(char) && subState === 'NORMAL') {
           state = 'START'
+          break
         } else if (char === '$') {
-          segment += ':'
+          pathSegment += ':'
         } else if (char === '[') {
           subState = 'ESCAPE'
         } else if (char === ']') {
           subState = 'NORMAL'
         } else {
-          segment += char
+          pathSegment += char
         }
-        break
-      case 'PATHLESS':
-        if (isPathSeparator(char)) {
-          state = 'START'
-        }
+        routeSegment += char
+
         break
     }
     index++ // advance to next character
   }
-  if (segment === 'index') isIndex = true
-  url = appendSegment(url, segment)
+  if (routeSegment === 'index') isIndex = true
+  url = appendPathSegment(url, pathSegment)
   return {
     path: url,
     file: `${baseDir}/${routeFile}`,
@@ -145,7 +160,7 @@ function parseRouteFile(baseDir: string, routeFile: string) {
   }
 }
 
-function appendSegment(url: string, segment: string) {
+function appendPathSegment(url: string, segment: string) {
   if (segment) {
     if (segment.startsWith('_')) {
       return url
@@ -154,7 +169,7 @@ function appendSegment(url: string, segment: string) {
       if (!url.endsWith('/')) {
         url += '/'
       }
-    } else if (segment === ':') {
+    } else if (segment === ':' || segment === ':_') {
       url += '/*'
     } else if (segment !== 'route') {
       // strip trailing underscore
