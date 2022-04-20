@@ -119,6 +119,7 @@ Individual explanations:
 | `docs.$.jsx`            | bare $                 | splat route                     |
 | `dashboard.route.jsx`   | route suffix           | optional, ignored completely    |
 | `_layout.jsx`           | explict layout file    | optional, same as parent folder |
+| `_route.jsx`            | explict route file     | optional, same as parent folder |
 | `investors/[index].jsx` | brackets               | escapes conventional characters |
 
 ## Justification
@@ -150,11 +151,11 @@ Could be folders holding their own modules inside:
 ```
 routes/
   _auth/
-    login/
-      index.tsx <- route file (same as _auth.login.tsx)
-    signup/
-      index.tsx <- route file (same as _auth.index.tsx)
     _layout.tsx <- explicit layout file (same as _auth.tsx)
+  _auth.forgot-password/
+    _route.tsx  <- explicit route file (same as _auth.forgot-password.tsx)
+  _auth.login/
+    index.tsx   <- route files (same as _auth.login.tsx)
   _landing.about/
     index.tsx   <- route file (same as _landing.about.tsx)
     employee-profile-card.tsx
@@ -167,12 +168,6 @@ routes/
     index.tsx   <- route file (same as _landing.tsx)
     header.tsx
     footer.tsx
-  app.projects/
-    $id/
-      index.tsx <- route file (same as app.projects.$id.tsx)
-    project-card.tsx
-    get-projects.server.tsx
-    project-buttons.tsx
   app/
     index.tsx   <- route file (same as app.tsx)
     primary-nav.tsx
@@ -181,6 +176,14 @@ routes/
     index.tsx   <- route file (same as app_.projects.$id.roadmap.tsx)
     chart.tsx
     update-timeline.server.tsx
+  app.projects/
+    _layout.tsx <- explicit layout file (sames as app.projects.tsx)
+    project-card.tsx
+    get-projects.server.tsx
+    project-buttons.tsx
+  app.projects.$id/
+    _route.tsx  <- explicit route file (sames as app.projects.$id.tsx)
+
 ```
 
 This is a bit more opinionated, but I think it's ultimately what most developers would prefer. Each route becomes its own "mini app" with all of it's dependencies together. With the routeIgnorePatterns option it's completely unclear which files are routes and which aren't.
