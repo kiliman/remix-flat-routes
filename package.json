@@ -1,8 +1,8 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Package for generating routes using flat convention",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "files": [
     "dist",
     "src",
