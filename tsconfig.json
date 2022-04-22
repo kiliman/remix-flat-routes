@@ -12,6 +12,6 @@
     "jsx": "react-jsx",
     "importHelpers": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "test"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "test/index.test.ts"]
 }
