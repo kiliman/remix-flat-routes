@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.2.0
+
+- ✨ Add new command to migrate existing routes to new convention
+- ✅ Add tests for migration
+
 ## v0.1.0
 
 - ✅ Add tests for parseRouteModule
