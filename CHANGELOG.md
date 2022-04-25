@@ -2,6 +2,11 @@
 
 ## v0.2.0
 
+- 🐛 Add shebang to cli.js script
+- 🔨 Check that source directory exists before processing
+
+## v0.2.0
+
 - ✨ Add new command to migrate existing routes to new convention
 - ✅ Add tests for migration
 

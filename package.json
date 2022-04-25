@@ -1,8 +1,8 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Package for generating routes using flat convention",
-  "main": "dist/cli.js",
+  "main": "dist/index.js",
   "bin": {
     "migrate-flat-routes": "dist/cli.js"
   },
