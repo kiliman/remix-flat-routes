@@ -40,12 +40,11 @@ You can now migrate your existing routes to the new flat-routes convention. Simp
 ```bash
 npx migrate-flat-routes <sourceDir> <targetDir> [options]
 
-
 Example:
   npx migrate-flat-routes ./app/routes ./app/flatroutes --convention=flat-folders
 
 NOTE:
-  sourceDir and targetDir are relative to project roo
+  sourceDir and targetDir are relative to project root
 
 Options:
   --convention=<convention>

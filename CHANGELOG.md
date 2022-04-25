@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## v0.2.0
+## v0.2.1
 
-- 🐛 Add shebang to cli.js script
+- 🔨 Add shebang to cli.js script
 - 🔨 Check that source directory exists before processing
 
 ## v0.2.0
