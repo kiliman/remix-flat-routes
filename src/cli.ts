@@ -19,6 +19,11 @@ function main() {
     process.exit(1)
   }
 
+  if (!fs.existsSync(sourceDir)) {
+    console.error(`source directory '${sourceDir}' does not exist`)
+    process.exit(1)
+  }
+
   let options: MigrateOptions = { convention: 'flat-files' }
 
   for (let option of argv.slice(2)) {
