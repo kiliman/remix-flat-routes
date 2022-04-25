@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+import * as fs from 'fs'
 import { migrate, MigrateOptions } from './migrate'
 
 main()
