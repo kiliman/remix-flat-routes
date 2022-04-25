@@ -1,8 +1,11 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Package for generating routes using flat convention",
-  "main": "dist/src/index.js",
+  "main": "dist/cli.js",
+  "bin": {
+    "migrate-flat-routes": "dist/cli.js"
+  },
   "files": [
     "dist",
     "src",
@@ -11,11 +14,12 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc --project tsconfig.json --module CommonJS --outDir ./dist",
+    "build": "npm run clean && esbuild --format=cjs --outdir=./dist ./src/*.ts",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cli.js"
   },
   "keywords": [
     "remix",

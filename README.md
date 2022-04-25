@@ -33,6 +33,21 @@ NOTE: `basePath` should be relative to the `app` folder. If you want to
 use the `routes` folder, you will need to update the `ignoreRouteFiles`
 property to ignore **all** files: `**/*`
 
+## 🚚 Migrating Existing Routes
+
+You can now migrate your existing routes to the new flat-routes convention. Simply run:
+
+```bash
+npx migrate-flat-routes <sourceDir> <targetDir> [options]
+
+Options:
+  --convention=<convention>
+    The convention to use when migrating.
+      flat-files - Migrates all files to a flat directory structure.
+      flat-folders - Migrates all files to a flat directory structure, but
+        creates folders for each route.
+```
+
 ## 🔨 Flat Routes Convention
 
 ```
