@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.3.0
+
+- ✨ Add `basePath` option to mount routes to path other than root
+- 🔨 Add more TypeScript types
+- ♻️ Refactor tests
+
 ## v0.2.1
 
 - 🔨 Add shebang to cli.js script

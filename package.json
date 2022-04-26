@@ -1,6 +1,6 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Package for generating routes using flat convention",
   "main": "dist/index.js",
   "bin": {
@@ -14,7 +14,7 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && esbuild --format=cjs --outdir=./dist ./src/*.ts",
+    "build": "npm run clean && esbuild --format=cjs --sourcemap --outdir=./dist ./src/*.ts",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
