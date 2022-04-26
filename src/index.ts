@@ -1,23 +1,70 @@
 import * as path from 'path'
 import { visitFiles } from './util'
 
+type RouteInfo = {
+  path: string
+  file: string
+  name: string
+  parent: string
+  isIndex: boolean
+}
+
+type DefineRouteOptions = {
+  caseSensitive?: boolean
+  index?: boolean
+}
+
+type DefineRouteChildren = {
+  (): void
+}
+
+type DefineRouteFunction = (
+  path: string | undefined,
+  file: string,
+  optionsOrChildren?: DefineRouteOptions | DefineRouteChildren,
+  children?: DefineRouteChildren,
+) => void
+
+export type VisitFilesFunction = (
+  dir: string,
+  visitor: (file: string) => void,
+  baseDir?: string,
+) => void
+
+type FlatRoutesOptions = {
+  basePath?: string
+}
+
+type ParentMapEntry = {
+  routeInfo: RouteInfo
+  children: RouteInfo[]
+}
+
+export type DefineRoutesFunction = (
+  callback: (route: DefineRouteFunction) => void,
+) => any
+
 export default function flatRoutes(
   baseDir: string,
-  defineRoutes: (route: (...args: any) => void) => any,
+  defineRoutes: DefineRoutesFunction,
+  options: FlatRoutesOptions = {},
 ) {
-  const routeMap = new Map()
-  const parentMap = new Map()
+  const routeMap = new Map<string, RouteInfo>()
+  const parentMap = new Map<string, ParentMapEntry>()
 
   // initialize root route
   routeMap.set('root', {
     path: '',
     file: 'root.tsx',
+    name: 'root',
+    parent: '',
+    isIndex: false,
   })
   var routes = defineRoutes(route => {
     visitFiles(`app/${baseDir}`, routeFile => {
-      const parsed = parseRouteFile(baseDir, routeFile)
-      if (!parsed) return
-      routeMap.set(parsed.name, parsed)
+      const routeInfo = getRouteInfo(baseDir, routeFile, options.basePath)
+      if (!routeInfo) return
+      routeMap.set(routeInfo.name, routeInfo)
     })
     // setup parent map
     for (let [_name, route] of routeMap) {
@@ -26,7 +73,7 @@ export default function flatRoutes(
         let parent = parentMap.get(parentRoute)
         if (!parent) {
           parent = {
-            parsed: routeMap.get(parentRoute),
+            routeInfo: routeMap.get(parentRoute)!,
             children: [],
           }
           parentMap.set(parentRoute, parent)
@@ -43,46 +90,43 @@ export default function flatRoutes(
 }
 
 function getRoutes(
-  parentMap: Map<string, any>,
+  parentMap: Map<string, ParentMapEntry>,
   parent: string,
-  route: (...args: any) => void,
+  route: DefineRouteFunction,
 ) {
   let parentRoute = parentMap.get(parent)
   if (parentRoute && parentRoute.children) {
+    const routeOptions: DefineRouteOptions = {
+      caseSensitive: false,
+      index: parentRoute!.routeInfo.isIndex,
+    }
+    const routeChildren: DefineRouteChildren = () => {
+      for (let child of parentRoute!.children) {
+        getRoutes(parentMap, child.name, route)
+        const path = child.path.substring(
+          parentRoute!.routeInfo.path.length + 1,
+        )
+        route(path, child.file, { index: child.isIndex })
+      }
+    }
     route(
-      parentRoute.parsed.path,
-      parentRoute.parsed.file,
-      () => {
-        for (let child of parentRoute.children) {
-          getRoutes(parentMap, child.name, route)
-          route(
-            child.path.substring(parentRoute.parsed.path.length + 1),
-            child.file,
-            { index: child.isIndex },
-          )
-        }
-      },
-      { index: parentRoute.parsed.isIndex },
+      parentRoute.routeInfo.path,
+      parentRoute.routeInfo.file,
+      routeOptions,
+      routeChildren,
     )
   }
 }
 
-export type RouteInfo = {
-  path: string
-  file: string
-  name: string
-  parent: string
-  isIndex: boolean
-}
-
-export function parseRouteFile(
+export function getRouteInfo(
   baseDir: string,
   routeFile: string,
+  basePath?: string,
 ): RouteInfo | null {
   let state = 'START'
   let subState = 'NORMAL'
   let parentState = 'APPEND'
-  let url = ''
+  let url = basePath ?? ''
   let parent = ''
   let isIndex = false
   // get extension
@@ -110,7 +154,6 @@ export function parseRouteFile(
   let routeSegment = ''
   while (index < name.length) {
     let char = name[index]
-    //console.log({ char, state, subState, segment, url })
     switch (state) {
       case 'START':
         // process existing segment
@@ -187,3 +230,9 @@ function isPathSeparator(char: string) {
 }
 
 export { flatRoutes }
+export type {
+  DefineRouteFunction,
+  DefineRouteOptions,
+  DefineRouteChildren,
+  RouteInfo,
+}
