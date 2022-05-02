@@ -132,7 +132,7 @@ export function getRouteInfo(
   // get extension
   let ext = path.extname(routeFile)
   // only process valid route files
-  if (!['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
+  if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
     return null
   }
   // remove extension from name
