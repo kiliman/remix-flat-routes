@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.3.1
+
+- 🔨 Add support for MDX files [#7](https://github.com/kiliman/remix-flat-routes/pull/6)
+
 ## v0.3.0
 
 - ✨ Add `basePath` option to mount routes to path other than root
