@@ -11,7 +11,7 @@ This package enables you to define your routes using the flat-routes convention.
 ## 🛠 Installation
 
 ```bash
-> npm install remix-flat-routes
+npm install remix-flat-routes
 ```
 
 ## ⚙️ Configuration
