@@ -27,7 +27,7 @@ export function flatFiles(sourceDir: string, targetDir: string) {
   }
 }
 
-const routeExtensions = ['.js', '.jsx', '.ts', '.tsx']
+const routeExtensions = ['.js', '.jsx', '.ts', '.tsx', '.mdx']
 export function flatFolders(sourceDir: string, targetDir: string) {
   return (file: string) => {
     console.log(file)
