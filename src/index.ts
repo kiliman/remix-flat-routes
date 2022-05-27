@@ -1,11 +1,11 @@
 import * as path from 'path'
-import { visitFiles } from './util'
+import { getRouteSegments, visitFiles } from './util'
 
 type RouteInfo = {
   path: string
   file: string
   name: string
-  parent: string
+  parent?: string // first pass parent is undefined
   isIndex: boolean
 }
 
@@ -33,6 +33,7 @@ export type VisitFilesFunction = (
 
 type FlatRoutesOptions = {
   basePath?: string
+  visitFiles?: VisitFilesFunction
 }
 
 type ParentMapEntry = {
@@ -51,6 +52,7 @@ export default function flatRoutes(
 ) {
   const routeMap = new Map<string, RouteInfo>()
   const parentMap = new Map<string, ParentMapEntry>()
+  const visitor = options?.visitFiles || visitFiles
 
   // initialize root route
   routeMap.set('root', {
@@ -61,14 +63,15 @@ export default function flatRoutes(
     isIndex: false,
   })
   var routes = defineRoutes(route => {
-    visitFiles(`app/${baseDir}`, routeFile => {
+    visitor(`app/${baseDir}`, routeFile => {
       const routeInfo = getRouteInfo(baseDir, routeFile, options.basePath)
       if (!routeInfo) return
       routeMap.set(routeInfo.name, routeInfo)
     })
     // setup parent map
-    for (let [_name, route] of routeMap) {
-      let parentRoute = route.parent
+    for (let [name, route] of routeMap) {
+      if (name === 'root') continue
+      let parentRoute = getParentRoute(routeMap, name)
       if (parentRoute) {
         let parent = parentMap.get(parentRoute)
         if (!parent) {
@@ -85,8 +88,24 @@ export default function flatRoutes(
     getRoutes(parentMap, 'root', route)
   })
   // don't return root since remix already provides it
-  delete routes.root
+  if (routes) {
+    delete routes.root
+  }
   return routes
+}
+
+function getParentRoute(
+  routeMap: Map<string, RouteInfo>,
+  name: string,
+): string | null {
+  var parentName = name.substring(0, name.lastIndexOf('.'))
+  if (parentName === '') {
+    return 'root'
+  }
+  if (routeMap.has(parentName)) {
+    return parentName
+  }
+  return getParentRoute(routeMap, parentName)
 }
 
 function getRoutes(
@@ -123,13 +142,9 @@ export function getRouteInfo(
   routeFile: string,
   basePath?: string,
 ): RouteInfo | null {
-  let state = 'START'
-  let subState = 'NORMAL'
-  let parentState = 'APPEND'
   let url = basePath ?? ''
-  let parent = ''
-  let isIndex = false
   // get extension
+  console.log(routeFile)
   let ext = path.extname(routeFile)
   // only process valid route files
   if (!['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx'].includes(ext)) {
@@ -137,96 +152,59 @@ export function getRouteInfo(
   }
   // remove extension from name
   let name = routeFile.substring(0, routeFile.length - ext.length)
-  // route module so only process index routes
+  console.log(`name after ext: ${name}`)
   if (routeFile.includes('/')) {
+    // route flat-folder so only process index/layout routes
     if (
-      !name.endsWith('/index') &&
-      !name.endsWith('/_layout') &&
-      !name.endsWith('/_route')
+      ['/index', '/_index', '/_layout', '/_route', '.route'].every(
+        suffix => !name.endsWith(suffix),
+      )
     ) {
+      // ignore non-index routes
       return null
     }
-    name = path.dirname(routeFile)
-    isIndex = name.endsWith('/index') || name.endsWith('.index')
-  }
-  let index = 0
-  let pathSegment = ''
-  let routeSegment = ''
-  while (index < name.length) {
-    let char = name[index]
-    switch (state) {
-      case 'START':
-        // process existing segment
-        url = appendPathSegment(url, pathSegment)
-
-        if (routeSegment.endsWith('_')) {
-          parentState = 'IGNORE'
-        }
-        if (parentState === 'APPEND') {
-          if (parent) {
-            parent += '.'
-          }
-          parent += routeSegment
-        }
-        if (routeSegment === 'index') isIndex = true
-        pathSegment = '' // reset segment
-        routeSegment = ''
-        state = 'PATH'
-        continue // restart without advancing index
-      case 'PATH':
-        if (isPathSeparator(char) && subState === 'NORMAL') {
-          state = 'START'
-          break
-        } else if (char === '$') {
-          pathSegment += ':'
-        } else if (char === '[') {
-          subState = 'ESCAPE'
-        } else if (char === ']') {
-          subState = 'NORMAL'
-        } else {
-          pathSegment += char
-        }
-        routeSegment += char
-
-        break
+    if (name.endsWith('.route')) {
+      // convert docs/readme.route to docs.readme/_index
+      name = name.replace(/\//g, '.').replace(/\.route$/, '/_index')
     }
-    index++ // advance to next character
+    name = path.dirname(name)
   }
-  if (routeSegment === 'index') isIndex = true
-  url = appendPathSegment(url, pathSegment)
+
+  let routeSegments = getRouteSegments(name)
+  for (let i = 0; i < routeSegments.length; i++) {
+    let routeSegment = routeSegments[i]
+    url = appendPathSegment(url, routeSegment)
+  }
+  console.log({ name, routeSegments, url })
   return {
     path: url,
     file: `${baseDir}/${routeFile}`,
     name,
-    parent: parent || 'root',
-    isIndex,
+    //parent: parent will be calculated after all routes are defined,
+    isIndex:
+      routeSegments.at(-1) === 'index' || routeSegments.at(-1) === '_index',
   }
 }
 
 function appendPathSegment(url: string, segment: string) {
   if (segment) {
     if (segment.startsWith('_')) {
+      // handle pathless route (not included in url)
       return url
-    }
-    if (segment === 'index') {
+    } else if (['index', '_index'].some(name => segment === name)) {
+      // handle index route
       if (!url.endsWith('/')) {
         url += '/'
       }
-    } else if (segment === ':' || segment === ':_') {
-      url += '/*'
-    } else if (segment !== 'route') {
-      // strip trailing underscore
-      if (segment.endsWith('_')) {
-        segment = segment.slice(0, -1)
-      }
+    } else if (segment.startsWith('$')) {
+      // handle params
+      segment = segment === '$' ? '*' : `:${segment.substring(1)}`
+      url += '/' + segment
+    } else {
       url += '/' + segment
     }
   }
   return url
-}
-
-function isPathSeparator(char: string) {
-  return char === '/' || char === path.win32.sep || char === '.'
 }
 
 export { flatRoutes }

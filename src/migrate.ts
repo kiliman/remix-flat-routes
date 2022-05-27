@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { visitFiles } from './util'
+import { getRouteSegments, visitFiles } from './util'
 
 export type RoutingConvention = 'flat-files' | 'flat-folders'
 export type MigrateOptions = {
@@ -27,7 +27,7 @@ export function flatFiles(sourceDir: string, targetDir: string) {
   }
 }
 
-const routeExtensions = ['.js', '.jsx', '.ts', '.tsx']
+const routeExtensions = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 export function flatFolders(sourceDir: string, targetDir: string) {
   return (file: string) => {
     console.log(file)
@@ -39,30 +39,31 @@ export function flatFolders(sourceDir: string, targetDir: string) {
       return
     }
     fs.mkdirSync(targetFolder, { recursive: true })
-    fs.cpSync(`${sourceDir}/${file}`, `${targetFolder}/index${extension}`, {
+    fs.cpSync(`${sourceDir}/${file}`, `${targetFolder}/_index${extension}`, {
       force: true,
     })
   }
 }
 
-export function convertToRoute(file: string) {
-  const pathSegments = file.split('/')
-  const parent =
-    pathSegments.length == 1 ? '' : pathSegments.slice(0, -1).join('/')
-  const route = pathSegments.slice(-1)[0]
-  const routeSegments = route.split('.')
+export function convertToRoute(name: string) {
+  const pathSegments = name.split('/')
 
-  if (routeSegments.length > 1) {
-    routeSegments[0] = `${routeSegments[0]}_`
-  }
-
-  return `${getFlatRoute(parent.split('/'))}${
-    parent === '' ? '' : '.'
-  }${getFlatRoute(routeSegments)}`
+  return pathSegments
+    .map(pathSegment => {
+      const routeSegments = getRouteSegments(pathSegment)
+      return getFlatRoute(routeSegments)
+    })
+    .join('.')
 }
 
 function getFlatRoute(segments: string[]) {
   return segments
-    .map(segment => (segment.startsWith('__') ? segment.substring(1) : segment))
+    .map(segment =>
+      segment.startsWith('__')
+        ? segment.substring(1)
+        : segment === 'index'
+        ? '_index'
+        : segment,
+    )
     .join('.')
 }
