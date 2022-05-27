@@ -22,8 +22,8 @@ export function flatFiles(sourceDir: string, targetDir: string) {
     let extension = path.extname(file)
     let name = file.substring(0, file.length - extension.length)
     const route = convertToRoute(name)
-    const targetFile = `${targetDir}/${route}${extension}`
-    fs.cpSync(`${sourceDir}/${file}`, targetFile, { force: true })
+    const targetFile = path.join(targetDir, `${route}${extension}`)
+    fs.cpSync(path.join(sourceDir, file), targetFile, { force: true })
   }
 }
 
@@ -34,19 +34,23 @@ export function flatFolders(sourceDir: string, targetDir: string) {
     const extension = path.extname(file)
     const name = file.substring(0, file.length - extension.length)
     const route = convertToRoute(name)
-    const targetFolder = `${targetDir}/${route}`
+    const targetFolder = path.join(targetDir, route)
     if (!routeExtensions.includes(extension)) {
       return
     }
     fs.mkdirSync(targetFolder, { recursive: true })
-    fs.cpSync(`${sourceDir}/${file}`, `${targetFolder}/_index${extension}`, {
-      force: true,
-    })
+    fs.cpSync(
+      path.join(sourceDir, file),
+      path.join(targetFolder, `/_index${extension}`),
+      {
+        force: true,
+      },
+    )
   }
 }
 
 export function convertToRoute(name: string) {
-  const pathSegments = name.split('/')
+  const pathSegments = name.split(path.sep)
 
   return pathSegments
     .map(pathSegment => {

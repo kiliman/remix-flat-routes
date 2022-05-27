@@ -144,16 +144,16 @@ export function getRouteInfo(
 ): RouteInfo | null {
   let url = basePath ?? ''
   // get extension
-  console.log(routeFile)
   let ext = path.extname(routeFile)
   // only process valid route files
   if (!['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx'].includes(ext)) {
     return null
   }
-  // remove extension from name
-  let name = routeFile.substring(0, routeFile.length - ext.length)
-  console.log(`name after ext: ${name}`)
-  if (routeFile.includes('/')) {
+  // remove extension from name and normalize path separators
+  let name = routeFile
+    .substring(0, routeFile.length - ext.length)
+    .replace(path.win32.sep, '/')
+  if (name.includes('/')) {
     // route flat-folder so only process index/layout routes
     if (
       ['/index', '/_index', '/_layout', '/_route', '.route'].every(
@@ -165,7 +165,7 @@ export function getRouteInfo(
     }
     if (name.endsWith('.route')) {
       // convert docs/readme.route to docs.readme/_index
-      name = name.replace(/\//g, '.').replace(/\.route$/, '/_index')
+      name = name.replace(/[\/\\]/g, '.').replace(/\.route$/, '/_index')
     }
     name = path.dirname(name)
   }
@@ -175,10 +175,9 @@ export function getRouteInfo(
     let routeSegment = routeSegments[i]
     url = appendPathSegment(url, routeSegment)
   }
-  console.log({ name, routeSegments, url })
   return {
     path: url,
-    file: `${baseDir}/${routeFile}`,
+    file: path.join(baseDir, routeFile),
     name,
     //parent: parent will be calculated after all routes are defined,
     isIndex:

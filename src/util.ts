@@ -7,14 +7,10 @@ export function getRouteSegments(name: string) {
   let index = 0
   let routeSegment = ''
   let state = 'START'
-  let segmentWasEscaped = false
   let subState = 'NORMAL'
 
   const pushRouteSegment = (routeSegment: string) => {
     if (routeSegment) {
-      // ignore 'route' suffix that wasn't escaped [route]
-      //if (routeSegment === 'route' && segmentWasEscaped) return
-
       routeSegments.push(routeSegment)
     }
   }
@@ -26,7 +22,6 @@ export function getRouteSegments(name: string) {
         // process existing segment
         pushRouteSegment(routeSegment)
         routeSegment = ''
-        segmentWasEscaped = false
         state = 'PATH'
         continue // restart without advancing index
       case 'PATH':
@@ -35,7 +30,6 @@ export function getRouteSegments(name: string) {
           break
         } else if (char === '[') {
           subState = 'ESCAPE'
-          segmentWasEscaped = true
           break
         } else if (char === ']') {
           subState = 'NORMAL'
