@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.4.0
+
+- 🔨 Rewrite how parent routes are calculated [#9](https://github.com/kiliman/remix-flat-routes/issues/9)
+- 🐛 Use `path.sep` to support Windows [#10](https://github.com/kiliman/remix-flat-routes/issues/10)
+
 ## v0.3.1
 
 - 🔨 Add support for MDX files [#7](https://github.com/kiliman/remix-flat-routes/pull/6)

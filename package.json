@@ -1,6 +1,6 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Package for generating routes using flat convention",
   "main": "dist/index.js",
   "bin": {
@@ -38,12 +38,13 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
+    "@remix-run/dev": "^1.5.1",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.21",
     "all-contributors-cli": "^6.20.0",
     "babel-jest": "^27.4.2",
-    "esbuild-register": "^3.3.2",
     "esbuild": "^0.14.36",
+    "esbuild-register": "^3.3.2",
     "formdata-polyfill": "^4.0.10",
     "jest": "^27.4.3",
     "prettier": "^2.5.1",
