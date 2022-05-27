@@ -1,41 +1,109 @@
-import type { RouteInfo } from '../src/index'
-import { getRouteInfo } from '../src/index'
-import { routes as flatFiles } from './flat-files'
-import { routes as flatFolders } from './flat-folders'
+import { defineRoutes } from '@remix-run/dev/config/routes'
+import flatRoutes from '../src/index'
 
-describe('parse flat-files routes', () => {
-  test.each(flatFiles)('%s: %s', (_description, route, expected) => {
-    const result = getRouteInfo('routes', route)
-    expect(result).toEqual(expected)
+describe('define routes', () => {
+  it('should define routes for flat-files', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+      'healthcheck.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should define routes for flat-folders', () => {
+    const flatFolders = [
+      '$lang.$ref/_index.tsx',
+      '$lang.$ref._index/_index.tsx',
+      '$lang.$ref.$/_index.tsx',
+      '_index/_index.tsx',
+      'healthcheck/_index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should define routes for flat-folders on Windows', () => {
+    const flatFolders = [
+      '$lang.$ref\\_index.tsx',
+      '$lang.$ref._index\\_index.tsx',
+      '$lang.$ref.$\\_index.tsx',
+      '_index\\_index.tsx',
+      'healthcheck\\_index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/$lang.$ref._index/_index'].parentId).toBe(
+      'routes/$lang.$ref/_index',
+    )
+    expect(routes).toMatchSnapshot()
+  })
+  it('should define routes for complex structure', () => {
+    const routeList = [
+      '_auth.forgot-password.tsx',
+      '_auth.login.tsx',
+      '_auth.reset-password.tsx',
+      '_auth.signup.tsx',
+      '_auth.tsx',
+      '_landing.about.tsx',
+      '_landing.index.tsx',
+      '_landing.tsx',
+      'app.calendar.$day.tsx',
+      'app.calendar.index.tsx',
+      'app.calendar.tsx',
+      'app.projects.$id.tsx',
+      'app.projects.tsx',
+      'app.tsx',
+      'app_.projects.$id.roadmap.tsx',
+      'app_.projects.$id.roadmap[.pdf].tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(routeList),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+
+  it('should ignore non-route files in flat-folders', () => {
+    const flatFolders = [
+      '$lang.$ref/_layout.tsx',
+      '$lang.$ref/component.tsx',
+      '$lang.$ref._index/_index.tsx',
+      '$lang.$ref._index/style.css',
+      '$lang.$ref.$/model.server.ts',
+      '_index/_index.tsx',
+      'healthcheck/_route.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should support markdown routes as flat-files', () => {
+    const flatFiles = ['docs.tsx', 'docs.readme.md']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should support markdown routes as flat-folders', () => {
+    const flatFolders = ['docs/_layout.tsx', 'docs/readme.route.mdx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes).toMatchSnapshot()
   })
 })
 
-describe('parse flat-folders routes', () => {
-  test.each(flatFolders)('%s: %s', (_description, route, expected) => {
-    const result = getRouteInfo('routes', route)
-    expect(result).toEqual(expected)
-  })
-})
-
-describe('parse routes with basePath /myapp', () => {
-  test.each(flatFolders)('%s: %s', (_description, route, expected) => {
-    const result = getRouteInfo('routes', route, '/myapp')
-    expected.path = '/myapp' + expected.path
-    expect(result).toEqual(expected)
-  })
-})
-
-describe('parse nested-flat non-route files', () => {
-  // description, route, expected
-  const routes: [string, string, RouteInfo | null][] = [
-    ['component files', '_auth.forgot-password/component.tsx', null],
-    ['server files', '_auth.forgot-password/data.server.ts', null],
-    ['image files', '_auth.forgot-password/image.jpg', null],
-    ['nested files', '_auth.forgot-password/nested/styles.css', null],
-  ]
-
-  test.each(routes)('%s: %s', (_description, route, expected) => {
-    const result = getRouteInfo('routes', route)
-    expect(result).toEqual(expected)
-  })
-})
+function visitFilesFromArray(files: string[]) {
+  return (_dir: string, visitor: (file: string) => void, _baseDir?: string) => {
+    files.forEach(file => {
+      visitor(file)
+    })
+  }
+}

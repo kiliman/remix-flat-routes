@@ -6,3 +6,4 @@ public/build
 dist
 app
 .DS_Store
+.vscode
