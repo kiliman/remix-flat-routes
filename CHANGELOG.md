@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.1
+
+- 🐛 Fix parent handling and trailing `_` in path [#11](https://github.com/kiliman/remix-flat-routes/issues/11)
+
 ## v0.4.0
 
 - 🔨 Rewrite how parent routes are calculated [#9](https://github.com/kiliman/remix-flat-routes/issues/9)
