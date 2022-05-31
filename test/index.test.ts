@@ -1,4 +1,5 @@
 import { defineRoutes } from '@remix-run/dev/config/routes'
+import type { RouteManifest } from '../src/index'
 import flatRoutes from '../src/index'
 
 describe('define routes', () => {
@@ -69,6 +70,32 @@ describe('define routes', () => {
     expect(routes).toMatchSnapshot()
   })
 
+  it('should correctly nest routes', () => {
+    const routeList = [
+      'app.$organizationSlug.tsx',
+      'app.$organizationSlug.edit.tsx',
+      'app.$organizationSlug.projects.tsx',
+      'app.$organizationSlug.projects.$projectId.tsx',
+      'app.$organizationSlug.projects.$projectId.edit.tsx',
+      'app.$organizationSlug.projects.new.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(routeList),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should allow routes to specify different parent routes', () => {
+    const routeList = [
+      'parent.tsx',
+      'parent.some.nested.tsx',
+      'parent.some_.nested.route.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(routeList),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+
   it('should ignore non-route files in flat-folders', () => {
     const flatFolders = [
       '$lang.$ref/_layout.tsx',
@@ -106,4 +133,54 @@ function visitFilesFromArray(files: string[]) {
       visitor(file)
     })
   }
+}
+
+type RouteMapInfo = {
+  id: string
+  path: string
+  file: string
+  index?: boolean
+  children: string[]
+}
+function dumpRoutes(routes: RouteManifest) {
+  const routeMap = new Map<string, RouteMapInfo>()
+  const rootRoute: RouteMapInfo = {
+    id: 'root',
+    path: '',
+    file: 'root.tsx',
+    index: false,
+    children: [],
+  }
+  routeMap.set('root', rootRoute)
+  Object.entries(routes).forEach(([name, route]) => {
+    if (!route.parentId) return
+    const parent = routeMap.get(route.parentId)
+    if (parent) {
+      parent.children.push(name)
+    }
+    routeMap.set(name, {
+      id: name,
+      path: route.path,
+      file: route.file,
+      index: route.index,
+      children: [],
+    })
+  })
+  const dump = (route: RouteMapInfo, indent: string) => {
+    const getPath = (path?: string) => (path ? `path="${path}" ` : '')
+    const getIndex = (index?: boolean) => (index ? 'index ' : '')
+    output += `${indent}<Route ${getIndex(route.index)}${getPath(
+      route.path,
+    )}file="${route.file}"${route.children ? '' : ' /'}>\n`
+    if (route.children.length) {
+      route.children.forEach((childId: string) => {
+        dump(routeMap.get(childId)!, indent + '  ')
+      })
+      output += `${indent}</Route>\n`
+    }
+  }
+  let output = '<Routes>\n'
+  dump(routeMap.get('root')!, '  ')
+  output += '</Routes>\n'
+  console.log(output)
 }

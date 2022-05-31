@@ -5,8 +5,12 @@ type RouteInfo = {
   path: string
   file: string
   name: string
-  parent?: string // first pass parent is undefined
-  isIndex: boolean
+  parentId?: string // first pass parent is undefined
+  index?: boolean
+  caseSensitive?: boolean
+}
+interface RouteManifest {
+  [key: string]: RouteInfo
 }
 
 type DefineRouteOptions = {
@@ -49,7 +53,7 @@ export default function flatRoutes(
   baseDir: string,
   defineRoutes: DefineRoutesFunction,
   options: FlatRoutesOptions = {},
-) {
+): RouteManifest {
   const routeMap = new Map<string, RouteInfo>()
   const parentMap = new Map<string, ParentMapEntry>()
   const visitor = options?.visitFiles || visitFiles
@@ -59,8 +63,8 @@ export default function flatRoutes(
     path: '',
     file: 'root.tsx',
     name: 'root',
-    parent: '',
-    isIndex: false,
+    parentId: '',
+    index: false,
   })
   var routes = defineRoutes(route => {
     visitor(`app/${baseDir}`, routeFile => {
@@ -117,7 +121,7 @@ function getRoutes(
   if (parentRoute && parentRoute.children) {
     const routeOptions: DefineRouteOptions = {
       caseSensitive: false,
-      index: parentRoute!.routeInfo.isIndex,
+      index: parentRoute!.routeInfo.index,
     }
     const routeChildren: DefineRouteChildren = () => {
       for (let child of parentRoute!.children) {
@@ -125,7 +129,7 @@ function getRoutes(
         const path = child.path.substring(
           parentRoute!.routeInfo.path.length + 1,
         )
-        route(path, child.file, { index: child.isIndex })
+        route(path, child.file, { index: child.index })
       }
     }
     route(
@@ -180,7 +184,7 @@ export function getRouteInfo(
     file: path.join(baseDir, routeFile),
     name,
     //parent: parent will be calculated after all routes are defined,
-    isIndex:
+    index:
       routeSegments.at(-1) === 'index' || routeSegments.at(-1) === '_index',
   }
 }
@@ -190,6 +194,10 @@ function appendPathSegment(url: string, segment: string) {
     if (segment.startsWith('_')) {
       // handle pathless route (not included in url)
       return url
+    } else if (segment.endsWith('_')) {
+      // handle parent override
+      segment = segment.substring(0, segment.length - 1)
+      url += '/' + segment
     } else if (['index', '_index'].some(name => segment === name)) {
       // handle index route
       if (!url.endsWith('/')) {
@@ -211,5 +219,6 @@ export type {
   DefineRouteFunction,
   DefineRouteOptions,
   DefineRouteChildren,
+  RouteManifest,
   RouteInfo,
 }

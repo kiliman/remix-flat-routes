@@ -1,5 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`define routes should allow routes to specify different parent routes 1`] = `
+Object {
+  "routes/parent": Object {
+    "caseSensitive": undefined,
+    "file": "routes/parent.tsx",
+    "id": "routes/parent",
+    "index": undefined,
+    "parentId": "root",
+    "path": "parent",
+  },
+  "routes/parent.some.nested": Object {
+    "caseSensitive": undefined,
+    "file": "routes/parent.some.nested.tsx",
+    "id": "routes/parent.some.nested",
+    "index": undefined,
+    "parentId": "routes/parent",
+    "path": "some/nested",
+  },
+  "routes/parent.some_.nested.route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/parent.some_.nested.route.tsx",
+    "id": "routes/parent.some_.nested.route",
+    "index": undefined,
+    "parentId": "routes/parent",
+    "path": "some/nested/route",
+  },
+}
+`;
+
+exports[`define routes should correctly nest routes 1`] = `
+Object {
+  "routes/app.$organizationSlug": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.tsx",
+    "id": "routes/app.$organizationSlug",
+    "index": undefined,
+    "parentId": "root",
+    "path": "app/:organizationSlug",
+  },
+  "routes/app.$organizationSlug.edit": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.edit.tsx",
+    "id": "routes/app.$organizationSlug.edit",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug",
+    "path": "edit",
+  },
+  "routes/app.$organizationSlug.projects": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.projects.tsx",
+    "id": "routes/app.$organizationSlug.projects",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug",
+    "path": "projects",
+  },
+  "routes/app.$organizationSlug.projects.$projectId": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.projects.$projectId.tsx",
+    "id": "routes/app.$organizationSlug.projects.$projectId",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug.projects",
+    "path": ":projectId",
+  },
+  "routes/app.$organizationSlug.projects.$projectId.edit": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.projects.$projectId.edit.tsx",
+    "id": "routes/app.$organizationSlug.projects.$projectId.edit",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug.projects.$projectId",
+    "path": "edit",
+  },
+  "routes/app.$organizationSlug.projects.new": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug.projects.new.tsx",
+    "id": "routes/app.$organizationSlug.projects.new",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug.projects",
+    "path": "new",
+  },
+}
+`;
+
 exports[`define routes should define routes for complex structure 1`] = `
 Object {
   "routes/_auth": Object {
@@ -120,7 +202,7 @@ Object {
     "id": "routes/app_.projects.$id.roadmap",
     "index": undefined,
     "parentId": "root",
-    "path": "app_/projects/:id/roadmap",
+    "path": "app/projects/:id/roadmap",
   },
   "routes/app_.projects.$id.roadmap[.pdf]": Object {
     "caseSensitive": undefined,
@@ -128,7 +210,7 @@ Object {
     "id": "routes/app_.projects.$id.roadmap[.pdf]",
     "index": undefined,
     "parentId": "root",
-    "path": "app_/projects/:id/roadmap.pdf",
+    "path": "app/projects/:id/roadmap.pdf",
   },
 }
 `;
