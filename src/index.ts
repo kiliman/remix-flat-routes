@@ -191,25 +191,27 @@ export function getRouteInfo(
 
 function appendPathSegment(url: string, segment: string) {
   if (segment) {
-    if (segment.startsWith('_')) {
-      // handle pathless route (not included in url)
-      return url
-    } else if (segment.endsWith('_')) {
-      // handle parent override
-      segment = segment.substring(0, segment.length - 1)
-      url += '/' + segment
-    } else if (['index', '_index'].some(name => segment === name)) {
+    if (['index', '_index'].some(name => segment === name)) {
       // handle index route
       if (!url.endsWith('/')) {
         url += '/'
       }
-    } else if (segment.startsWith('$')) {
+      return url
+    }
+
+    if (segment.startsWith('_')) {
+      // handle pathless route (not included in url)
+      return url
+    }
+    if (segment.endsWith('_')) {
+      // handle parent override
+      segment = segment.substring(0, segment.length - 1)
+    }
+    if (segment.startsWith('$')) {
       // handle params
       segment = segment === '$' ? '*' : `:${segment.substring(1)}`
-      url += '/' + segment
-    } else {
-      url += '/' + segment
     }
+    url += '/' + segment
   }
   return url
 }

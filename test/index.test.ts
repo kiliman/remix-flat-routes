@@ -95,6 +95,18 @@ describe('define routes', () => {
     })
     expect(routes).toMatchSnapshot()
   })
+  it('should handle params with trailing underscore', () => {
+    const routeList = [
+      'app.$organizationSlug_._projects.tsx',
+      'app.$organizationSlug_._projects.projects.new.tsx',
+      'app.$organizationSlug_._projects.projects.$projectId.tsx',
+      'app.$organizationSlug_._projects.projects.$projectId.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(routeList),
+    })
+    expect(routes).toMatchSnapshot()
+  })
 
   it('should ignore non-route files in flat-folders', () => {
     const flatFolders = [

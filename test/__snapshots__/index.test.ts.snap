@@ -350,6 +350,43 @@ Object {
 }
 `;
 
+exports[`define routes should handle params with trailing underscore 1`] = `
+Object {
+  "routes/app.$organizationSlug_._projects": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug_._projects.tsx",
+    "id": "routes/app.$organizationSlug_._projects",
+    "index": undefined,
+    "parentId": "root",
+    "path": "app/:organizationSlug",
+  },
+  "routes/app.$organizationSlug_._projects.projects.$projectId": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug_._projects.projects.$projectId.tsx",
+    "id": "routes/app.$organizationSlug_._projects.projects.$projectId",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug_._projects",
+    "path": "projects/:projectId",
+  },
+  "routes/app.$organizationSlug_._projects.projects.$projectId.edit": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug_._projects.projects.$projectId.edit.tsx",
+    "id": "routes/app.$organizationSlug_._projects.projects.$projectId.edit",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug_._projects.projects.$projectId",
+    "path": "edit",
+  },
+  "routes/app.$organizationSlug_._projects.projects.new": Object {
+    "caseSensitive": undefined,
+    "file": "routes/app.$organizationSlug_._projects.projects.new.tsx",
+    "id": "routes/app.$organizationSlug_._projects.projects.new",
+    "index": undefined,
+    "parentId": "routes/app.$organizationSlug_._projects",
+    "path": "projects/new",
+  },
+}
+`;
+
 exports[`define routes should ignore non-route files in flat-folders 1`] = `
 Object {
   "routes/$lang.$ref._index/_index": Object {
