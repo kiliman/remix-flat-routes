@@ -66,7 +66,7 @@ export default function flatRoutes(
     parentId: '',
     index: false,
   })
-  var routes = defineRoutes(route => {
+  let routes = defineRoutes(route => {
     visitor(`app/${baseDir}`, routeFile => {
       const routeInfo = getRouteInfo(baseDir, routeFile, options.basePath)
       if (!routeInfo) return
@@ -192,10 +192,7 @@ export function getRouteInfo(
 function appendPathSegment(url: string, segment: string) {
   if (segment) {
     if (['index', '_index'].some(name => segment === name)) {
-      // handle index route
-      if (!url.endsWith('/')) {
-        url += '/'
-      }
+      // index routes don't affect the the path
       return url
     }
 
