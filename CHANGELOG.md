@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.3
+
+- 🐛 Use correct path for index routes [#13](https://github.com/kiliman/remix-flat-routes/issues/13)
+
 ## v0.4.2
 
 - 🐛 Fix params with trailing slash [#11](https://github.com/kiliman/remix-flat-routes/issues/11)
