@@ -196,3 +196,25 @@ function dumpRoutes(routes: RouteManifest) {
   output += '</Routes>\n'
   console.log(output)
 }
+
+describe('define ignored routes', () => {
+  const ignoredRouteFiles = ['**/.*', '**/*.css', '**/*.test.{js,jsx,ts,tsx}']
+  it('should ignore routes for flat-files', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+      'healthcheck.tsx',
+      'style.css',
+      '_index.test.tsx',
+      'styles/style.css',
+      '__tests__/_index.test.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      ignoredRouteFiles,
+    })
+    expect(routes).toMatchSnapshot()
+  })
+})

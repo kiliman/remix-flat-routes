@@ -1,3 +1,4 @@
+import minimatch from 'minimatch'
 import * as path from 'path'
 import { getRouteSegments, visitFiles } from './util'
 
@@ -38,6 +39,7 @@ export type VisitFilesFunction = (
 type FlatRoutesOptions = {
   basePath?: string
   visitFiles?: VisitFilesFunction
+  ignoredRouteFiles?: string[]
 }
 
 type ParentMapEntry = {
@@ -57,7 +59,7 @@ export default function flatRoutes(
   const routeMap = new Map<string, RouteInfo>()
   const parentMap = new Map<string, ParentMapEntry>()
   const visitor = options?.visitFiles || visitFiles
-
+  const ignoredFilePatterns = options?.ignoredRouteFiles ?? []
   // initialize root route
   routeMap.set('root', {
     path: '',
@@ -68,6 +70,10 @@ export default function flatRoutes(
   })
   let routes = defineRoutes(route => {
     visitor(`app/${baseDir}`, routeFile => {
+      let file = `app/${baseDir}/${routeFile}`
+      if (ignoredFilePatterns.some(pattern => minimatch(file, pattern))) {
+        return
+      }
       const routeInfo = getRouteInfo(baseDir, routeFile, options.basePath)
       if (!routeInfo) return
       routeMap.set(routeInfo.name, routeInfo)
@@ -96,6 +102,10 @@ export default function flatRoutes(
     delete routes.root
   }
   return routes
+}
+
+function isIgnoredRouteFile(file: string, ignoredRouteFiles: string[]) {
+  return ignoredRouteFiles.some(ignoredFile => file.endsWith(ignoredFile))
 }
 
 function getParentRoute(

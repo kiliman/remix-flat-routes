@@ -58,5 +58,8 @@
   "jest": {
     "preset": "ts-jest/presets/default-esm",
     "testEnvironment": "jsdom"
+  },
+  "dependencies": {
+    "minimatch": "^5.1.0"
   }
 }
