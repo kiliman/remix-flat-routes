@@ -1,7 +1,9 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the flat-routes convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -19,16 +21,20 @@ Update your _remix.config.js_ file and use the custom routes config option.
 ```ts
 const { flatRoutes } = require('remix-flat-routes')
 module.exports = {
-  // ignore all files in routes folder
+  // ignore all files in routes folder to prevent
+  // default remix convention from picking up routes
   ignoredRouteFiles: ['**/*'],
   routes: async defineRoutes => {
-    return flatRoutes('routes', defineRoutes)
+    return flatRoutes('routes', defineRoutes, {
+      basePath: '/', // optional base path (defaults to /)
+      ignoredRouteFiles: [], // same as remix config
+    })
   },
 }
 ```
 
-NOTE: `basePath` should be relative to the `app` folder. If you want to
-use the `routes` folder, you will need to update the `ignoreRouteFiles`
+NOTE: `baseDir` should be relative to the `app` folder. If you want to
+use the `routes` folder, you will need to update the `ignoredRouteFiles`
 property to ignore **all** files: `**/*`
 
 ## 🚚 Migrating Existing Routes
@@ -205,7 +211,7 @@ routes/
 
 ```
 
-This is a bit more opinionated, but I think it's ultimately what most developers would prefer. Each route becomes its own "mini app" with all of it's dependencies together. With the routeIgnorePatterns option it's completely unclear which files are routes and which aren't.
+This is a bit more opinionated, but I think it's ultimately what most developers would prefer. Each route becomes its own "mini app" with all of it's dependencies together. With the `ignoredRouteFiles` option it's completely unclear which files are routes and which aren't.
 
 ## 😍 Contributors
 

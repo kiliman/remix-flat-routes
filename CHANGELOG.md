@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.4
+
+- 🔨 Add `ignoredRouteFiles` to `flatRoutes` options [#15](https://github.com/kiliman/remix-flat-routes/issues/15)
+
 ## v0.4.3
 
 - 🐛 Use correct path for index routes [#13](https://github.com/kiliman/remix-flat-routes/issues/13)
