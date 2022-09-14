@@ -128,24 +128,49 @@ Individual explanations:
 | `app_.projects.$id.roadmap.tsx`       | `/app/projects/:id/roadmap`     | `root.tsx`           |
 | `app_.projects.$id.roadmap[.pdf].tsx` | `/app/projects/:id/roadmap.pdf` | n/a (resource route) |
 
+## Nested Layouts
+
+### Default match
+
+By default, `flat-routes` will nest the current route into the parent layout that has the longest matching prefix.
+
+Given the layout route `app.calendar.tsx`, the following routes will be nested under `app.calendar.tsx` since **`app.calendar`** is the longest matching prefix.
+
+- `app.calendar.index.tsx`
+- `app.calendar.$day.tsx`
+
+### Override match
+
+Sometimes you want to use a parent layout that is higher up in the route hierarchy. With the default Remix convention, you would use dot (`.`) notation instead of nested folders. With `flat-routes`, since routes files always use dots, there is a different convention to specify which layout to nest under.
+
+Let's say you have an `app.tsx` layout, but you have a route that you don't want to share with the layout, but instead want to match with `root.tsx`. To override the default parent match, append a trailing underscore (`_`) to the segment that is the immediate child of the route you want to nest under.
+
+`app_.projects.$id.roadmap.tsx` will nest under `root` since there are no matching routes:
+
+- ❌ `app_.projects.$id.tsx`
+- ❌ `app_.projects.tsx`
+- ❌ `app_.tsx`
+- ✅ `root.tsx`
+
 ## Conventions
 
-| filename                | convention             | behavior                        |
-| ----------------------- | ---------------------- | ------------------------------- |
-| `privacy.jsx`           | filename               | normal route                    |
-| `pages.tos.jsx`         | dot with no layout     | normal route, "." -> "/"        |
-| `about.jsx`             | filename with children | parent layout route             |
-| `about.contact.jsx`     | dot                    | child route of layout           |
-| `about.index.jsx`       | index filename         | index route of layout           |
-| `about_.company.jsx`    | trailing underscore    | url segment, no layout          |
-| `_auth.jsx`             | leading underscore     | layout nesting, no url segment  |
-| `_auth.login.jsx`       | leading underscore     | child of pathless layout route  |
-| `users.$userId.jsx`     | leading $              | URL param                       |
-| `docs.$.jsx`            | bare $                 | splat route                     |
-| `dashboard.route.jsx`   | route suffix           | optional, ignored completely    |
-| `_layout.jsx`           | explict layout file    | optional, same as parent folder |
-| `_route.jsx`            | explict route file     | optional, same as parent folder |
-| `investors/[index].jsx` | brackets               | escapes conventional characters |
+| filename                        | convention             | behavior                        |
+| ------------------------------- | ---------------------- | ------------------------------- |
+| `privacy.jsx`                   | filename               | normal route                    |
+| `pages.tos.jsx`                 | dot with no layout     | normal route, "." -> "/"        |
+| `about.jsx`                     | filename with children | parent layout route             |
+| `about.contact.jsx`             | dot                    | child route of layout           |
+| `about.index.jsx`               | index filename         | index route of layout           |
+| `about_.company.jsx`            | trailing underscore    | url segment, no layout          |
+| `app_.projects.$id.roadmap.tsx` | trailing underscore    | change default parent layout    |
+| `_auth.jsx`                     | leading underscore     | layout nesting, no url segment  |
+| `_auth.login.jsx`               | leading underscore     | child of pathless layout route  |
+| `users.$userId.jsx`             | leading $              | URL param                       |
+| `docs.$.jsx`                    | bare $                 | splat route                     |
+| `dashboard.route.jsx`           | route suffix           | optional, ignored completely    |
+| `_layout.jsx`                   | explict layout file    | optional, same as parent folder |
+| `_route.jsx`                    | explict route file     | optional, same as parent folder |
+| `investors/[index].jsx`         | brackets               | escapes conventional characters |
 
 ## Justification
 
