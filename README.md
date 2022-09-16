@@ -41,6 +41,7 @@ type FlatRoutesOptions = {
   basePath?: string               // optional base path (default is '/')
   ignoredRouteFiles?: string[]    // optional files to ingore as routes (same as Remix config option)
   visitFiles?: VisitFilesFuction  // optional visitor (useful for tests to provide files without file system)
+}
 ```
 NOTE: `baseDir` should be relative to the `app` folder. If you want to use the `routes` folder, you will need to update the `ignoredRouteFiles`property to ignore **all** files: `**/*`
 
