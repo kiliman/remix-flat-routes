@@ -38,6 +38,15 @@
         "doc",
         "code"
       ]
+    },
+    {
+      "login": "machour",
+      "name": "Mehdi Achour",
+      "avatar_url": "https://avatars.githubusercontent.com/u/304450?v=4",
+      "profile": "https://github.com/machour",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
