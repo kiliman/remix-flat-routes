@@ -193,7 +193,7 @@ routes/
 
 Each route becomes a folder with the route name minus the file extension. The route file then is named _index.tsx_.
 
-So *app.projects.tsx* becomes *app.projecxts/index.tsx*
+So *app.projects.tsx* becomes *app.projects/index.tsx*
 
 ```
 routes/
