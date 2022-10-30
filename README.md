@@ -18,6 +18,10 @@ Update your _remix.config.js_ file and use the custom routes config option.
 
 ```ts
 const { flatRoutes } = require('remix-flat-routes')
+
+/**
+ * @type {import("@remix-run/dev").AppConfig}
+ */
 module.exports = {
   // ignore all files in routes folder to prevent
   // default remix convention from picking up routes
