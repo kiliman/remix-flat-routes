@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.4.7
+
+- 🔨 Modify route ids for index routes to workaround bug in Remix
+  - See Remix PR [#4560](https://github.com/remix-run/remix/pull/4560)
+
 ## v0.4.6
 
 - 🔨 Update build to use tsc compiler to generate type definitions [#21](https://github.com/kiliman/remix-flat-routes/issues/21)
