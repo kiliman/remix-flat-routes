@@ -17,7 +17,7 @@
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepublish": "npm run build",
+    "prepare": "npm run typecheck && npm run build",
     "typecheck": "tsc -b",
     "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cli.js"
   },
