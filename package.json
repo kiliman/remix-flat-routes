@@ -7,13 +7,15 @@
     "migrate-flat-routes": "dist/cli.js"
   },
   "files": [
-    "dist/**/*.js",
-    "README.md"
+    "dist/**/*.j",
+    "dist/**/*d.ts",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && esbuild --format=cjs --sourcemap --outdir=./dist ./src/*.ts",
+    "build": "tsc --project tsconfig.build.json --module CommonJS --outDir ./dist",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
