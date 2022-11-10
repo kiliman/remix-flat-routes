@@ -39,6 +39,7 @@ export type VisitFilesFunction = (
 type FlatRoutesOptions = {
   basePath?: string
   visitFiles?: VisitFilesFunction
+  paramPrefixChar?: string
   ignoredRouteFiles?: string[]
 }
 
@@ -165,6 +166,7 @@ export function getRouteInfo(
   baseDir: string,
   routeFile: string,
   basePath?: string,
+  paramsPrefixChar?: string,
 ): RouteInfo | null {
   let url = basePath ?? ''
   if (url.startsWith('/')) {
@@ -200,7 +202,7 @@ export function getRouteInfo(
   let routeSegments = getRouteSegments(name)
   for (let i = 0; i < routeSegments.length; i++) {
     let routeSegment = routeSegments[i]
-    url = appendPathSegment(url, routeSegment)
+    url = appendPathSegment(url, routeSegment, paramsPrefixChar)
   }
   return {
     path: url,
@@ -212,7 +214,11 @@ export function getRouteInfo(
   }
 }
 
-function appendPathSegment(url: string, segment: string) {
+function appendPathSegment(
+  url: string,
+  segment: string,
+  paramsPrefixChar: string = '$',
+) {
   if (segment) {
     if (['index', '_index'].some(name => segment === name)) {
       // index routes don't affect the the path
@@ -227,9 +233,9 @@ function appendPathSegment(url: string, segment: string) {
       // handle parent override
       segment = segment.substring(0, segment.length - 1)
     }
-    if (segment.startsWith('$')) {
+    if (segment.startsWith(paramsPrefixChar)) {
       // handle params
-      segment = segment === '$' ? '*' : `:${segment.substring(1)}`
+      segment = segment === paramsPrefixChar ? '*' : `:${segment.substring(1)}`
     }
     if (url) url += '/'
     url += segment

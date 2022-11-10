@@ -1,7 +1,9 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -29,6 +31,7 @@ module.exports = {
   routes: async defineRoutes => {
     return flatRoutes('routes', defineRoutes, {
       basePath: '/', // optional base path (defaults to /)
+      paramPrefixChar: '$', // optional specify param prefix
       ignoredRouteFiles: [], // same as remix config
     })
   },
@@ -36,20 +39,28 @@ module.exports = {
 ```
 
 ### API
+
 ```ts
-function flatRoutes(baseDir: string, defineRoutes: DefineRoutesFunction, options: FlatRoutesOptions)
+function flatRoutes(
+  baseDir: string,
+  defineRoutes: DefineRoutesFunction,
+  options: FlatRoutesOptions,
+)
 
 type FlatRoutesOptions = {
-  basePath?: string               // optional base path (default is '/')
-  ignoredRouteFiles?: string[]    // optional files to ingore as routes (same as Remix config option)
+  basePath?: string // optional base path (default is '/')
+  paramPrefixChar?: string // optional param prefix (default is '$')
+  ignoredRouteFiles?: string[] // optional files to ingore as routes (same as Remix config option)
   visitFiles?: VisitFilesFunction // optional visitor (useful for tests to provide files without file system)
 }
 ```
+
 NOTE: `baseDir` should be relative to the `app` folder. If you want to use the `routes` folder, you will need to update the `ignoredRouteFiles` property to ignore **all** files: `**/*`
 
 ## 🔨 Flat Routes Convention
 
 ### Example (flat-files)
+
 ```
 routes/
   _auth.forgot-password.tsx
@@ -151,7 +162,7 @@ Let's say you have an `app.tsx` layout, and you have a route that you don't want
 | `about.jsx`                     | filename with children | parent layout route             |
 | `about.contact.jsx`             | dot                    | child route of layout           |
 | `about.index.jsx`               | index filename         | index route of layout           |
-| `about._index.jsx`              | alias of index.tsx     | index route of layout*          |
+| `about._index.jsx`              | alias of index.tsx     | index route of layout\*         |
 | `about_.company.jsx`            | trailing underscore    | url segment, no layout          |
 | `app_.projects.$id.roadmap.tsx` | trailing underscore    | change default parent layout    |
 | `_auth.jsx`                     | leading underscore     | layout nesting, no url segment  |
@@ -175,7 +186,7 @@ Let's say you have an `app.tsx` layout, and you have a route that you don't want
 
 ## Colocation
 
-While the example is exclusively files, they are really just "import paths". So you could make a folder for a route instead and the `index` file will be imported, allowing all of a route's modules to live alongside each other. This is the *flat-folders* convention, as opposed to the *flat-files* convention detailed above.
+While the example is exclusively files, they are really just "import paths". So you could make a folder for a route instead and the `index` file will be imported, allowing all of a route's modules to live alongside each other. This is the _flat-folders_ convention, as opposed to the _flat-files_ convention detailed above.
 
 ### Example (flat-folders)
 
@@ -195,7 +206,7 @@ routes/
 
 Each route becomes a folder with the route name minus the file extension. The route file then is named _index.tsx_.
 
-So *app.projects.tsx* becomes *app.projects/index.tsx*
+So _app.projects.tsx_ becomes _app.projects/index.tsx_
 
 ```
 routes/
@@ -236,15 +247,15 @@ routes/
 
 ### Aliases
 
-Since the route file is now named *index.tsx* and you can colocate additional files in the same route folder, the *index.tsx* file may get lost in the list of files. You can also use the following aliases for *index.tsx*. The underscore prefix will sort the file to the top of the directory listing.
+Since the route file is now named _index.tsx_ and you can colocate additional files in the same route folder, the _index.tsx_ file may get lost in the list of files. You can also use the following aliases for _index.tsx_. The underscore prefix will sort the file to the top of the directory listing.
 
-* `_index.tsx`
-* `_layout.tsx`
-* `_route.tsx` 
+- `_index.tsx`
+- `_layout.tsx`
+- `_route.tsx`
 
-> NOTE: The *_layout.tsx* and *_route.tsx* files are simply more explicit about their role. They work the same as *index.tsx*.
+> NOTE: The _\_layout.tsx_ and _\_route.tsx_ files are simply more explicit about their role. They work the same as _index.tsx_.
 
-As with flat files, an index route (not to be confused with index route _file_), can also use the underscore prefix. The route `_landing.index` can be saved as `_landing.index/index.tsx` or `_landing._index/_index.tsx`. 
+As with flat files, an index route (not to be confused with index route _file_), can also use the underscore prefix. The route `_landing.index` can be saved as `_landing.index/index.tsx` or `_landing._index/_index.tsx`.
 
 This is a bit more opinionated, but I think it's ultimately what most developers would prefer. Each route becomes its own "mini app" with all of its dependencies together. With the `ignoredRouteFiles` option it's completely unclear which files are routes and which aren't.
 
@@ -268,7 +279,6 @@ Options:
       flat-folders - Migrates all files to a flat directory structure, but
         creates folders for each route.
 ```
-
 
 ## 😍 Contributors
 
