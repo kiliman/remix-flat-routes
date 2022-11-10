@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.6
+
+- 🔨 Update build to use tsc compiler to generate type definitions [#21](https://github.com/kiliman/remix-flat-routes/issues/21)
+
 ## v0.4.5
 
 - 🐛 Fix path generation to ensure relative paths [#14](https://github.com/kiliman/remix-flat-routes/issues/14)
