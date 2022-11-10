@@ -112,9 +112,32 @@ export default function flatRoutes(
   if (routes) {
     delete routes.root
   }
-  return routes
+  // HACK: Update the route ids for index routes to work around
+  // a bug in Remix as of v1.7.5. Need this until PR #4560 is merged.
+  // https://github.com/remix-run/remix/pull/4560
+  let fixedRoutes = fixupIndexRoutes(routes)
+  return fixedRoutes
 }
 
+function fixupIndexRoutes(routes: any) {
+  let oldRoutes = { ...routes }
+  // append /index to all index route ids
+  Object.entries(oldRoutes).forEach(([id, route]: any) => {
+    if (route.index && !id.endsWith('/index')) {
+      let newId = id + '/index'
+      route.id = newId
+      routes[newId] = route
+      delete routes[id]
+    }
+  })
+  // fixup the parent ids to match the new ids
+  Object.entries(routes).forEach(([, route]: any) => {
+    if (routes[route.parentId!]?.index) {
+      route.parentId = routes[routes.parentId!].id
+    }
+  })
+  return routes
+}
 function isIgnoredRouteFile(file: string, ignoredRouteFiles: string[]) {
   return ignoredRouteFiles.some(ignoredFile => file.endsWith(ignoredFile))
 }

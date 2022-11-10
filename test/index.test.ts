@@ -40,7 +40,8 @@ describe('define routes', () => {
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
     })
-    expect(routes['routes/$lang.$ref._index/_index'].parentId).toBe(
+    expect(routes['routes/$lang.$ref._index/_index/index']).toBeDefined()
+    expect(routes['routes/$lang.$ref._index/_index/index'].parentId).toBe(
       'routes/$lang.$ref/_index',
     )
     expect(routes).toMatchSnapshot()
@@ -216,5 +217,53 @@ describe('define ignored routes', () => {
       ignoredRouteFiles,
     })
     expect(routes).toMatchSnapshot()
+  })
+})
+
+describe('define index routes', () => {
+  it('should generate "correct" id for index routes for flat files', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+    })
+
+    Object.entries(routes).forEach(([name, route]: any) => {
+      if (route.index) {
+        // index routes must end with "/index" to work around Remix bug
+        expect(name).toMatch(/\/index$/)
+        expect(route.id).toMatch(/\/index$/)
+      }
+      if (route.parentId !== 'root' && routes[route.parentId!]?.index) {
+        expect(route[route.parentId]).toBeDefined()
+        expect(route.parentId!).toMatch(/\/index$/)
+      }
+    })
+  })
+  it('should generate "correct" id for index routes for flat folders', () => {
+    const flatFolders = [
+      '$lang.$ref/index.tsx',
+      '$lang.$ref._index/index.tsx',
+      '$lang.$ref.$/index.tsx',
+      '_index/index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    Object.entries(routes).forEach(([name, route]: any) => {
+      if (route.index) {
+        // index routes must end with "/index" to work around Remix bug
+        expect(name).toMatch(/\/index$/)
+        expect(route.id).toMatch(/\/index$/)
+      }
+      if (route.parentId !== 'root' && routes[route.parentId!]?.index) {
+        expect(route[route.parentId]).toBeDefined()
+        expect(route.parentId!).toMatch(/\/index$/)
+      }
+    })
   })
 })
