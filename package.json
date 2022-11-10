@@ -15,7 +15,7 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --project tsconfig.build.json --module CommonJS --outDir ./dist",
+    "build": "npm run clean && tsc --project tsconfig.build.json --module CommonJS --outDir ./dist",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
