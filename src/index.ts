@@ -71,10 +71,20 @@ export default function flatRoutes(
   let routes = defineRoutes(route => {
     visitor(`app/${baseDir}`, routeFile => {
       let file = `app/${baseDir}/${routeFile}`
-      if (ignoredFilePatterns.some(pattern => minimatch(file, pattern))) {
+      let absoluteFile = path.resolve(file)
+      if (
+        ignoredFilePatterns.some(pattern =>
+          minimatch(absoluteFile, pattern, { dot: true }),
+        )
+      ) {
         return
       }
-      const routeInfo = getRouteInfo(baseDir, routeFile, options.basePath)
+      const routeInfo = getRouteInfo(
+        baseDir,
+        routeFile,
+        options.basePath,
+        options.paramPrefixChar,
+      )
       if (!routeInfo) return
       routeMap.set(routeInfo.name, routeInfo)
     })
