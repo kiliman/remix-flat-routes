@@ -136,9 +136,9 @@ function getRoutes(
     const routeChildren: DefineRouteChildren = () => {
       for (let child of parentRoute!.children) {
         getRoutes(parentMap, child.name, route)
-        const path = child.path.substring(
-          parentRoute!.routeInfo.path.length + 1,
-        )
+
+        let path = child.path.substring(parentRoute!.routeInfo.path.length)
+        if (path.startsWith('/')) path = path.substring(1)
         route(path, child.file, { index: child.index })
       }
     }
@@ -157,6 +157,9 @@ export function getRouteInfo(
   basePath?: string,
 ): RouteInfo | null {
   let url = basePath ?? ''
+  if (url.startsWith('/')) {
+    url = url.substring(1)
+  }
   // get extension
   let ext = path.extname(routeFile)
   // only process valid route files
@@ -218,7 +221,8 @@ function appendPathSegment(url: string, segment: string) {
       // handle params
       segment = segment === '$' ? '*' : `:${segment.substring(1)}`
     }
-    url += '/' + segment
+    if (url) url += '/'
+    url += segment
   }
   return url
 }
