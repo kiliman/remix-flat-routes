@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.4.5
+
+- 🐛 Fix path generation to ensure relative paths [#14](https://github.com/kiliman/remix-flat-routes/issues/14)
+  - Couple of issues in Remix that cause problem when posting to index routes. Here is a link to patches that will fix this problem. https://gist.github.com/kiliman/6ecc2186d487baa248d65f79128f72f6
+- 🐛 Handle ignored files starting with dots
+- ✨ Add paramPrefixChar to config
+  - Since the `$` prefix makes it hard to work with files in the shell, you can choose a different character like `^`
+
 ## v0.4.4
 
 - 🔨 Add `ignoredRouteFiles` to `flatRoutes` options [#15](https://github.com/kiliman/remix-flat-routes/issues/15)
