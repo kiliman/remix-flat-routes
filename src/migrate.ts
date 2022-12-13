@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getRouteSegments, visitFiles } from './util'
+import { defaultVisitFiles as visitFiles, getRouteSegments } from './index'
 
 export type RoutingConvention = 'flat-files' | 'flat-folders'
 export type MigrateOptions = {
