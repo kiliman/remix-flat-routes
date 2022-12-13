@@ -299,3 +299,26 @@ describe('use custom param prefix char', () => {
     expect(routes['routes/^']!.path!).toBe('*')
   })
 })
+
+describe('define hybrid routes', () => {
+  it('should define routes for hybrid routes', () => {
+    const flatFolders = [
+      '_index/_index.tsx',
+      '_public/_layout.tsx',
+      '_public/about/_route.tsx',
+      '_public/contact[.jpg]/_route.tsx',
+      'test.$/_route.tsx',
+      'users/_layout.tsx',
+      'users/users.css',
+      'users/_index/_index.tsx',
+      'users/$userId/_route.tsx',
+      'users/$userId/avatar.png',
+      'users/$userId_.edit/_route.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    console.log(routes)
+    expect(routes).toMatchSnapshot()
+  })
+})

@@ -230,7 +230,7 @@ function _flatRoutes(
 
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 const serverRegex = /\.server\.(ts|tsx|js|jsx|md|mdx)$/
-const indexRouteRegex = /((^|\.)(index|_index))(\/[^/]+)?$/
+const indexRouteRegex = /((^|[.])(index|_index))(\/[^\/]+)?$|(\/_?index\/)/
 
 export function isRouteModuleFile(
   filename: string,

@@ -1,5 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`define hybrid routes should define routes for hybrid routes 1`] = `
+Object {
+  "routes/_index/_index/index": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_index/_index.tsx",
+    "id": "routes/_index/_index/index",
+    "index": true,
+    "parentId": "root",
+    "path": undefined,
+  },
+  "routes/_public/_layout": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public/_layout.tsx",
+    "id": "routes/_public/_layout",
+    "index": undefined,
+    "parentId": "root",
+    "path": undefined,
+  },
+  "routes/_public/about/_route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public/about/_route.tsx",
+    "id": "routes/_public/about/_route",
+    "index": undefined,
+    "parentId": "routes/_public/_layout",
+    "path": "about",
+  },
+  "routes/_public/contact[.jpg]/_route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public/contact[.jpg]/_route.tsx",
+    "id": "routes/_public/contact[.jpg]/_route",
+    "index": undefined,
+    "parentId": "routes/_public/_layout",
+    "path": "contact.jpg",
+  },
+  "routes/test.$/_route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/test.$/_route.tsx",
+    "id": "routes/test.$/_route",
+    "index": undefined,
+    "parentId": "root",
+    "path": "test/*",
+  },
+  "routes/users/$userId/_route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users/$userId/_route.tsx",
+    "id": "routes/users/$userId/_route",
+    "index": undefined,
+    "parentId": "routes/users/_layout",
+    "path": ":userId",
+  },
+  "routes/users/$userId_.edit/_route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users/$userId_.edit/_route.tsx",
+    "id": "routes/users/$userId_.edit/_route",
+    "index": undefined,
+    "parentId": "routes/users/_layout",
+    "path": ":userId/edit",
+  },
+  "routes/users/_index/_index/index": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users/_index/_index.tsx",
+    "id": "routes/users/_index/_index/index",
+    "index": true,
+    "parentId": "routes/users/_layout",
+    "path": undefined,
+  },
+  "routes/users/_layout": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users/_layout.tsx",
+    "id": "routes/users/_layout",
+    "index": undefined,
+    "parentId": "root",
+    "path": "users",
+  },
+}
+`;
+
 exports[`define ignored routes should ignore routes for flat-files 1`] = `
 Object {
   "routes/$lang.$ref": Object {
