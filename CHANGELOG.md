@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.5.0
+
+- 🔨 Update flatRoutes with new features
+  - Uses same function as Remix core
+  - Allows to maintain extended flat-routes function
+  - Customizations passed in `options`
+  - Add support for "hybrid" routes
+  - Add support for extended route filenames
+  - Add support for multiple route folders
+  - Add support for custom param prefix character
+  - Add support for custom base path
+
 ## v0.4.7
 
 - 🔨 Modify route ids for index routes to workaround bug in Remix

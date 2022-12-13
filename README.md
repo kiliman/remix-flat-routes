@@ -8,6 +8,122 @@
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
 
+## ✨🎉 New in v0.5.0
+
+### Integration with Remix Core
+
+Remix flat routes will be a core feature in a future version of Remix. This will be enabled using a config option.
+
+I plan to continue to maintain this package in the future to enable enhancements that will not be in the Remix core version. To simplify maintenance, I expose all enhancements via the `options` parameter.
+
+### Hybrid Routes
+
+You can now use nested folders for your route names, yet still keep the colocation feature of flat routes.
+
+If you have a large app, its not uncommon to have routes nested many levels deep. With default flat routes, the folder name is the entire route path: `some.really.long.route.edit/index.tsx`
+
+Often you may have several parent layouts like `_public` or `admin`. Instead of having to repeat the name in every route, you can create top-level folders, then nest your routes under them. This way you can still take advantage of flat folders with colocation.
+
+**Before**
+
+```shell
+❯ tree app/routes-folders
+app/routes-folders
+├── _index
+│   └── page.tsx
+├── _public
+│   └── _layout.tsx
+├── _public.about
+│   └── index.tsx
+├── _public.contact[.jpg]
+│   └── index.tsx
+├── test.$
+│   ├── _route.server.tsx
+│   └── _route.tsx
+├── users
+│   ├── _layout.tsx
+│   └── users.css
+├── users.$userId
+│   ├── _route.tsx
+│   └── avatar.png
+├── users.$userId_.edit
+│   └── _route.tsx
+└── users._index
+    └── index.tsx
+```
+
+**After**
+
+```shell
+❯ tree app/routes-hybrid
+app/routes-hybrid
+├── _index
+│   └── index.tsx
+├── _public
+│   ├── _layout.tsx
+│   ├── about
+│   │   └── _route.tsx
+│   └── contact[.jpg]
+│       └── _route.tsx
+├── test.$
+│   └── _route.tsx
+└── users
+    ├── $userId
+    │   ├── _route.tsx
+    │   └── avatar.png
+    ├── $userId_.edit
+    │   └── _route.tsx
+    ├── _index
+    │   └── index.tsx
+    ├── _layout.tsx
+    └── users.css
+```
+
+### Extended Route Filenames
+
+In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `index.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.
+
+So instead of
+
+```
+_public.about/index.tsx
+_public.contact/index.tsx
+_public.privacy/index.tsx
+```
+
+You can name them
+
+```
+_public.about/_about.tsx
+_public.contact/_contact.tsx
+_public.privacy/_privacy.tsx
+```
+
+### Multiple Route Folders
+
+You can now pass in additional route folders besides the default `routes` folder. These routes will be merged into a single namespace, so you can have routes in one folder that will use shared routes from another.
+
+### Custom Param Prefix
+
+You can override the default param prefix of `$`. Some shells use the `$` prefix for variables, and this can be an issue due to shell expansion. Use any character that is a valid filename, for example: `^`
+
+```
+users.^userId.tsx  => users/:userId
+test.^.tsx         => test/*
+```
+
+### Custom Base Path
+
+You can override the default base path of `/`. This will prepend your base path to the root path.
+
+### Optional Route Segments
+
+React Router will introduce a new feature for optional route segments. To use optional segments in flat routes, simply wrap your route name in `()`.
+
+```
+parent.(optional).tsx   => parent/optional?
+```
+
 ## 🛠 Installation
 
 ```bash
