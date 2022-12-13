@@ -1,17 +1,20 @@
+import type {
+  DefineRouteFunction,
+  RouteManifest,
+} from '@remix-run/dev/config/routes'
+import * as fs from 'fs'
 import minimatch from 'minimatch'
 import * as path from 'path'
-import { getRouteSegments, visitFiles } from './util'
 
 type RouteInfo = {
+  id: string
   path: string
   file: string
   name: string
+  segments: string[]
   parentId?: string // first pass parent is undefined
   index?: boolean
   caseSensitive?: boolean
-}
-interface RouteManifest {
-  [key: string]: RouteInfo
 }
 
 type DefineRouteOptions = {
@@ -23,95 +26,61 @@ type DefineRouteChildren = {
   (): void
 }
 
-type DefineRouteFunction = (
-  path: string | undefined,
-  file: string,
-  optionsOrChildren?: DefineRouteOptions | DefineRouteChildren,
-  children?: DefineRouteChildren,
-) => void
-
 export type VisitFilesFunction = (
   dir: string,
   visitor: (file: string) => void,
   baseDir?: string,
 ) => void
 
-type FlatRoutesOptions = {
+export type FlatRoutesOptions = {
+  routeDir?: string | string[]
+  defineRoutes?: DefineRoutesFunction
   basePath?: string
   visitFiles?: VisitFilesFunction
   paramPrefixChar?: string
   ignoredRouteFiles?: string[]
-}
-
-type ParentMapEntry = {
-  routeInfo: RouteInfo
-  children: RouteInfo[]
+  routeRegex?: RegExp
 }
 
 export type DefineRoutesFunction = (
   callback: (route: DefineRouteFunction) => void,
 ) => any
 
+export type {
+  DefineRouteFunction,
+  DefineRouteOptions,
+  DefineRouteChildren,
+  RouteManifest,
+  RouteInfo,
+}
+export { flatRoutes }
+
+const defaultOptions: FlatRoutesOptions = {
+  routeDir: 'routes',
+  basePath: '/',
+  paramPrefixChar: '$',
+  routeRegex:
+    /\/((index|route|layout|page)|(_[a-zA-Z0-9_$.-]+)|([a-zA-Z0-9_$.\[\]-]+\.route))\.(ts|tsx|js|jsx|md|mdx)$/,
+}
+const defaultDefineRoutes = undefined
+
 export default function flatRoutes(
-  baseDir: string,
+  routeDir: string | string[],
   defineRoutes: DefineRoutesFunction,
-  options: FlatRoutesOptions = {},
+  options: FlatRoutesOptions = defaultOptions,
 ): RouteManifest {
-  const routeMap = new Map<string, RouteInfo>()
-  const parentMap = new Map<string, ParentMapEntry>()
-  const visitor = options?.visitFiles || visitFiles
-  const ignoredFilePatterns = options?.ignoredRouteFiles ?? []
-  // initialize root route
-  routeMap.set('root', {
-    path: '',
-    file: 'root.tsx',
-    name: 'root',
-    parentId: '',
-    index: false,
+  const routes = _flatRoutes('app', options.ignoredRouteFiles ?? [], {
+    ...options,
+    routeDir,
+    defineRoutes,
   })
-  let routes = defineRoutes(route => {
-    visitor(`app/${baseDir}`, routeFile => {
-      let file = `app/${baseDir}/${routeFile}`
-      let absoluteFile = path.resolve(file)
-      if (
-        ignoredFilePatterns.some(pattern =>
-          minimatch(absoluteFile, pattern, { dot: true }),
-        )
-      ) {
-        return
-      }
-      const routeInfo = getRouteInfo(
-        baseDir,
-        routeFile,
-        options.basePath,
-        options.paramPrefixChar,
-      )
-      if (!routeInfo) return
-      routeMap.set(routeInfo.name, routeInfo)
-    })
-    // setup parent map
-    for (let [name, route] of routeMap) {
-      if (name === 'root') continue
-      let parentRoute = getParentRoute(routeMap, name)
-      if (parentRoute) {
-        let parent = parentMap.get(parentRoute)
-        if (!parent) {
-          parent = {
-            routeInfo: routeMap.get(parentRoute)!,
-            children: [],
-          }
-          parentMap.set(parentRoute, parent)
-        }
-        parent.children.push(route)
-      }
+  // update undefined parentIds to 'root'
+  Object.values(routes).forEach(route => {
+    if (route.parentId === undefined) {
+      route.parentId = 'root'
     }
-    // start with root
-    getRoutes(parentMap, 'root', route)
   })
-  // don't return root since remix already provides it
-  if (routes) {
-    delete routes.root
-  }
+
   // HACK: Update the route ids for index routes to work around
   // a bug in Remix as of v1.7.5. Need this until PR #4560 is merged.
   // https://github.com/remix-run/remix/pull/4560
@@ -138,139 +107,346 @@ function fixupIndexRoutes(routes: any) {
   })
   return routes
 }
-function isIgnoredRouteFile(file: string, ignoredRouteFiles: string[]) {
-  return ignoredRouteFiles.some(ignoredFile => file.endsWith(ignoredFile))
-}
 
-function getParentRoute(
-  routeMap: Map<string, RouteInfo>,
-  name: string,
-): string | null {
-  var parentName = name.substring(0, name.lastIndexOf('.'))
-  if (parentName === '') {
-    return 'root'
+// this function uses the same signature as the one used in core remix
+// this way we can continue to enhance this package and still maintain
+// compatibility with remix
+function _flatRoutes(
+  appDir: string,
+  ignoredFilePatternsOrOptions?: string[] | FlatRoutesOptions,
+  options?: FlatRoutesOptions,
+): RouteManifest {
+  // get options
+  let ignoredFilePatterns: string[] = []
+  if (
+    ignoredFilePatternsOrOptions &&
+    !Array.isArray(ignoredFilePatternsOrOptions)
+  ) {
+    options = ignoredFilePatternsOrOptions
+  } else {
+    ignoredFilePatterns = ignoredFilePatternsOrOptions ?? []
   }
-  if (routeMap.has(parentName)) {
-    return parentName
+  if (!options) {
+    options = defaultOptions
   }
-  return getParentRoute(routeMap, parentName)
-}
 
-function getRoutes(
-  parentMap: Map<string, ParentMapEntry>,
-  parent: string,
-  route: DefineRouteFunction,
-) {
-  let parentRoute = parentMap.get(parent)
-  if (parentRoute && parentRoute.children) {
-    const routeOptions: DefineRouteOptions = {
-      caseSensitive: false,
-      index: parentRoute!.routeInfo.index,
-    }
-    const routeChildren: DefineRouteChildren = () => {
-      for (let child of parentRoute!.children) {
-        getRoutes(parentMap, child.name, route)
+  let routeMap: Map<string, RouteInfo> = new Map()
+  let nameMap: Map<string, RouteInfo> = new Map()
 
-        let path = child.path.substring(parentRoute!.routeInfo.path.length)
-        if (path.startsWith('/')) path = path.substring(1)
-        route(path, child.file, { index: child.index })
+  let routeDirs = Array.isArray(options.routeDir)
+    ? options.routeDir
+    : [options.routeDir ?? 'routes']
+  let defineRoutes = options.defineRoutes ?? defaultDefineRoutes
+  if (!defineRoutes) {
+    throw new Error('You must provide a defineRoutes function')
+  }
+  let visitFiles = options.visitFiles ?? defaultVisitFiles
+  let routeRegex = options.routeRegex ?? defaultOptions.routeRegex!
+
+  for (let routeDir of routeDirs) {
+    visitFiles(path.join(appDir, routeDir), file => {
+      if (
+        ignoredFilePatterns &&
+        ignoredFilePatterns.some(pattern =>
+          minimatch(file, pattern, { dot: true }),
+        )
+      ) {
+        return
+      }
+
+      if (isRouteModuleFile(file, routeRegex)) {
+        let routeInfo = getRouteInfo(routeDir, file, options!)
+        routeMap.set(routeInfo.id, routeInfo)
+        nameMap.set(routeInfo.name, routeInfo)
+        return
+      }
+    })
+  }
+  // update parentIds for all routes
+  Array.from(routeMap.values()).forEach(routeInfo => {
+    let parentId = findParentRouteId(routeInfo, nameMap)
+    routeInfo.parentId = parentId
+  })
+  let uniqueRoutes = new Map<string, string>()
+
+  // Then, recurse through all routes using the public defineRoutes() API
+  function defineNestedRoutes(
+    defineRoute: DefineRouteFunction,
+    parentId?: string,
+  ): void {
+    let childRoutes = Array.from(routeMap.values()).filter(
+      routeInfo => routeInfo.parentId === parentId,
+    )
+    let parentRoute = parentId ? routeMap.get(parentId) : undefined
+    let parentRoutePath = parentRoute?.path ?? '/'
+    for (let childRoute of childRoutes) {
+      let routePath = childRoute?.path?.slice(parentRoutePath.length) ?? ''
+      // remove leading slash
+      if (routePath.startsWith('/')) {
+        routePath = routePath.slice(1)
+      }
+      let index = childRoute.index
+      let fullPath = childRoute.path
+      let uniqueRouteId = (fullPath || '') + (index ? '?index' : '')
+
+      if (uniqueRouteId) {
+        if (uniqueRoutes.has(uniqueRouteId)) {
+          throw new Error(
+            `Path ${JSON.stringify(fullPath)} defined by route ${JSON.stringify(
+              childRoute.id,
+            )} conflicts with route ${JSON.stringify(
+              uniqueRoutes.get(uniqueRouteId),
+            )}`,
+          )
+        } else {
+          uniqueRoutes.set(uniqueRouteId, childRoute.id)
+        }
+      }
+
+      if (index) {
+        let invalidChildRoutes = Object.values(routeMap).filter(
+          routeInfo => routeInfo.parentId === childRoute.id,
+        )
+
+        if (invalidChildRoutes.length > 0) {
+          throw new Error(
+            `Child routes are not allowed in index routes. Please remove child routes of ${childRoute.id}`,
+          )
+        }
+
+        defineRoute(routePath, routeMap.get(childRoute.id!)!.file, {
+          index: true,
+        })
+      } else {
+        defineRoute(routePath, routeMap.get(childRoute.id!)!.file, () => {
+          defineNestedRoutes(defineRoute, childRoute.id)
+        })
       }
     }
-    route(
-      parentRoute.routeInfo.path,
-      parentRoute.routeInfo.file,
-      routeOptions,
-      routeChildren,
-    )
   }
+  let routes = defineRoutes(defineNestedRoutes)
+  return routes
+}
+
+const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
+const serverRegex = /\.server\.(ts|tsx|js|jsx|md|mdx)$/
+const indexRouteRegex = /((^|\.)(index|_index))(\/[^/]+)?$/
+
+export function isRouteModuleFile(
+  filename: string,
+  routeRegex: RegExp,
+): boolean {
+  // flat files only need correct extension
+  let isFlatFile = !filename.includes(path.sep)
+  if (isFlatFile) {
+    return routeModuleExts.includes(path.extname(filename))
+  }
+  let isRoute = routeRegex.test(filename)
+  if (isRoute) {
+    // check to see if it ends in .server.tsx because you may have
+    // a _route.tsx and and _route.server.tsx and only the _route.tsx
+    // file should be considered a route
+    let isServer = serverRegex.test(filename)
+    return !isServer
+  }
+  return false
+}
+
+export function isIndexRoute(routeId: string): boolean {
+  return indexRouteRegex.test(routeId)
 }
 
 export function getRouteInfo(
-  baseDir: string,
-  routeFile: string,
-  basePath?: string,
-  paramsPrefixChar?: string,
-): RouteInfo | null {
-  let url = basePath ?? ''
-  if (url.startsWith('/')) {
-    url = url.substring(1)
-  }
-  // get extension
-  let ext = path.extname(routeFile)
-  // only process valid route files
-  if (!['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx'].includes(ext)) {
-    return null
-  }
-  // remove extension from name and normalize path separators
-  let name = routeFile
-    .substring(0, routeFile.length - ext.length)
-    .replace(path.win32.sep, '/')
-  if (name.includes('/')) {
-    // route flat-folder so only process index/layout routes
-    if (
-      ['/index', '/_index', '/_layout', '/_route', '.route'].every(
-        suffix => !name.endsWith(suffix),
-      )
-    ) {
-      // ignore non-index routes
-      return null
-    }
-    if (name.endsWith('.route')) {
-      // convert docs/readme.route to docs.readme/_index
-      name = name.replace(/[\/\\]/g, '.').replace(/\.route$/, '/_index')
-    }
-    name = path.dirname(name)
-  }
-
-  let routeSegments = getRouteSegments(name)
-  for (let i = 0; i < routeSegments.length; i++) {
-    let routeSegment = routeSegments[i]
-    url = appendPathSegment(url, routeSegment, paramsPrefixChar)
-  }
-  return {
-    path: url,
-    file: path.join(baseDir, routeFile),
-    name,
-    //parent: parent will be calculated after all routes are defined,
-    index:
-      routeSegments.at(-1) === 'index' || routeSegments.at(-1) === '_index',
-  }
-}
-
-function appendPathSegment(
-  url: string,
-  segment: string,
-  paramsPrefixChar: string = '$',
+  routeDir: string,
+  file: string,
+  options: FlatRoutesOptions,
 ) {
-  if (segment) {
-    if (['index', '_index'].some(name => segment === name)) {
-      // index routes don't affect the the path
-      return url
-    }
-
-    if (segment.startsWith('_')) {
-      // handle pathless route (not included in url)
-      return url
-    }
-    if (segment.endsWith('_')) {
-      // handle parent override
-      segment = segment.substring(0, segment.length - 1)
-    }
-    if (segment.startsWith(paramsPrefixChar)) {
-      // handle params
-      segment = segment === paramsPrefixChar ? '*' : `:${segment.substring(1)}`
-    }
-    if (url) url += '/'
-    url += segment
+  let filePath = path.join(routeDir, file)
+  let routeId = createRouteId(filePath)
+  let routeIdWithoutRoutes = routeId.slice(routeDir.length + 1)
+  let index = isIndexRoute(routeIdWithoutRoutes)
+  let routeSegments = getRouteSegments(
+    routeIdWithoutRoutes,
+    options.paramPrefixChar,
+  )
+  let routePath = createRoutePath(routeSegments, index, options)
+  let routeInfo = {
+    id: routeId,
+    path: routePath!,
+    file: filePath,
+    name: routeSegments.join('/'),
+    segments: routeSegments,
+    index,
   }
-  return url
+
+  return routeInfo
 }
 
-export { flatRoutes }
-export type {
-  DefineRouteFunction,
-  DefineRouteOptions,
-  DefineRouteChildren,
-  RouteManifest,
-  RouteInfo,
+// create full path starting with /
+export function createRoutePath(
+  routeSegments: string[],
+  index: boolean,
+  options: FlatRoutesOptions,
+): string | undefined {
+  let result = ''
+  let basePath = options.basePath ?? '/'
+  let paramPrefixChar = options.paramPrefixChar ?? '$'
+
+  if (index) {
+    // replace index with blank
+    routeSegments[routeSegments.length - 1] = ''
+  }
+  for (let i = 0; i < routeSegments.length; i++) {
+    let segment = routeSegments[i]
+    // skip pathless layout segments
+    if (segment.startsWith('_')) {
+      continue
+    }
+    // remove trailing slash
+    if (segment.endsWith('_')) {
+      segment = segment.slice(0, -1)
+    }
+
+    // handle param segments: $ => *, $id => :id
+    if (segment.startsWith(paramPrefixChar)) {
+      if (segment === paramPrefixChar) {
+        result += `/*`
+      } else {
+        result += `/:${segment.slice(1)}`
+      }
+      // handle optional segments: (segment) => segment?
+    } else if (segment.startsWith('(')) {
+      result += `/${segment.slice(1, segment.length - 1)}?`
+    } else {
+      result += `/${segment}`
+    }
+  }
+  if (basePath !== '/') {
+    result = basePath + result
+  }
+  return result || undefined
+}
+
+function findParentRouteId(
+  routeInfo: RouteInfo,
+  nameMap: Map<string, RouteInfo>,
+): string | undefined {
+  let parentName = routeInfo.segments.slice(0, -1).join('/')
+  while (parentName) {
+    if (nameMap.has(parentName)) {
+      return nameMap.get(parentName)!.id
+    }
+    parentName = parentName.substring(0, parentName.lastIndexOf('/'))
+  }
+  return undefined
+}
+
+export function getRouteSegments(name: string, paramPrefixChar: string = '$') {
+  let routeSegments: string[] = []
+  let index = 0
+  let routeSegment = ''
+  let state = 'START'
+  let subState = 'NORMAL'
+
+  // do not remove segments ending in .route
+  // since these would be part of the route directory name
+  // docs/readme.route.tsx => docs/readme
+  if (!name.endsWith('.route')) {
+    // remove last segment since this should just be the
+    // route filename and we only want the directory name
+    // docs/_layout.tsx => docs
+    let last = name.lastIndexOf('/')
+    if (last >= 0) {
+      name = name.substring(0, last)
+    }
+  }
+  let pushRouteSegment = (routeSegment: string) => {
+    if (routeSegment) {
+      routeSegments.push(routeSegment)
+    }
+  }
+
+  while (index < name.length) {
+    let char = name[index]
+    switch (state) {
+      case 'START':
+        // process existing segment
+        if (
+          routeSegment.includes(paramPrefixChar) &&
+          !routeSegment.startsWith(paramPrefixChar)
+        ) {
+          throw new Error(
+            `Route params must start with prefix char ${paramPrefixChar}: ${routeSegment}`,
+          )
+        }
+        if (
+          routeSegment.includes('(') &&
+          !routeSegment.startsWith('(') &&
+          !routeSegment.endsWith(')')
+        ) {
+          throw new Error(
+            `Optional routes must start and end with parentheses: ${routeSegment}`,
+          )
+        }
+        pushRouteSegment(routeSegment)
+        routeSegment = ''
+        state = 'PATH'
+        continue // restart without advancing index
+      case 'PATH':
+        if (isPathSeparator(char) && subState === 'NORMAL') {
+          state = 'START'
+          break
+        } else if (char === '[') {
+          subState = 'ESCAPE'
+          break
+        } else if (char === ']') {
+          subState = 'NORMAL'
+          break
+        }
+        routeSegment += char
+        break
+    }
+    index++ // advance to next character
+  }
+  // process remaining segment
+  pushRouteSegment(routeSegment)
+  // strip trailing .route segment
+  if (routeSegments.at(-1) === 'route') {
+    routeSegments = routeSegments.slice(0, -1)
+  }
+  return routeSegments
+}
+
+const pathSeparatorRegex = /[/\\.]/
+function isPathSeparator(char: string) {
+  return pathSeparatorRegex.test(char)
+}
+
+export function defaultVisitFiles(
+  dir: string,
+  visitor: (file: string) => void,
+  baseDir = dir,
+) {
+  for (let filename of fs.readdirSync(dir)) {
+    let file = path.resolve(dir, filename)
+    let stat = fs.lstatSync(file)
+
+    if (stat.isDirectory()) {
+      defaultVisitFiles(file, visitor, baseDir)
+    } else if (stat.isFile()) {
+      visitor(path.relative(baseDir, file))
+    }
+  }
+}
+
+export function createRouteId(file: string) {
+  return normalizeSlashes(stripFileExtension(file))
+}
+
+export function normalizeSlashes(file: string) {
+  return file.split(path.win32.sep).join('/')
+}
+
+function stripFileExtension(file: string) {
+  return file.replace(/\.[a-z0-9]+$/i, '')
 }

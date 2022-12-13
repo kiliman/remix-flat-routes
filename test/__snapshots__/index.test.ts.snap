@@ -63,13 +63,13 @@ Object {
     "parentId": "routes/parent",
     "path": "some/nested",
   },
-  "routes/parent.some_.nested.route": Object {
+  "routes/parent.some_.nested.page": Object {
     "caseSensitive": undefined,
-    "file": "routes/parent.some_.nested.route.tsx",
-    "id": "routes/parent.some_.nested.route",
+    "file": "routes/parent.some_.nested.page.tsx",
+    "id": "routes/parent.some_.nested.page",
     "index": undefined,
     "parentId": "routes/parent",
-    "path": "some/nested/route",
+    "path": "some/nested/page",
   },
 }
 `;

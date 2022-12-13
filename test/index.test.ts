@@ -89,7 +89,7 @@ describe('define routes', () => {
     const routeList = [
       'parent.tsx',
       'parent.some.nested.tsx',
-      'parent.some_.nested.route.tsx',
+      'parent.some_.nested.page.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(routeList),
@@ -173,7 +173,7 @@ function dumpRoutes(routes: RouteManifest) {
     }
     routeMap.set(name, {
       id: name,
-      path: route.path,
+      path: route.path!,
       file: route.file,
       index: route.index,
       children: [],
@@ -265,5 +265,37 @@ describe('define index routes', () => {
         expect(route.parentId!).toMatch(/\/index$/)
       }
     })
+  })
+})
+
+describe('use custom base path', () => {
+  it('should generate correct routes with base path prefix', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      basePath: '/myapp',
+    })
+    const rootChildren = Object.values(routes).filter(
+      route => route.parentId === 'root',
+    )
+    expect(rootChildren.length).toBeGreaterThan(0)
+    expect(rootChildren[0].path!.startsWith('myapp/')).toBe(true)
+  })
+})
+
+describe('use custom param prefix char', () => {
+  it('should generate correct paths with custom param prefix', () => {
+    const flatFiles = ['^userId.tsx', '^.tsx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      paramPrefixChar: '^',
+    })
+    expect(routes['routes/^userId']!.path!).toBe(':userId')
+    expect(routes['routes/^']!.path!).toBe('*')
   })
 })
