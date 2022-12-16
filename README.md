@@ -93,7 +93,6 @@ _auth+/forgot-password.tsx => _auth.forgot-password.tsx
 
 ```
 ❯ tree app/routes-hybrid-files/
-a❯ tree app/routes-hybrid-files/
 app/routes-hybrid-files/
 ├── _auth+
 │   ├── forgot-password.tsx
