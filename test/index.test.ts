@@ -318,7 +318,43 @@ describe('define hybrid routes', () => {
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
     })
-    console.log(routes)
     expect(routes).toMatchSnapshot()
+  })
+})
+
+describe('define folders for flat-files', () => {
+  it('should define routes for flat-files with folders', () => {
+    const flatFolders = [
+      '_auth+/forgot-password.tsx',
+      '_auth+/login.tsx',
+      '_public+/_layout.tsx',
+      '_public+/index.tsx',
+      '_public+/about.tsx',
+      '_public+/contact[.jpg].tsx',
+      'users+/_layout.tsx',
+      'users+/_index.tsx',
+      'users+/$userId.tsx',
+      'users+/$userId_.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should define routes for flat-files with folders and flat-folders convention', () => {
+    const flatFolders = [
+      '_public+/parent.child.tsx',
+      '_public+/parent.child.grandchild.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/_public+/parent.child']?.path).toBe('parent/child')
+    expect(routes['routes/_public+/parent.child.grandchild']?.parentId).toBe(
+      'routes/_public+/parent.child',
+    )
+    expect(routes['routes/_public+/parent.child.grandchild']?.path).toBe(
+      'grandchild',
+    )
   })
 })

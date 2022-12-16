@@ -60,7 +60,7 @@ const defaultOptions: FlatRoutesOptions = {
   basePath: '/',
   paramPrefixChar: '$',
   routeRegex:
-    /\/((index|route|layout|page)|(_[a-zA-Z0-9_$.-]+)|([a-zA-Z0-9_$.\[\]-]+\.route))\.(ts|tsx|js|jsx|md|mdx)$/,
+    /(([+]\/[a-zA-Z0-9_$.\[\]-]+)|\/((index|route|layout|page)|(_[a-zA-Z0-9_$.-]+)|([a-zA-Z0-9_$.\[\]-]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$/,
 }
 const defaultDefineRoutes = undefined
 
@@ -230,7 +230,8 @@ function _flatRoutes(
 
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 const serverRegex = /\.server\.(ts|tsx|js|jsx|md|mdx)$/
-const indexRouteRegex = /((^|[.])(index|_index))(\/[^\/]+)?$|(\/_?index\/)/
+const indexRouteRegex =
+  /((^|[.]|[+]\/)(index|_index))(\/[^\/]+)?$|(\/_?index\/)/
 
 export function isRouteModuleFile(
   filename: string,
@@ -267,6 +268,7 @@ export function getRouteInfo(
   let index = isIndexRoute(routeIdWithoutRoutes)
   let routeSegments = getRouteSegments(
     routeIdWithoutRoutes,
+    index,
     options.paramPrefixChar,
   )
   let routePath = createRoutePath(routeSegments, index, options)
@@ -341,17 +343,32 @@ function findParentRouteId(
   return undefined
 }
 
-export function getRouteSegments(name: string, paramPrefixChar: string = '$') {
+export function getRouteSegments(
+  name: string,
+  index: boolean,
+  paramPrefixChar: string = '$',
+) {
   let routeSegments: string[] = []
-  let index = 0
+  let i = 0
   let routeSegment = ''
   let state = 'START'
   let subState = 'NORMAL'
-
-  // do not remove segments ending in .route
-  // since these would be part of the route directory name
-  // docs/readme.route.tsx => docs/readme
-  if (!name.endsWith('.route')) {
+  let hasPlus = false
+  // replace +/ with .
+  // this supports folders for organizing flat-files convention
+  // _public+/about.tsx => _public.about.tsx
+  //
+  if (/[+]\//.test(name)) {
+    name = name.replace(/[+]\//g, '.')
+    hasPlus = true
+  }
+  let hasFolder = /\//.test(name)
+  // if name has plus folder, but we still have regular folders
+  // then treat ending route as flat-folders
+  if (((hasPlus && hasFolder) || !hasPlus) && !name.endsWith('.route')) {
+    // do not remove segments ending in .route
+    // since these would be part of the route directory name
+    // docs/readme.route.tsx => docs/readme
     // remove last segment since this should just be the
     // route filename and we only want the directory name
     // docs/_layout.tsx => docs
@@ -360,14 +377,15 @@ export function getRouteSegments(name: string, paramPrefixChar: string = '$') {
       name = name.substring(0, last)
     }
   }
+
   let pushRouteSegment = (routeSegment: string) => {
     if (routeSegment) {
       routeSegments.push(routeSegment)
     }
   }
 
-  while (index < name.length) {
-    let char = name[index]
+  while (i < name.length) {
+    let char = name[i]
     switch (state) {
       case 'START':
         // process existing segment
@@ -406,12 +424,20 @@ export function getRouteSegments(name: string, paramPrefixChar: string = '$') {
         routeSegment += char
         break
     }
-    index++ // advance to next character
+    i++ // advance to next character
   }
   // process remaining segment
   pushRouteSegment(routeSegment)
   // strip trailing .route segment
   if (routeSegments.at(-1) === 'route') {
+    routeSegments = routeSegments.slice(0, -1)
+  }
+  // if hasPlus, we need to strip the trailing segment if it starts with _
+  // and route is not an index route
+  // this is to handle layouts in flat-files
+  // _public+/_layout.tsx => _public.tsx
+  // _public+/index.tsx => _public.index.tsx
+  if (!index && hasPlus && routeSegments.at(-1)?.startsWith('_')) {
     routeSegments = routeSegments.slice(0, -1)
   }
   return routeSegments

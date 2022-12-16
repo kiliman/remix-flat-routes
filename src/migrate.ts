@@ -51,10 +51,10 @@ export function flatFolders(sourceDir: string, targetDir: string) {
 
 export function convertToRoute(name: string) {
   const pathSegments = name.split(path.sep)
-
   return pathSegments
     .map(pathSegment => {
-      const routeSegments = getRouteSegments(pathSegment)
+      const index = /(^|[.])index$/.test(pathSegment)
+      const routeSegments = getRouteSegments(pathSegment, index)
       return getFlatRoute(routeSegments)
     })
     .join('.')

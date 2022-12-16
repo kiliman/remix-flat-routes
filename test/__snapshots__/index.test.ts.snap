@@ -1,5 +1,90 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`define folders for flat-files should define routes for flat-files with folders 1`] = `
+Object {
+  "routes/_auth+/forgot-password": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_auth+/forgot-password.tsx",
+    "id": "routes/_auth+/forgot-password",
+    "index": undefined,
+    "parentId": "root",
+    "path": "forgot-password",
+  },
+  "routes/_auth+/login": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_auth+/login.tsx",
+    "id": "routes/_auth+/login",
+    "index": undefined,
+    "parentId": "root",
+    "path": "login",
+  },
+  "routes/_public+/_layout": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public+/_layout.tsx",
+    "id": "routes/_public+/_layout",
+    "index": undefined,
+    "parentId": "root",
+    "path": undefined,
+  },
+  "routes/_public+/about": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public+/about.tsx",
+    "id": "routes/_public+/about",
+    "index": undefined,
+    "parentId": "routes/_public+/_layout",
+    "path": "about",
+  },
+  "routes/_public+/contact[.jpg]": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public+/contact[.jpg].tsx",
+    "id": "routes/_public+/contact[.jpg]",
+    "index": undefined,
+    "parentId": "routes/_public+/_layout",
+    "path": "contact.jpg",
+  },
+  "routes/_public+/index": Object {
+    "caseSensitive": undefined,
+    "file": "routes/_public+/index.tsx",
+    "id": "routes/_public+/index",
+    "index": true,
+    "parentId": "routes/_public+/_layout",
+    "path": undefined,
+  },
+  "routes/users+/$userId": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users+/$userId.tsx",
+    "id": "routes/users+/$userId",
+    "index": undefined,
+    "parentId": "routes/users+/_layout",
+    "path": ":userId",
+  },
+  "routes/users+/$userId_.edit": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users+/$userId_.edit.tsx",
+    "id": "routes/users+/$userId_.edit",
+    "index": undefined,
+    "parentId": "routes/users+/_layout",
+    "path": ":userId/edit",
+  },
+  "routes/users+/_index/index": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users+/_index.tsx",
+    "id": "routes/users+/_index/index",
+    "index": true,
+    "parentId": "routes/users+/_layout",
+    "path": undefined,
+  },
+  "routes/users+/_layout": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users+/_layout.tsx",
+    "id": "routes/users+/_layout",
+    "index": undefined,
+    "parentId": "root",
+    "path": "users",
+  },
+}
+`;
+
 exports[`define hybrid routes should define routes for hybrid routes 1`] = `
 Object {
   "routes/_index/_index/index": Object {
