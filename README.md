@@ -79,6 +79,83 @@ app/routes-hybrid
     └── users.css
 ```
 
+### Nested folders with `flat-files` convention (✨ New in v0.5.1)
+
+To create a folder but treat it as flat-file, just append the `+`to the folder name.
+
+```
+_auth+/forgot-password.tsx => _auth.forgot-password.tsx
+```
+
+> NOTE: You can include the \_layout.tsx file inside your folder. You do NOT need to have a \_public.tsx or users.tsx file.
+
+> You can still use flat-folders for colocation. So this is best of both formats.
+
+```
+❯ tree app/routes-hybrid-files/
+a❯ tree app/routes-hybrid-files/
+app/routes-hybrid-files/
+├── _auth+
+│   ├── forgot-password.tsx
+│   └── login.tsx
+├── _public+
+│   ├── _layout.tsx
+│   ├── about.tsx
+│   ├── contact[.jpg].tsx
+│   └── index.tsx
+├── project
+│   ├── _layout.tsx
+│   ├── parent.child
+│   │   └── index.tsx
+│   └── parent.child.grandchild
+│       ├── index.tsx
+│       └── styles.css
+└── users+
+    ├── $userId.tsx
+    ├── $userId_.edit.tsx
+    ├── _layout.tsx
+    └── index.tsx
+```
+
+```js
+<Routes>
+  <Route file="root.tsx">
+    <Route
+      path="forgot-password"
+      file="routes-hybrid-files/_auth+/forgot-password.tsx"
+    />
+    <Route path="login" file="routes-hybrid-files/_auth+/login.tsx" />
+    <Route file="routes-hybrid-files/_public+/_layout.tsx">
+      <Route path="about" file="routes-hybrid-files/_public+/about.tsx" />
+      <Route
+        path="contact.jpg"
+        file="routes-hybrid-files/_public+/contact[.jpg].tsx"
+      />
+      <Route index file="routes-hybrid-files/_public+/index.tsx" />
+    </Route>
+    <Route path="project" file="routes-hybrid-files/project/_layout.tsx">
+      <Route
+        path="parent/child"
+        file="routes-hybrid-files/project/parent.child/index.tsx"
+      >
+        <Route
+          path="grandchild"
+          file="routes-hybrid-files/project/parent.child.grandchild/index.tsx"
+        />
+      </Route>
+    </Route>
+    <Route path="users" file="routes-hybrid-files/users+/_layout.tsx">
+      <Route path=":userId" file="routes-hybrid-files/users+/$userId.tsx" />
+      <Route
+        path=":userId/edit"
+        file="routes-hybrid-files/users+/$userId_.edit.tsx"
+      />
+      <Route index file="routes-hybrid-files/users+/index.tsx" />
+    </Route>
+  </Route>
+</Routes>
+```
+
 ### Extended Route Filenames
 
 In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `index.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.1
+
+- 🔨 Add support for folders with `flat-files` convention [#25](https://github.com/kiliman/remix-flat-routes/discussions/25)
+
 ## v0.5.0
 
 - 🔨 Update flatRoutes with new features
