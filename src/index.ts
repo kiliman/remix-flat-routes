@@ -33,6 +33,7 @@ export type VisitFilesFunction = (
 ) => void
 
 export type FlatRoutesOptions = {
+  appDir?: string
   routeDir?: string | string[]
   defineRoutes?: DefineRoutesFunction
   basePath?: string
@@ -56,6 +57,7 @@ export type {
 export { flatRoutes }
 
 const defaultOptions: FlatRoutesOptions = {
+  appDir: 'app',
   routeDir: 'routes',
   basePath: '/',
   paramPrefixChar: '$',
@@ -67,13 +69,18 @@ const defaultDefineRoutes = undefined
 export default function flatRoutes(
   routeDir: string | string[],
   defineRoutes: DefineRoutesFunction,
-  options: FlatRoutesOptions = defaultOptions,
+  options: FlatRoutesOptions = {},
 ): RouteManifest {
-  const routes = _flatRoutes('app', options.ignoredRouteFiles ?? [], {
-    ...options,
-    routeDir,
-    defineRoutes,
-  })
+  const routes = _flatRoutes(
+    options.appDir ?? defaultOptions.appDir!,
+    options.ignoredRouteFiles ?? [],
+    {
+      ...defaultOptions,
+      ...options,
+      routeDir,
+      defineRoutes,
+    },
+  )
   // update undefined parentIds to 'root'
   Object.values(routes).forEach(route => {
     if (route.parentId === undefined) {

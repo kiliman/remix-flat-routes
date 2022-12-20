@@ -200,6 +200,10 @@ React Router will introduce a new feature for optional route segments. To use op
 parent.(optional).tsx   => parent/optional?
 ```
 
+### Custom App Directory
+
+You can override the default app directory of `app`.
+
 ## 🛠 Installation
 
 ```bash
@@ -221,11 +225,7 @@ module.exports = {
   // default remix convention from picking up routes
   ignoredRouteFiles: ['**/*'],
   routes: async defineRoutes => {
-    return flatRoutes('routes', defineRoutes, {
-      basePath: '/', // optional base path (defaults to /)
-      paramPrefixChar: '$', // optional specify param prefix
-      ignoredRouteFiles: [], // same as remix config
-    })
+    return flatRoutes('routes', defineRoutes)
   },
 }
 ```
@@ -234,12 +234,13 @@ module.exports = {
 
 ```ts
 function flatRoutes(
-  baseDir: string,
+  routeDir: string | string[],
   defineRoutes: DefineRoutesFunction,
   options: FlatRoutesOptions,
 )
 
 type FlatRoutesOptions = {
+  appDir?: string // optional app directory (defaults to app)
   basePath?: string // optional base path (default is '/')
   paramPrefixChar?: string // optional param prefix (default is '$')
   ignoredRouteFiles?: string[] // optional files to ingore as routes (same as Remix config option)
@@ -247,7 +248,7 @@ type FlatRoutesOptions = {
 }
 ```
 
-NOTE: `baseDir` should be relative to the `app` folder. If you want to use the `routes` folder, you will need to update the `ignoredRouteFiles` property to ignore **all** files: `**/*`
+NOTE: `routeDir` should be relative to the `app` folder. If you want to use the `routes` folder, you will need to update the `ignoredRouteFiles` property to ignore **all** files: `**/*`
 
 ## 🔨 Flat Routes Convention
 
