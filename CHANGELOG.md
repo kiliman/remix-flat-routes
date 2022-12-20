@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.3
+
+- 🐛 Make unique route id check optional [#29](https://github.com/kiliman/remix-flat-routes/issues/29)
+
 ## v0.5.2
 
 - 🐛 Fix flat-files folder support on Windows [#27](https://github.com/kiliman/remix-flat-routes/issues/27)
