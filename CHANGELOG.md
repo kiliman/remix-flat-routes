@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.5.2
+
+- 🐛 Fix flat-files folder support on Windows [#27](https://github.com/kiliman/remix-flat-routes/issues/27)
+- ✨ Add `appDir` option [#26](https://github.com/kiliman/remix-flat-routes/issues/26)
+
 ## v0.5.1
 
 - 🔨 Add support for folders with `flat-files` convention [#25](https://github.com/kiliman/remix-flat-routes/discussions/25)
