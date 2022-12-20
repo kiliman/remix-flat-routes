@@ -358,11 +358,11 @@ export function getRouteSegments(
   // this supports folders for organizing flat-files convention
   // _public+/about.tsx => _public.about.tsx
   //
-  if (/[+]\//.test(name)) {
-    name = name.replace(/[+]\//g, '.')
+  if (/[+][\/\\]/.test(name)) {
+    name = name.replace(/[+][\/\\]/g, '.')
     hasPlus = true
   }
-  let hasFolder = /\//.test(name)
+  let hasFolder = /[\/\\]/.test(name)
   // if name has plus folder, but we still have regular folders
   // then treat ending route as flat-folders
   if (((hasPlus && hasFolder) || !hasPlus) && !name.endsWith('.route')) {
@@ -372,7 +372,7 @@ export function getRouteSegments(
     // remove last segment since this should just be the
     // route filename and we only want the directory name
     // docs/_layout.tsx => docs
-    let last = name.lastIndexOf('/')
+    let last = name.lastIndexOf(path.sep)
     if (last >= 0) {
       name = name.substring(0, last)
     }
@@ -443,7 +443,7 @@ export function getRouteSegments(
   return routeSegments
 }
 
-const pathSeparatorRegex = /[/\\.]/
+const pathSeparatorRegex = /[\/\\.]/
 function isPathSeparator(char: string) {
   return pathSeparatorRegex.test(char)
 }

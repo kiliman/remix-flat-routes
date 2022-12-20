@@ -343,8 +343,26 @@ describe('define folders for flat-files', () => {
   })
   it('should define routes for flat-files with folders and flat-folders convention', () => {
     const flatFolders = [
-      '_public+/parent.child.tsx',
-      '_public+/parent.child.grandchild.tsx',
+      '_public+/parent.child/index.tsx',
+      '_public+/parent.child.grandchild/index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/_public+/parent.child/index']?.path).toBe(
+      'parent/child',
+    )
+    expect(
+      routes['routes/_public+/parent.child.grandchild/index']?.parentId,
+    ).toBe('routes/_public+/parent.child/index')
+    expect(routes['routes/_public+/parent.child.grandchild/index']?.path).toBe(
+      'grandchild',
+    )
+  })
+  it('should define routes for flat-files with folders on windows', () => {
+    const flatFolders = [
+      '_public+\\parent.child.tsx',
+      '_public+\\parent.child.grandchild.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
