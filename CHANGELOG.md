@@ -2,6 +2,10 @@
 
 ## v0.5.3
 
+- 🐛 Fix route matching on Windows
+
+## v0.5.3
+
 - 🐛 Make unique route id check optional [#29](https://github.com/kiliman/remix-flat-routes/issues/29)
 
 ## v0.5.2
