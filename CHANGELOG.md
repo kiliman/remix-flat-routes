@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v0.5.3
+## v0.5.5
+
+- 🐛 Handle optional segments with param [#30](https://github.com/kiliman/remix-flat-routes/issues/30)
+
+## v0.5.4
 
 - 🐛 Fix route matching on Windows
 
