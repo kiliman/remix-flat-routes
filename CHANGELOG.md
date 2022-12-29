@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.6
+
+- 🐛 Simplify regex for routes and fix optional routes with folders [#28](https://github.com/kiliman/remix-flat-routes/issues/28)
+
 ## v0.5.5
 
 - 🐛 Handle optional segments with param [#30](https://github.com/kiliman/remix-flat-routes/issues/30)
