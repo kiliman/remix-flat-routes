@@ -300,6 +300,25 @@ describe('use custom param prefix char', () => {
   })
 })
 
+describe('use optional segments', () => {
+  it('should generate correct paths with optional syntax', () => {
+    const files = ['parent.(child).tsx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(files),
+    })
+    console.log(routes)
+    expect(routes['routes/parent.(child)']!.path!).toBe('parent/child?')
+  })
+  it('should generate correct paths with optional syntax and dynamic param', () => {
+    const files = ['parent.($child).tsx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(files),
+    })
+    console.log(routes)
+    expect(routes['routes/parent.($child)']!.path!).toBe('parent/:child?')
+  })
+})
+
 describe('define hybrid routes', () => {
   it('should define routes for hybrid routes', () => {
     const flatFolders = [

@@ -334,6 +334,9 @@ export function createRoutePath(
       } else {
         result += `/:${segment.slice(1)}`
       }
+      // handle optional segments with param: ($segment) => :segment?
+    } else if (segment.startsWith(`(${paramPrefixChar}`)) {
+      result += `/:${segment.slice(2, segment.length - 1)}?`
       // handle optional segments: (segment) => segment?
     } else if (segment.startsWith('(')) {
       result += `/${segment.slice(1, segment.length - 1)}?`
@@ -409,7 +412,10 @@ export function getRouteSegments(
         // process existing segment
         if (
           routeSegment.includes(paramPrefixChar) &&
-          !routeSegment.startsWith(paramPrefixChar)
+          !(
+            routeSegment.startsWith(paramPrefixChar) ||
+            routeSegment.startsWith(`(${paramPrefixChar}`)
+          )
         ) {
           throw new Error(
             `Route params must start with prefix char ${paramPrefixChar}: ${routeSegment}`,
