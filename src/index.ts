@@ -63,7 +63,7 @@ const defaultOptions: FlatRoutesOptions = {
   basePath: '/',
   paramPrefixChar: '$',
   routeRegex:
-    /(([+][\/\\][a-zA-Z0-9_$.\[\]-]+)|[\/\\]((index|route|layout|page)|(_[a-zA-Z0-9_$.-]+)|([a-zA-Z0-9_$.\[\]-]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$/,
+    /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
   enableUniqueIdCheck: true,
 }
 const defaultDefineRoutes = undefined

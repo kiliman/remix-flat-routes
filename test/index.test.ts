@@ -309,6 +309,16 @@ describe('use optional segments', () => {
     console.log(routes)
     expect(routes['routes/parent.(child)']!.path!).toBe('parent/child?')
   })
+  it('should generate correct paths with folders', () => {
+    const files = ['_folder+/parent.(child).tsx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(files),
+    })
+    console.log(routes)
+    expect(routes['routes/_folder+/parent.(child)']!.path!).toBe(
+      'parent/child?',
+    )
+  })
   it('should generate correct paths with optional syntax and dynamic param', () => {
     const files = ['parent.($child).tsx']
     const routes = flatRoutes('routes', defineRoutes, {
