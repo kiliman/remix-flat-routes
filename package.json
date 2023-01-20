@@ -41,7 +41,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
-    "@remix-run/dev": "^1.5.1",
+    "@remix-run/dev": "^1.6.2",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.21",
     "all-contributors-cli": "^6.20.0",
