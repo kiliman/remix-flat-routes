@@ -56,6 +56,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "haines",
+      "name": "Andrew Haines",
+      "avatar_url": "https://avatars.githubusercontent.com/u/785641?v=4",
+      "profile": "https://www.linkedin.com/in/andrewihaines",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

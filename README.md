@@ -1,9 +1,7 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -487,6 +485,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://blp.is/"><img src="https://avatars.githubusercontent.com/u/967145?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brandon Pittman</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Documentation">📖</a> <a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/machour"><img src="https://avatars.githubusercontent.com/u/304450?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mehdi Achour</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=machour" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/falegh"><img src="https://avatars.githubusercontent.com/u/49175237?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Fidel González</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=falegh" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/andrewihaines"><img src="https://avatars.githubusercontent.com/u/785641?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Haines</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=haines" title="Code">💻</a></td>
   </tr>
 </table>
 
