@@ -1,7 +1,7 @@
 import type {
   DefineRouteFunction,
   RouteManifest,
-} from '@remix-run/dev/config/routes'
+} from '@remix-run/dev/dist/config/routes'
 import * as fs from 'fs'
 import minimatch from 'minimatch'
 import * as path from 'path'
