@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.7
+
+- 🐛 Fix import path for Remix 1.6.2+ [#35](https://github.com/kiliman/remix-flat-routes/pull/35)
+
 ## v0.5.6
 
 - 🐛 Simplify regex for routes and fix optional routes with folders [#28](https://github.com/kiliman/remix-flat-routes/issues/28)
