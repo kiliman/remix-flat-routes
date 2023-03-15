@@ -393,7 +393,7 @@ export function getRouteSegments(
     // remove last segment since this should just be the
     // route filename and we only want the directory name
     // docs/_layout.tsx => docs
-    let last = name.lastIndexOf(path.sep)
+    let last = name.lastIndexOf('/')
     if (last >= 0) {
       name = name.substring(0, last)
     }
