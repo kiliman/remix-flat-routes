@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.8
+
+- 🐛  Fix last segment finding on Windows [#40](https://github.com/kiliman/remix-flat-routes/pull/40)
+
 ## v0.5.7
 
 - 🐛 Fix import path for Remix 1.6.2+ [#35](https://github.com/kiliman/remix-flat-routes/pull/35)
