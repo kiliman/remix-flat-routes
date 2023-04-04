@@ -97,10 +97,10 @@ export default function flatRoutes(
   return fixedRoutes
 }
 
-function fixupIndexRoutes(routes: any) {
+function fixupIndexRoutes(routes: RouteManifest) {
   let oldRoutes = { ...routes }
   // append /index to all index route ids
-  Object.entries(oldRoutes).forEach(([id, route]: any) => {
+  Object.entries(oldRoutes).forEach(([id, route]) => {
     if (route.index && !id.endsWith('/index')) {
       let newId = id + '/index'
       route.id = newId
@@ -109,9 +109,9 @@ function fixupIndexRoutes(routes: any) {
     }
   })
   // fixup the parent ids to match the new ids
-  Object.entries(routes).forEach(([, route]: any) => {
+  Object.entries(routes).forEach(([, route]) => {
     if (routes[route.parentId!]?.index) {
-      route.parentId = routes[routes.parentId!].id
+      route.parentId = routes[routes[route.parentId!].id].parentId
     }
   })
   return routes
