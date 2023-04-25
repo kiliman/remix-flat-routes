@@ -453,7 +453,7 @@ export function getRouteSegments(
   // process remaining segment
   pushRouteSegment(routeSegment)
   // strip trailing .route segment
-  if (routeSegments.at(-1) === 'route') {
+  if (routeSegments[routeSegments.length - 1] === 'route') {
     routeSegments = routeSegments.slice(0, -1)
   }
   // if hasPlus, we need to strip the trailing segment if it starts with _
@@ -461,7 +461,11 @@ export function getRouteSegments(
   // this is to handle layouts in flat-files
   // _public+/_layout.tsx => _public.tsx
   // _public+/index.tsx => _public.index.tsx
-  if (!index && hasPlus && routeSegments.at(-1)?.startsWith('_')) {
+  if (
+    !index &&
+    hasPlus &&
+    routeSegments[routeSegments.length - 1]?.startsWith('_')
+  ) {
     routeSegments = routeSegments.slice(0, -1)
   }
   return routeSegments
