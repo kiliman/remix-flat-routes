@@ -1,6 +1,8 @@
+import { createRoutesFromFolders } from '@remix-run/v1-route-convention'
 import * as fs from 'fs'
 import * as path from 'path'
-import { defaultVisitFiles as visitFiles, getRouteSegments } from './index'
+import { getRouteSegments } from './index'
+import { defineRoutes } from './routes'
 
 export type RoutingConvention = 'flat-files' | 'flat-folders'
 export type MigrateOptions = {
@@ -11,9 +13,25 @@ export function migrate(
   targetDir: string,
   options: MigrateOptions = { convention: 'flat-files' },
 ) {
-  var visitor = options.convention === 'flat-files' ? flatFiles : flatFolders
+  // var visitor = options.convention === 'flat-files' ? flatFiles : flatFolders
 
-  visitFiles(sourceDir, visitor(sourceDir, targetDir))
+  // visitFiles(sourceDir, visitor(sourceDir, targetDir))
+
+  const routes = createRoutesFromFolders(defineRoutes, {
+    appDirectory: './app',
+    routesDirectory: sourceDir,
+  })
+
+  Object.entries(routes).forEach(([_key, route]) => {
+    let file = route.file
+    let flat = file
+      .replace(/[\/]/g, '.')
+      .replace(/\._([^_.])/g, '.[_]$1')
+      .replace(/\.__/g, '._')
+      .replace(/\.index.tsx$/, '._index.tsx')
+      .replace(/^routes\./, 'routes/')
+    console.log(flat)
+  })
 }
 
 export function flatFiles(sourceDir: string, targetDir: string) {
