@@ -37,12 +37,15 @@
     "url": "https://github.com/kiliman/remix-flat-routes.git"
   },
   "license": "MIT",
+  "dependencies": {
+    "@remix-run/v1-route-convention": "^0.1.2",
+    "minimatch": "^5.1.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
-    "@remix-run/dev": "^1.6.2",
-    "@remix-run/v1-route-convention": "^0.1.1",
+    "@remix-run/dev": "^1.18.1",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.21",
     "all-contributors-cli": "^6.20.0",
@@ -62,7 +65,7 @@
     "preset": "ts-jest/presets/default-esm",
     "testEnvironment": "jsdom"
   },
-  "dependencies": {
-    "minimatch": "^5.1.0"
+  "peerDependencies": {
+    "@remix-run/dev": "^1.15.0"
   }
 }
