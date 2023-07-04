@@ -1,8 +1,15 @@
 # CHANGELOG
 
+## v0.5.9
+
+- 🔨 Update migration script to use `v1-route-convention` package [#46](https://github.com/kiliman/remix-flat-routes/issues/46)
+- 🐛 Normalize Windows path for routes config [#59](https://github.com/kiliman/remix-flat-routes/issues/59)
+- 🔥 Remove index hack since it is fixed in Remix
+- 🔥 Remove uniqueness check from `v2` routing because it is buggy
+
 ## v0.5.8
 
-- 🐛  Fix last segment finding on Windows [#40](https://github.com/kiliman/remix-flat-routes/pull/40)
+- 🐛 Fix last segment finding on Windows [#40](https://github.com/kiliman/remix-flat-routes/pull/40)
 
 ## v0.5.7
 
