@@ -31,18 +31,21 @@ describe('define routes', () => {
   })
   it('should define routes for flat-folders on Windows', () => {
     const flatFolders = [
-      '$lang.$ref\\_index.tsx',
-      '$lang.$ref._index\\_index.tsx',
-      '$lang.$ref.$\\_index.tsx',
-      '_index\\_index.tsx',
-      'healthcheck\\_index.tsx',
+      '$lang.$ref\\route.tsx',
+      '$lang.$ref._index\\route.tsx',
+      '$lang.$ref.$\\route.tsx',
+      '_index\\route.tsx',
+      'healthcheck\\route.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
     })
-    expect(routes['routes/$lang.$ref._index/_index/index']).toBeDefined()
-    expect(routes['routes/$lang.$ref._index/_index/index'].parentId).toBe(
-      'routes/$lang.$ref/_index',
+    expect(routes['routes/$lang.$ref._index/route']).toBeDefined()
+    expect(routes['routes/$lang.$ref._index/route'].parentId).toBe(
+      'routes/$lang.$ref/route',
+    )
+    expect(routes['routes/$lang.$ref._index/route'].file).toBe(
+      'routes/$lang.$ref._index/route.tsx',
     )
     expect(routes).toMatchSnapshot()
   })

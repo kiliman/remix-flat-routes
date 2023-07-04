@@ -228,7 +228,7 @@ export function getRouteInfo(
   file: string,
   options: FlatRoutesOptions,
 ) {
-  let filePath = path.join(routeDir, file)
+  let filePath = normalizeSlashes(path.join(routeDir, file))
   let routeId = createRouteId(filePath)
   let routeIdWithoutRoutes = routeId.slice(routeDir.length + 1)
   let index = isIndexRoute(routeIdWithoutRoutes)
