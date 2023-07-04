@@ -41,7 +41,6 @@ export type FlatRoutesOptions = {
   paramPrefixChar?: string
   ignoredRouteFiles?: string[]
   routeRegex?: RegExp
-  enableUniqueIdCheck?: boolean
 }
 
 export type DefineRoutesFunction = (
@@ -64,7 +63,6 @@ const defaultOptions: FlatRoutesOptions = {
   paramPrefixChar: '$',
   routeRegex:
     /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
-  enableUniqueIdCheck: true,
 }
 const defaultDefineRoutes = undefined
 
@@ -176,7 +174,6 @@ function _flatRoutes(
     let parentId = findParentRouteId(routeInfo, nameMap)
     routeInfo.parentId = parentId
   })
-  let uniqueRoutes = new Map<string, string>()
 
   // Then, recurse through all routes using the public defineRoutes() API
   function defineNestedRoutes(
@@ -195,32 +192,7 @@ function _flatRoutes(
         routePath = routePath.slice(1)
       }
       let index = childRoute.index
-      let fullPath = childRoute.path
 
-      // add option to check for unique route ids
-      // this is copied from remix default convention
-      // but it is currently breaking some flat routes
-      // so until we can figure out a better way to do this
-      // make it optional to unblock users
-      if (options?.enableUniqueIdCheck) {
-        let uniqueRouteId = (fullPath || '') + (index ? '?index' : '')
-
-        if (uniqueRouteId) {
-          if (uniqueRoutes.has(uniqueRouteId)) {
-            throw new Error(
-              `Path ${JSON.stringify(
-                fullPath,
-              )} defined by route ${JSON.stringify(
-                childRoute.id,
-              )} conflicts with route ${JSON.stringify(
-                uniqueRoutes.get(uniqueRouteId),
-              )}`,
-            )
-          } else {
-            uniqueRoutes.set(uniqueRouteId, childRoute.id)
-          }
-        }
-      }
       if (index) {
         let invalidChildRoutes = Object.values(routeMap).filter(
           routeInfo => routeInfo.parentId === childRoute.id,
