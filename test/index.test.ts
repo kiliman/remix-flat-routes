@@ -18,11 +18,11 @@ describe('define routes', () => {
   })
   it('should define routes for flat-folders', () => {
     const flatFolders = [
-      '$lang.$ref/_index.tsx',
-      '$lang.$ref._index/_index.tsx',
-      '$lang.$ref.$/_index.tsx',
-      '_index/_index.tsx',
-      'healthcheck/_index.tsx',
+      '$lang.$ref/route.tsx',
+      '$lang.$ref._index/route.tsx',
+      '$lang.$ref.$/route.tsx',
+      '_index/route.tsx',
+      'healthcheck/route.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
@@ -116,11 +116,11 @@ describe('define routes', () => {
     const flatFolders = [
       '$lang.$ref/_layout.tsx',
       '$lang.$ref/component.tsx',
-      '$lang.$ref._index/_index.tsx',
+      '$lang.$ref._index/route.tsx',
       '$lang.$ref._index/style.css',
       '$lang.$ref.$/model.server.ts',
-      '_index/_index.tsx',
-      'healthcheck/_route.tsx',
+      '_index/route.tsx',
+      'healthcheck/route.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
@@ -213,7 +213,7 @@ describe('define ignored routes', () => {
       'style.css',
       '_index.test.tsx',
       'styles/style.css',
-      '__tests__/_index.test.tsx',
+      '__tests__/route.test.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFiles),
@@ -235,39 +235,22 @@ describe('define index routes', () => {
       visitFiles: visitFilesFromArray(flatFiles),
     })
 
-    Object.entries(routes).forEach(([name, route]: any) => {
-      if (route.index) {
-        // index routes must end with "/index" to work around Remix bug
-        expect(name).toMatch(/\/index$/)
-        expect(route.id).toMatch(/\/index$/)
-      }
-      if (route.parentId !== 'root' && routes[route.parentId!]?.index) {
-        expect(route[route.parentId]).toBeDefined()
-        expect(route.parentId!).toMatch(/\/index$/)
-      }
-    })
+    expect(routes['routes/_index'].index).toBe(true)
+    expect(routes['routes/$lang.$ref._index'].index).toBe(true)
   })
+
   it('should generate "correct" id for index routes for flat folders', () => {
     const flatFolders = [
-      '$lang.$ref/index.tsx',
-      '$lang.$ref._index/index.tsx',
-      '$lang.$ref.$/index.tsx',
-      '_index/index.tsx',
+      '$lang.$ref/route.tsx',
+      '$lang.$ref._index/route.tsx',
+      '$lang.$ref.$/route.tsx',
+      '_index/route.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
     })
-    Object.entries(routes).forEach(([name, route]: any) => {
-      if (route.index) {
-        // index routes must end with "/index" to work around Remix bug
-        expect(name).toMatch(/\/index$/)
-        expect(route.id).toMatch(/\/index$/)
-      }
-      if (route.parentId !== 'root' && routes[route.parentId!]?.index) {
-        expect(route[route.parentId]).toBeDefined()
-        expect(route.parentId!).toMatch(/\/index$/)
-      }
-    })
+    expect(routes['routes/_index/route'].index).toBe(true)
+    expect(routes['routes/$lang.$ref._index/route'].index).toBe(true)
   })
 })
 
@@ -309,7 +292,6 @@ describe('use optional segments', () => {
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(files),
     })
-    console.log(routes)
     expect(routes['routes/parent.(child)']!.path!).toBe('parent/child?')
   })
   it('should generate correct paths with folders', () => {
@@ -317,7 +299,6 @@ describe('use optional segments', () => {
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(files),
     })
-    console.log(routes)
     expect(routes['routes/_folder+/parent.(child)']!.path!).toBe(
       'parent/child?',
     )
@@ -327,7 +308,6 @@ describe('use optional segments', () => {
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(files),
     })
-    console.log(routes)
     expect(routes['routes/parent.($child)']!.path!).toBe('parent/:child?')
   })
 })
@@ -335,17 +315,17 @@ describe('use optional segments', () => {
 describe('define hybrid routes', () => {
   it('should define routes for hybrid routes', () => {
     const flatFolders = [
-      '_index/_index.tsx',
+      '_index/route.tsx',
       '_public/_layout.tsx',
-      '_public/about/_route.tsx',
-      '_public/contact[.jpg]/_route.tsx',
-      'test.$/_route.tsx',
+      '_public/about/route.tsx',
+      '_public/contact[.jpg]/route.tsx',
+      'test.$/route.tsx',
       'users/_layout.tsx',
       'users/users.css',
-      'users/_index/_index.tsx',
-      'users/$userId/_route.tsx',
+      'users/route/route.tsx',
+      'users/$userId/route.tsx',
       'users/$userId/avatar.png',
-      'users/$userId_.edit/_route.tsx',
+      'users/$userId_.edit/route.tsx',
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
@@ -364,7 +344,7 @@ describe('define folders for flat-files', () => {
       '_public+/about.tsx',
       '_public+/contact[.jpg].tsx',
       'users+/_layout.tsx',
-      'users+/_index.tsx',
+      'users+/route.tsx',
       'users+/$userId.tsx',
       'users+/$userId_.edit.tsx',
     ]

@@ -55,7 +55,7 @@ Object {
     "file": "routes/users+/$userId.tsx",
     "id": "routes/users+/$userId",
     "index": undefined,
-    "parentId": "routes/users+/_layout",
+    "parentId": "routes/users+/route",
     "path": ":userId",
   },
   "routes/users+/$userId_.edit": Object {
@@ -63,16 +63,8 @@ Object {
     "file": "routes/users+/$userId_.edit.tsx",
     "id": "routes/users+/$userId_.edit",
     "index": undefined,
-    "parentId": "routes/users+/_layout",
+    "parentId": "routes/users+/route",
     "path": ":userId/edit",
-  },
-  "routes/users+/_index/index": Object {
-    "caseSensitive": undefined,
-    "file": "routes/users+/_index.tsx",
-    "id": "routes/users+/_index/index",
-    "index": true,
-    "parentId": "routes/users+/_layout",
-    "path": undefined,
   },
   "routes/users+/_layout": Object {
     "caseSensitive": undefined,
@@ -82,15 +74,23 @@ Object {
     "parentId": "root",
     "path": "users",
   },
+  "routes/users+/route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users+/route.tsx",
+    "id": "routes/users+/route",
+    "index": undefined,
+    "parentId": "root",
+    "path": "users",
+  },
 }
 `;
 
 exports[`define hybrid routes should define routes for hybrid routes 1`] = `
 Object {
-  "routes/_index/_index/index": Object {
+  "routes/_index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_index/_index.tsx",
-    "id": "routes/_index/_index/index",
+    "file": "routes/_index/route.tsx",
+    "id": "routes/_index/route",
     "index": true,
     "parentId": "root",
     "path": undefined,
@@ -103,58 +103,58 @@ Object {
     "parentId": "root",
     "path": undefined,
   },
-  "routes/_public/about/_route": Object {
+  "routes/_public/about/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_public/about/_route.tsx",
-    "id": "routes/_public/about/_route",
+    "file": "routes/_public/about/route.tsx",
+    "id": "routes/_public/about/route",
     "index": undefined,
     "parentId": "routes/_public/_layout",
     "path": "about",
   },
-  "routes/_public/contact[.jpg]/_route": Object {
+  "routes/_public/contact[.jpg]/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_public/contact[.jpg]/_route.tsx",
-    "id": "routes/_public/contact[.jpg]/_route",
+    "file": "routes/_public/contact[.jpg]/route.tsx",
+    "id": "routes/_public/contact[.jpg]/route",
     "index": undefined,
     "parentId": "routes/_public/_layout",
     "path": "contact.jpg",
   },
-  "routes/test.$/_route": Object {
+  "routes/test.$/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/test.$/_route.tsx",
-    "id": "routes/test.$/_route",
+    "file": "routes/test.$/route.tsx",
+    "id": "routes/test.$/route",
     "index": undefined,
     "parentId": "root",
     "path": "test/*",
   },
-  "routes/users/$userId/_route": Object {
+  "routes/users/$userId/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/users/$userId/_route.tsx",
-    "id": "routes/users/$userId/_route",
+    "file": "routes/users/$userId/route.tsx",
+    "id": "routes/users/$userId/route",
     "index": undefined,
-    "parentId": "routes/users/_layout",
+    "parentId": "routes/users/route/route",
     "path": ":userId",
   },
-  "routes/users/$userId_.edit/_route": Object {
+  "routes/users/$userId_.edit/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/users/$userId_.edit/_route.tsx",
-    "id": "routes/users/$userId_.edit/_route",
+    "file": "routes/users/$userId_.edit/route.tsx",
+    "id": "routes/users/$userId_.edit/route",
     "index": undefined,
-    "parentId": "routes/users/_layout",
+    "parentId": "routes/users/route/route",
     "path": ":userId/edit",
-  },
-  "routes/users/_index/_index/index": Object {
-    "caseSensitive": undefined,
-    "file": "routes/users/_index/_index.tsx",
-    "id": "routes/users/_index/_index/index",
-    "index": true,
-    "parentId": "routes/users/_layout",
-    "path": undefined,
   },
   "routes/users/_layout": Object {
     "caseSensitive": undefined,
     "file": "routes/users/_layout.tsx",
     "id": "routes/users/_layout",
+    "index": undefined,
+    "parentId": "root",
+    "path": "users",
+  },
+  "routes/users/route/route": Object {
+    "caseSensitive": undefined,
+    "file": "routes/users/route/route.tsx",
+    "id": "routes/users/route/route",
     "index": undefined,
     "parentId": "root",
     "path": "users",
@@ -180,18 +180,18 @@ Object {
     "parentId": "routes/$lang.$ref",
     "path": "*",
   },
-  "routes/$lang.$ref._index/index": Object {
+  "routes/$lang.$ref._index": Object {
     "caseSensitive": undefined,
     "file": "routes/$lang.$ref._index.tsx",
-    "id": "routes/$lang.$ref._index/index",
+    "id": "routes/$lang.$ref._index",
     "index": true,
     "parentId": "routes/$lang.$ref",
     "path": undefined,
   },
-  "routes/_index/index": Object {
+  "routes/_index": Object {
     "caseSensitive": undefined,
     "file": "routes/_index.tsx",
-    "id": "routes/_index/index",
+    "id": "routes/_index",
     "index": true,
     "parentId": "root",
     "path": undefined,
@@ -347,10 +347,10 @@ Object {
     "parentId": "routes/_landing",
     "path": "about",
   },
-  "routes/_landing.index/index": Object {
+  "routes/_landing.index": Object {
     "caseSensitive": undefined,
     "file": "routes/_landing.index.tsx",
-    "id": "routes/_landing.index/index",
+    "id": "routes/_landing.index",
     "index": true,
     "parentId": "routes/_landing",
     "path": undefined,
@@ -379,10 +379,10 @@ Object {
     "parentId": "routes/app.calendar",
     "path": ":day",
   },
-  "routes/app.calendar.index/index": Object {
+  "routes/app.calendar.index": Object {
     "caseSensitive": undefined,
     "file": "routes/app.calendar.index.tsx",
-    "id": "routes/app.calendar.index/index",
+    "id": "routes/app.calendar.index",
     "index": true,
     "parentId": "routes/app.calendar",
     "path": undefined,
@@ -440,18 +440,18 @@ Object {
     "parentId": "routes/$lang.$ref",
     "path": "*",
   },
-  "routes/$lang.$ref._index/index": Object {
+  "routes/$lang.$ref._index": Object {
     "caseSensitive": undefined,
     "file": "routes/$lang.$ref._index.tsx",
-    "id": "routes/$lang.$ref._index/index",
+    "id": "routes/$lang.$ref._index",
     "index": true,
     "parentId": "routes/$lang.$ref",
     "path": undefined,
   },
-  "routes/_index/index": Object {
+  "routes/_index": Object {
     "caseSensitive": undefined,
     "file": "routes/_index.tsx",
-    "id": "routes/_index/index",
+    "id": "routes/_index",
     "index": true,
     "parentId": "root",
     "path": undefined,
@@ -469,42 +469,42 @@ Object {
 
 exports[`define routes should define routes for flat-folders 1`] = `
 Object {
-  "routes/$lang.$ref.$/_index": Object {
+  "routes/$lang.$ref.$/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref.$/_index.tsx",
-    "id": "routes/$lang.$ref.$/_index",
+    "file": "routes/$lang.$ref.$/route.tsx",
+    "id": "routes/$lang.$ref.$/route",
     "index": undefined,
-    "parentId": "routes/$lang.$ref/_index",
+    "parentId": "routes/$lang.$ref/route",
     "path": "*",
   },
-  "routes/$lang.$ref._index/_index/index": Object {
+  "routes/$lang.$ref._index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref._index/_index.tsx",
-    "id": "routes/$lang.$ref._index/_index/index",
+    "file": "routes/$lang.$ref._index/route.tsx",
+    "id": "routes/$lang.$ref._index/route",
     "index": true,
-    "parentId": "routes/$lang.$ref/_index",
+    "parentId": "routes/$lang.$ref/route",
     "path": undefined,
   },
-  "routes/$lang.$ref/_index": Object {
+  "routes/$lang.$ref/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref/_index.tsx",
-    "id": "routes/$lang.$ref/_index",
+    "file": "routes/$lang.$ref/route.tsx",
+    "id": "routes/$lang.$ref/route",
     "index": undefined,
     "parentId": "root",
     "path": ":lang/:ref",
   },
-  "routes/_index/_index/index": Object {
+  "routes/_index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_index/_index.tsx",
-    "id": "routes/_index/_index/index",
+    "file": "routes/_index/route.tsx",
+    "id": "routes/_index/route",
     "index": true,
     "parentId": "root",
     "path": undefined,
   },
-  "routes/healthcheck/_index": Object {
+  "routes/healthcheck/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/healthcheck/_index.tsx",
-    "id": "routes/healthcheck/_index",
+    "file": "routes/healthcheck/route.tsx",
+    "id": "routes/healthcheck/route",
     "index": undefined,
     "parentId": "root",
     "path": "healthcheck",
@@ -514,42 +514,42 @@ Object {
 
 exports[`define routes should define routes for flat-folders on Windows 1`] = `
 Object {
-  "routes/$lang.$ref.$/_index": Object {
+  "routes/$lang.$ref.$/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref.$\\\\_index.tsx",
-    "id": "routes/$lang.$ref.$/_index",
+    "file": "routes/$lang.$ref.$/route.tsx",
+    "id": "routes/$lang.$ref.$/route",
     "index": undefined,
-    "parentId": "routes/$lang.$ref/_index",
+    "parentId": "routes/$lang.$ref/route",
     "path": "*",
   },
-  "routes/$lang.$ref._index/_index/index": Object {
+  "routes/$lang.$ref._index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref._index\\\\_index.tsx",
-    "id": "routes/$lang.$ref._index/_index/index",
+    "file": "routes/$lang.$ref._index/route.tsx",
+    "id": "routes/$lang.$ref._index/route",
     "index": true,
-    "parentId": "routes/$lang.$ref/_index",
+    "parentId": "routes/$lang.$ref/route",
     "path": undefined,
   },
-  "routes/$lang.$ref/_index": Object {
+  "routes/$lang.$ref/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref\\\\_index.tsx",
-    "id": "routes/$lang.$ref/_index",
+    "file": "routes/$lang.$ref/route.tsx",
+    "id": "routes/$lang.$ref/route",
     "index": undefined,
     "parentId": "root",
     "path": ":lang/:ref",
   },
-  "routes/_index/_index/index": Object {
+  "routes/_index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_index\\\\_index.tsx",
-    "id": "routes/_index/_index/index",
+    "file": "routes/_index/route.tsx",
+    "id": "routes/_index/route",
     "index": true,
     "parentId": "root",
     "path": undefined,
   },
-  "routes/healthcheck/_index": Object {
+  "routes/healthcheck/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/healthcheck\\\\_index.tsx",
-    "id": "routes/healthcheck/_index",
+    "file": "routes/healthcheck/route.tsx",
+    "id": "routes/healthcheck/route",
     "index": undefined,
     "parentId": "root",
     "path": "healthcheck",
@@ -596,10 +596,10 @@ Object {
 
 exports[`define routes should ignore non-route files in flat-folders 1`] = `
 Object {
-  "routes/$lang.$ref._index/_index/index": Object {
+  "routes/$lang.$ref._index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/$lang.$ref._index/_index.tsx",
-    "id": "routes/$lang.$ref._index/_index/index",
+    "file": "routes/$lang.$ref._index/route.tsx",
+    "id": "routes/$lang.$ref._index/route",
     "index": true,
     "parentId": "routes/$lang.$ref/_layout",
     "path": undefined,
@@ -612,18 +612,18 @@ Object {
     "parentId": "root",
     "path": ":lang/:ref",
   },
-  "routes/_index/_index/index": Object {
+  "routes/_index/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/_index/_index.tsx",
-    "id": "routes/_index/_index/index",
+    "file": "routes/_index/route.tsx",
+    "id": "routes/_index/route",
     "index": true,
     "parentId": "root",
     "path": undefined,
   },
-  "routes/healthcheck/_route": Object {
+  "routes/healthcheck/route": Object {
     "caseSensitive": undefined,
-    "file": "routes/healthcheck/_route.tsx",
-    "id": "routes/healthcheck/_route",
+    "file": "routes/healthcheck/route.tsx",
+    "id": "routes/healthcheck/route",
     "index": undefined,
     "parentId": "root",
     "path": "healthcheck",
