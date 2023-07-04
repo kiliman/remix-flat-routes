@@ -353,6 +353,19 @@ describe('define folders for flat-files', () => {
     })
     expect(routes).toMatchSnapshot()
   })
+  it('should define routes with flat-files hybrid with parent layout override', () => {
+    const flatFolders = [
+      '_index.tsx',
+      'faculty+/_layout.tsx',
+      'faculty+/index.tsx',
+      'faculty+/_.login.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/faculty+/_.login']?.parentId).toBe('root')
+  })
+
   it('should define routes for flat-files with folders and flat-folders convention', () => {
     const flatFolders = [
       '_public+/parent.child/index.tsx',

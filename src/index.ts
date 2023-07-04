@@ -323,15 +323,26 @@ export function getRouteSegments(
   let state = 'START'
   let subState = 'NORMAL'
   let hasPlus = false
-  // replace +/ with .
+
+  // name has already been normalized to use / as path separator
+
+  // replace `+/_.` with `_+/`
+  // this supports ability to to specify parent folder will not be a layout
+  // _public+/_.about.tsx => _public_.about.tsx
+
+  if (/\+\/_\./.test(name)) {
+    name = name.replace(/\+\/_\./g, '_+/')
+  }
+
+  // replace `+/` with `.`
   // this supports folders for organizing flat-files convention
   // _public+/about.tsx => _public.about.tsx
   //
-  if (/[+][\/\\]/.test(name)) {
-    name = name.replace(/[+][\/\\]/g, '.')
+  if (/\+\//.test(name)) {
+    name = name.replace(/\+\//g, '.')
     hasPlus = true
   }
-  let hasFolder = /[\/\\]/.test(name)
+  let hasFolder = /\//.test(name)
   // if name has plus folder, but we still have regular folders
   // then treat ending route as flat-folders
   if (((hasPlus && hasFolder) || !hasPlus) && !name.endsWith('.route')) {
