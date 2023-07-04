@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.10
+
+- 🔨 Add support for `+/_.` convention to override parent layout [#58](https://github.com/kiliman/remix-flat-routes/issues/58)
+
 ## v0.5.9
 
 - 🔨 Update migration script to use `v1-route-convention` package [#46](https://github.com/kiliman/remix-flat-routes/issues/46)
