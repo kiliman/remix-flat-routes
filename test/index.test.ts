@@ -158,6 +158,7 @@ type RouteMapInfo = {
   index?: boolean
   children: string[]
 }
+
 function dumpRoutes(routes: RouteManifest) {
   const routeMap = new Map<string, RouteMapInfo>()
   const rootRoute: RouteMapInfo = {
@@ -303,6 +304,16 @@ describe('use optional segments', () => {
       'parent/child?',
     )
   })
+  it('should generate correct paths with folders with overridden nested folder character', () => {
+    const files = ['_folder-/parent.(child).tsx']
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(files),
+      nestedFolderChar: '-',
+    })
+    expect(routes['routes/_folder-/parent.(child)']!.path!).toBe(
+      'parent/child?',
+    )
+  })
   it('should generate correct paths with optional syntax and dynamic param', () => {
     const files = ['parent.($child).tsx']
     const routes = flatRoutes('routes', defineRoutes, {
@@ -399,5 +410,128 @@ describe('define folders for flat-files', () => {
     expect(routes['routes/_public+/parent.child.grandchild']?.path).toBe(
       'grandchild',
     )
+  })
+})
+describe('define folders for flat-files with overridden nested folder character', () => {
+  it('should define routes for flat-files with folders', () => {
+    const flatFolders = [
+      '_auth-/forgot-password.tsx',
+      '_auth-/login.tsx',
+      '_public-/_layout.tsx',
+      '_public-/index.tsx',
+      '_public-/about.tsx',
+      '_public-/contact[.jpg].tsx',
+      'users-/_layout.tsx',
+      'users-/route.tsx',
+      'users-/$userId.tsx',
+      'users-/$userId_.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+      nestedFolderChar: '-',
+    })
+    expect(routes).toMatchSnapshot()
+  })
+  it('should define routes with flat-files hybrid with parent layout override', () => {
+    const flatFolders = [
+      '_index.tsx',
+      'faculty-/_layout.tsx',
+      'faculty-/index.tsx',
+      'faculty-/_.login.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+      nestedFolderChar: '-',
+    })
+    expect(routes['routes/faculty-/_.login']?.parentId).toBe('root')
+  })
+
+  it('should define routes for flat-files with folders and flat-folders convention', () => {
+    const flatFolders = [
+      '_public-/parent.child/index.tsx',
+      '_public-/parent.child.grandchild/index.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+      nestedFolderChar: '-',
+    })
+    expect(routes['routes/_public-/parent.child/index']?.path).toBe(
+      'parent/child',
+    )
+    expect(
+      routes['routes/_public-/parent.child.grandchild/index']?.parentId,
+    ).toBe('routes/_public-/parent.child/index')
+    expect(routes['routes/_public-/parent.child.grandchild/index']?.path).toBe(
+      'grandchild',
+    )
+  })
+  it('should define routes for flat-files with folders on windows', () => {
+    const flatFolders = [
+      '_public-\\parent.child.tsx',
+      '_public-\\parent.child.grandchild.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+      nestedFolderChar: '-',
+    })
+    expect(routes['routes/_public-/parent.child']?.path).toBe('parent/child')
+    expect(routes['routes/_public-/parent.child.grandchild']?.parentId).toBe(
+      'routes/_public-/parent.child',
+    )
+    expect(routes['routes/_public-/parent.child.grandchild']?.path).toBe(
+      'grandchild',
+    )
+  })
+})
+describe('support routeRegex', () => {
+  it('should accept a regex', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+      'healthcheck.tsx',
+       '_auth+/forgot-password.tsx',
+      '_auth+/login.tsx',
+      '_public+/_layout.tsx',
+      '_public+/index.tsx',
+      '_public+/about.tsx',
+      '_public+/contact[.jpg].tsx',
+      'users+/_layout.tsx',
+      'users+/route.tsx',
+      'users+/$userId.tsx',
+      'users+/$userId_.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+
+    })
+    expect(routes).toMatchSnapshot()
+  })
+
+  it('should accept a function that returns a regex', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+      'healthcheck.tsx',
+       '_auth+/forgot-password.tsx',
+      '_auth+/login.tsx',
+      '_public+/_layout.tsx',
+      '_public+/index.tsx',
+      '_public+/about.tsx',
+      '_public+/contact[.jpg].tsx',
+      'users+/_layout.tsx',
+      'users+/route.tsx',
+      'users+/$userId.tsx',
+      'users+/$userId_.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      routeRegex: (options) => /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+    })
+    expect(routes).toMatchSnapshot()
   })
 })
