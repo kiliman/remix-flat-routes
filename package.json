@@ -66,6 +66,6 @@
     "testEnvironment": "jsdom"
   },
   "peerDependencies": {
-    "@remix-run/dev": "^1.15.0"
+    "@remix-run/dev": "^1.15.0 || ^2"
   }
 }
