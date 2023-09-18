@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.11
+
+- 🔨 Update peerDependency to include Remix v2 [#72](https://github.com/kiliman/remix-flat-routes/pull/72)
+
 ## v0.5.10
 
 - 🔨 Add support for `+/_.` convention to override parent layout [#58](https://github.com/kiliman/remix-flat-routes/issues/58)
