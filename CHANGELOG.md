@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5.12
+
+- 📦 Update @remix-run/v1-route-convention package for v2 dependency [#74](https://github.com/kiliman/remix-flat-routes/issue/74)
+
 ## v0.5.11
 
 - 🔨 Update peerDependency to include Remix v2 [#72](https://github.com/kiliman/remix-flat-routes/pull/72)
