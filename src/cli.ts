@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import * as fs from 'fs'
 import { migrate, MigrateOptions } from './migrate'
 
@@ -8,44 +6,50 @@ main()
 function main() {
   const argv = process.argv.slice(2)
   if (argv.length < 2) {
-    usage()
-    process.exit(1)
+    printUsageAndExit()
   }
   const sourceDir = argv[0]
   const targetDir = argv[1]
 
+  validateDirectories(sourceDir, targetDir)
+
+  const options = buildOptions(argv.slice(2))
+
+  migrate(sourceDir, targetDir, options)
+}
+
+function validateDirectories(sourceDir: string, targetDir: string) {
   if (sourceDir === targetDir) {
-    console.error('source and target directories must be different')
-    process.exit(1)
+    printErrorAndExit('Source and target directories must be different.')
   }
 
   if (!fs.existsSync(sourceDir)) {
-    console.error(`source directory '${sourceDir}' does not exist`)
-    process.exit(1)
+    printErrorAndExit(`Source directory '${sourceDir}' does not exist.`)
   }
+}
 
+function buildOptions(args: string[]) {
   let options: MigrateOptions = { convention: 'flat-files' }
 
-  for (let option of argv.slice(2)) {
+  for (let option of args) {
     if (option.startsWith('--convention=')) {
       let convention = option.substring('--convention='.length)
       if (convention === 'flat-files' || convention === 'flat-folders') {
         options.convention = convention
       } else {
-        usage()
+        printUsageAndExit()
       }
     } else {
-      usage()
+      printUsageAndExit()
     }
   }
 
-  migrate(sourceDir, targetDir, options)
+  return options
 }
 
-function usage() {
+function printUsageAndExit() {
   console.log(
     `Usage: migrate <sourceDir> <targetDir> [options]
-
 Options:
   --convention=<convention>
     The convention to use when migrating.
@@ -54,4 +58,10 @@ Options:
         creates folders for each route.
 `,
   )
+  process.exit(1)
+}
+
+function printErrorAndExit(errorMessage: string) {
+  console.error(errorMessage)
+  process.exit(1)
 }
