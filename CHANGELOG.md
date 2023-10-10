@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.6.0
+
+- 🔨 Rewrite migration script
+
 ## v0.5.12
 
 - 📦 Update @remix-run/v1-route-convention package for v2 dependency [#74](https://github.com/kiliman/remix-flat-routes/issue/74)
