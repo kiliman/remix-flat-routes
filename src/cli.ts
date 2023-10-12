@@ -29,13 +29,20 @@ function main() {
   for (let option of argv.slice(2)) {
     if (option.startsWith('--convention=')) {
       let convention = option.substring('--convention='.length)
-      if (convention === 'flat-files' || convention === 'flat-folders') {
+      if (
+        convention === 'flat-files' ||
+        convention === 'flat-folders' ||
+        convention === 'hybrid'
+      ) {
         options.convention = convention
+        console.log({ convention })
       } else {
         usage()
+        process.exit(1)
       }
     } else {
       usage()
+      process.exit(1)
     }
   }
 
@@ -49,9 +56,9 @@ function usage() {
 Options:
   --convention=<convention>
     The convention to use when migrating.
-      flat-files - Migrates all files to a flat directory structure.
-      flat-folders - Migrates all files to a flat directory structure, but
-        creates folders for each route.
+      flat-files - Migrates to flat files
+      flat-folders - Migrates to flat directories with route.tsx files
+      hybrid - Keep folder structure with '+' suffix and _layout files
 `,
   )
 }

@@ -1,7 +1,9 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -466,9 +468,9 @@ NOTE:
 Options:
   --convention=<convention>
     The convention to use when migrating.
-      flat-files - Migrates all files to a flat directory structure.
-      flat-folders - Migrates all files to a flat directory structure, but
-        creates folders for each route.
+      flat-files - Migrates to flat files
+      flat-folders - Migrates to flat directories with route.tsx files
+      hybrid - Keep folder structure with '+' suffix and _layout files
 ```
 
 ## 😍 Contributors
