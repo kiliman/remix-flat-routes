@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.6.1
+
+- ✨ Add `--hybrid` convention to migration script [#78](https://github.com/kiliman/remix-flat-routes/issue/78)
+
 ## v0.6.0
 
 - 🔨 Rewrite migration script
