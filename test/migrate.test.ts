@@ -146,6 +146,22 @@ describe('test single leading _', () => {
   runTests(routes)
 })
 
+describe('test pathless layouts', () => {
+  // route, expected
+  const routes: [RouteConfig, string][] = [
+    [
+      {
+        file: '__index/resources/onboarding.tsx',
+        path: 'resources/onboarding',
+        parentId: '__index',
+        index: false,
+      },
+      '_index.resources.onboarding.tsx',
+    ],
+  ]
+  runTests(routes)
+})
+
 function runTests(routes: [RouteConfig, string][]) {
   test.each(routes)('%s: %s', (route, expected) => {
     const {
