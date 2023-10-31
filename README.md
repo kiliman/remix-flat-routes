@@ -471,6 +471,8 @@ Options:
       flat-files - Migrates to flat files
       flat-folders - Migrates to flat directories with route.tsx files
       hybrid - Keep folder structure with '+' suffix and _layout files
+  --force
+    Overwrite target directory if it exists
 ```
 
 ## 😍 Contributors

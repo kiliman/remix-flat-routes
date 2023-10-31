@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs'
+import { removeSync } from 'fs-extra'
 import { migrate, MigrateOptions } from './migrate'
 
 main()
@@ -24,9 +25,14 @@ function main() {
     process.exit(1)
   }
 
-  let options: MigrateOptions = { convention: 'flat-files' }
+  let options: MigrateOptions = { convention: 'flat-files', force: false }
 
   for (let option of argv.slice(2)) {
+    if (option === '--force') {
+      options.force = true
+      continue
+    }
+
     if (option.startsWith('--convention=')) {
       let convention = option.substring('--convention='.length)
       if (
@@ -35,7 +41,6 @@ function main() {
         convention === 'hybrid'
       ) {
         options.convention = convention
-        console.log({ convention })
       } else {
         usage()
         process.exit(1)
@@ -44,6 +49,14 @@ function main() {
       usage()
       process.exit(1)
     }
+  }
+  if (fs.existsSync(targetDir)) {
+    if (!options.force) {
+      console.error(`❌ target directory '${targetDir}' already exists`)
+      console.error(`   use --force to overwrite`)
+      process.exit(1)
+    }
+    removeSync(targetDir)
   }
 
   migrate(sourceDir, targetDir, options)
@@ -59,6 +72,8 @@ Options:
       flat-files - Migrates to flat files
       flat-folders - Migrates to flat directories with route.tsx files
       hybrid - Keep folder structure with '+' suffix and _layout files
+  --force
+    Overwrite target directory if it exists
 `,
   )
 }
