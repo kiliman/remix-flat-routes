@@ -157,14 +157,14 @@ app/routes-hybrid-files/
 
 ### Extended Route Filenames
 
-In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `index.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.
+In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `route.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.
 
 So instead of
 
 ```
-_public.about/index.tsx
-_public.contact/index.tsx
-_public.privacy/index.tsx
+_public.about/route.tsx
+_public.contact/route.tsx
+_public.privacy/route.tsx
 ```
 
 You can name them
