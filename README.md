@@ -316,6 +316,7 @@ Individual explanations:
 | `_landing.tsx`                        | n/a                             | `root.tsx`           |
 | `app.calendar.$day.tsx`               | `/app/calendar/:day`            | `app.calendar.tsx`   |
 | `app.calendar.index.tsx`              | `/app/calendar`                 | `app.calendar.tsx`   |
+| `app.calendar.tsx`                    | n/a                             | `app.tsx`            |
 | `app.projects.$id.tsx`                | `/app/projects/:id`             | `app.projects.tsx`   |
 | `app.projects.tsx`                    | `/app/projects`                 | `app.tsx`            |
 | `app.tsx`                             | `/app`                          | `root.tsx`           |
