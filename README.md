@@ -10,11 +10,19 @@ This package enables you to define your routes using the `flat-routes` conventio
 
 ## ✨🎉 New in v0.5.0
 
-### Integration with Remix Core
+### Remix v2 flat routes convention
 
-Remix flat routes will be a core feature in a future version of Remix. This will be enabled using a config option.
+`remix-flat-routes` was the initial implementation of the flat-routes specification. I added some enhancements
+based on user feedback. When Remix v2 added the flat-routes convention as the default, they used _only_ the 
+original specification.
 
-I plan to continue to maintain this package in the future to enable enhancements that will not be in the Remix core version. To simplify maintenance, I expose all enhancements via the `options` parameter.
+If you want enhancements like *hybrid routes*, extended route filenames, custom param prefix, etc., you will
+need to continue to use this package.
+
+`remix-flat-routes` will always maintain compatibility with the default Remix convention. This package is simply
+a superset/extension of the core convention.
+
+> NOTE: popular projects like Kent C. Dodds' [Epic Stack](https://github.com/epicweb-dev/epic-stack) uses `remix-flat-routes`
 
 ### Hybrid Routes
 
