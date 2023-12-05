@@ -8,6 +8,7 @@ export type RoutingConvention = 'flat-files' | 'flat-folders' | 'hybrid'
 export type MigrateOptions = {
   convention: RoutingConvention
   force: boolean
+  ignoredRouteFiles?: string[]
 }
 
 const pathSepRegex = new RegExp(`\\${path.sep}`, 'g')
@@ -16,7 +17,11 @@ const routeExtensions = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 export function migrate(
   sourceDir: string,
   targetDir: string,
-  options: MigrateOptions = { convention: 'flat-files', force: false },
+  options: MigrateOptions = {
+    convention: 'flat-files',
+    force: false,
+    ignoredRouteFiles: undefined,
+  },
 ) {
   if (sourceDir.startsWith('./')) {
     sourceDir = sourceDir.substring(2)
@@ -25,22 +30,33 @@ export function migrate(
     targetDir = targetDir.substring(2)
   }
 
+  if (!options.ignoredRouteFiles) {
+    // get remix.config.js
+    const remixConfig = require(path.join(process.cwd(), 'remix.config.js'))
+    options.ignoredRouteFiles = remixConfig.ignoredRouteFiles
+  }
+
   console.log(
     `🛠️ Migrating to flat-routes using ${options.convention} convention...`,
   )
   console.log(`🗂️ source: ${sourceDir}`)
   console.log(`🗂️ target: ${targetDir}`)
+  console.log(`🙈ignored files: ${options.ignoredRouteFiles}`)
   console.log()
 
   const routes = createRoutesFromFolders(defineRoutes, {
     appDirectory: './',
     routesDirectory: sourceDir,
+    ignoredFilePatterns: options.ignoredRouteFiles,
   })
 
-  console.log(routes)
   Object.entries(routes).forEach(([id, route]) => {
     let { path: routePath, file, parentId } = route
     let extension = path.extname(file)
+    // skip non-route files if not ignored above
+    if (!routeExtensions.includes(extension)) {
+      return
+    }
 
     let flat = convertToRoute(
       routes,
@@ -55,25 +71,25 @@ export function migrate(
     // replace sourceDir with targetDir
     flat = path.join(targetDir, flat)
 
-    //console.log(`📝 ${id}`)
-    if (options.convention === 'flat-folders') {
-      if (!routeExtensions.includes(extension)) {
-        return
+    switch (options.convention) {
+      case 'flat-folders': {
+        fs.mkdirSync(flat, { recursive: true })
+        fs.cpSync(file, path.join(flat, `/route${extension}`), {
+          force: true,
+        })
+        break
       }
-      fs.mkdirSync(flat, { recursive: true })
-      fs.cpSync(file, path.join(flat, `/route${extension}`), {
-        force: true,
-      })
-    } else if (options.convention === 'hybrid') {
-      if (!routeExtensions.includes(extension)) {
-        return
+      case 'hybrid': {
+        fs.mkdirSync(path.dirname(flat), { recursive: true })
+        const targetFile = `${flat}${extension}`
+        fs.cpSync(file, targetFile, { force: true })
+        break
       }
-      fs.mkdirSync(path.dirname(flat), { recursive: true })
-      const targetFile = `${flat}${extension}`
-      fs.cpSync(file, targetFile, { force: true })
-    } else if (options.convention === 'flat-files') {
-      const targetFile = `${flat}${extension}`
-      fs.cpSync(file, targetFile, { force: true })
+      case 'flat-files': {
+        const targetFile = `${flat}${extension}`
+        fs.cpSync(file, targetFile, { force: true })
+        break
+      }
     }
   })
   console.log('🏁 Finished!')
