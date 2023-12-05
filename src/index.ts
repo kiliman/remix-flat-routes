@@ -438,7 +438,7 @@ export function defaultVisitFiles(
 ) {
   for (let filename of fs.readdirSync(dir)) {
     let file = path.resolve(dir, filename)
-    let stat = fs.lstatSync(file)
+    let stat = fs.statSync(file)
 
     if (stat.isDirectory()) {
       defaultVisitFiles(file, visitor, baseDir)
