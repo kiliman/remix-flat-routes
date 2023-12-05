@@ -1,9 +1,7 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -502,6 +500,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://about.me/knisterpeter"><img src="https://avatars.githubusercontent.com/u/327445?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Wolf</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=KnisterPeter" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/sarat1669"><img src="https://avatars.githubusercontent.com/u/11179580?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sarat Chandra Balla</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=sarat1669" title="Code">💻</a></td>
   </tr>
 </table>
 
