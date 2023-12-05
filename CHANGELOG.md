@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.6.3
+
+- ✨ feat: Follow symlinks [#90](https://github.com/kiliman/remix-flat-routes/pull/90)
+
 ## v0.6.2
 
 - 🐛 Fix migration with pathless layouts [#79](https://github.com/kiliman/remix-flat-routes/issue/79)
