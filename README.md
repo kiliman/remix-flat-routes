@@ -108,7 +108,7 @@ app/routes-hybrid-files/
 │   ├── about.tsx
 │   ├── contact[.jpg].tsx
 │   └── index.tsx
-├── project
+├── project+
 │   ├── _layout.tsx
 │   ├── parent.child
 │   │   └── index.tsx
@@ -138,14 +138,14 @@ app/routes-hybrid-files/
       />
       <Route index file="routes-hybrid-files/_public+/index.tsx" />
     </Route>
-    <Route path="project" file="routes-hybrid-files/project/_layout.tsx">
+    <Route path="project" file="routes-hybrid-files/project+/_layout.tsx">
       <Route
         path="parent/child"
-        file="routes-hybrid-files/project/parent.child/index.tsx"
+        file="routes-hybrid-files/project+/parent.child/index.tsx"
       >
         <Route
           path="grandchild"
-          file="routes-hybrid-files/project/parent.child.grandchild/index.tsx"
+          file="routes-hybrid-files/project+/parent.child.grandchild/index.tsx"
         />
       </Route>
     </Route>
