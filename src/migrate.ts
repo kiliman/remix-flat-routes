@@ -32,8 +32,11 @@ export function migrate(
 
   if (!options.ignoredRouteFiles) {
     // get remix.config.js
-    const remixConfig = require(path.join(process.cwd(), 'remix.config.js'))
-    options.ignoredRouteFiles = remixConfig.ignoredRouteFiles
+    const remixConfigPath = path.join(process.cwd(), 'remix.config.js')
+    if (fs.existsSync(remixConfigPath)) {
+      const remixConfig = require(remixConfigPath)
+      options.ignoredRouteFiles = remixConfig.ignoredRouteFiles
+    }
   }
 
   console.log(
