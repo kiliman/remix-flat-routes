@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.6.5
+
+- 🐛 Check if remix.config.js exists before using during migration [#121]
+
 ## v0.6.4
 
 - 🐛 Import remix.config to use `ignoredRouteFiles` setting [#93](https://github.com/kiliman/remix-flat-routes/issue/93)
