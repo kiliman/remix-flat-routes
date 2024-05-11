@@ -1,18 +1,26 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
 
 ## ✨🎉 New in v0.5.0
 
-### Integration with Remix Core
+### Remix v2 flat routes convention
 
-Remix flat routes will be a core feature in a future version of Remix. This will be enabled using a config option.
+`remix-flat-routes` was the initial implementation of the flat-routes specification. I added some enhancements
+based on user feedback. When Remix v2 added the flat-routes convention as the default, they used _only_ the 
+original specification.
 
-I plan to continue to maintain this package in the future to enable enhancements that will not be in the Remix core version. To simplify maintenance, I expose all enhancements via the `options` parameter.
+If you want enhancements like *hybrid routes*, extended route filenames, custom param prefix, etc., you will
+need to continue to use this package.
+
+`remix-flat-routes` will always maintain compatibility with the default Remix convention. This package is simply
+a superset/extension of the core convention.
+
+> NOTE: popular projects like Kent C. Dodds' [Epic Stack](https://github.com/epicweb-dev/epic-stack) uses `remix-flat-routes`
 
 ### Hybrid Routes
 
@@ -100,7 +108,7 @@ app/routes-hybrid-files/
 │   ├── about.tsx
 │   ├── contact[.jpg].tsx
 │   └── index.tsx
-├── project
+├── project+
 │   ├── _layout.tsx
 │   ├── parent.child
 │   │   └── index.tsx
@@ -130,14 +138,14 @@ app/routes-hybrid-files/
       />
       <Route index file="routes-hybrid-files/_public+/index.tsx" />
     </Route>
-    <Route path="project" file="routes-hybrid-files/project/_layout.tsx">
+    <Route path="project" file="routes-hybrid-files/project+/_layout.tsx">
       <Route
         path="parent/child"
-        file="routes-hybrid-files/project/parent.child/index.tsx"
+        file="routes-hybrid-files/project+/parent.child/index.tsx"
       >
         <Route
           path="grandchild"
-          file="routes-hybrid-files/project/parent.child.grandchild/index.tsx"
+          file="routes-hybrid-files/project+/parent.child.grandchild/index.tsx"
         />
       </Route>
     </Route>
@@ -155,14 +163,14 @@ app/routes-hybrid-files/
 
 ### Extended Route Filenames
 
-In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `index.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.
+In addition to the standard `index | route | page | layout` names, any file that has a `_` prefix will be treated as the route file. This will make it easier to find a specific route instead of looking through a bunch of `route.tsx` files. This was inspired by [SolidStart](https://start.solidjs.com/core-concepts/routing) "Renaming Index" feature.
 
 So instead of
 
 ```
-_public.about/index.tsx
-_public.contact/index.tsx
-_public.privacy/index.tsx
+_public.about/route.tsx
+_public.contact/route.tsx
+_public.privacy/route.tsx
 ```
 
 You can name them
@@ -468,9 +476,11 @@ NOTE:
 Options:
   --convention=<convention>
     The convention to use when migrating.
-      flat-files - Migrates all files to a flat directory structure.
-      flat-folders - Migrates all files to a flat directory structure, but
-        creates folders for each route.
+      flat-files - Migrates to flat files
+      flat-folders - Migrates to flat directories with route.tsx files
+      hybrid - Keep folder structure with '+' suffix and _layout files
+  --force
+    Overwrite target directory if it exists
 ```
 
 ## 😍 Contributors
@@ -489,6 +499,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/falegh"><img src="https://avatars.githubusercontent.com/u/49175237?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Fidel González</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=falegh" title="Documentation">📖</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/andrewihaines"><img src="https://avatars.githubusercontent.com/u/785641?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Haines</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=haines" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/wonu"><img src="https://avatars.githubusercontent.com/u/9602236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wonu Lee</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=wonu" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://about.me/knisterpeter"><img src="https://avatars.githubusercontent.com/u/327445?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Wolf</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=KnisterPeter" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/sarat1669"><img src="https://avatars.githubusercontent.com/u/11179580?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sarat Chandra Balla</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=sarat1669" title="Code">💻</a></td>
   </tr>
 </table>
 

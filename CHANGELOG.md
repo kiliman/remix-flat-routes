@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## v0.6.5
+
+- 🐛 Check if remix.config.js exists before using during migration [#121]
+
+## v0.6.4
+
+- 🐛 Import remix.config to use `ignoredRouteFiles` setting [#93](https://github.com/kiliman/remix-flat-routes/issue/93)
+
+- ✨ feat: Follow symlinks [#90](https://github.com/kiliman/remix-flat-routes/pull/90)
+
+## v0.6.2
+
+- 🐛 Fix migration with pathless layouts [#79](https://github.com/kiliman/remix-flat-routes/issue/79)
+- ✨ Add `--force` CLI option to remove target folder before migration
+
+## v0.6.1
+
+- ✨ Add `--hybrid` convention to migration script [#78](https://github.com/kiliman/remix-flat-routes/issue/78)
+
+## v0.6.0
+
+- 🔨 Rewrite migration script
+
+## v0.5.12
+
+- 📦 Update @remix-run/v1-route-convention package for v2 dependency [#74](https://github.com/kiliman/remix-flat-routes/issue/74)
+
+## v0.5.11
+
+- 🔨 Update peerDependency to include Remix v2 [#72](https://github.com/kiliman/remix-flat-routes/pull/72)
+
 ## v0.5.10
 
 - 🔨 Add support for `+/_.` convention to override parent layout [#58](https://github.com/kiliman/remix-flat-routes/issues/58)
