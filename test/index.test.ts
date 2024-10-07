@@ -141,6 +141,25 @@ describe('define routes', () => {
     })
     expect(routes).toMatchSnapshot()
   })
+  it('should correctly nest a._b.c', () => {
+    const flatFolders = [
+      'a.tsx',
+      'a._b.tsx',
+      'a._b.c.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/a._b.c']?.parentId).toBe(
+      'routes/a._b',
+    )
+    expect(routes['routes/a._b']?.parentId).toBe(
+      'routes/a',
+    )
+    expect(routes['routes/a']?.parentId).toBe(
+      'root',
+    )
+  })
 })
 
 function visitFilesFromArray(files: string[]) {
@@ -398,6 +417,25 @@ describe('define folders for flat-files', () => {
     )
     expect(routes['routes/_public+/parent.child.grandchild']?.path).toBe(
       'grandchild',
+    )
+  })
+  it.failing('should correctly nest a._b.c', () => {
+    const flatFolders = [
+      '_xyzzy+/a.tsx',
+      '_xyzzy+/a._b.tsx',
+      '_xyzzy+/a._b.c.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFolders),
+    })
+    expect(routes['routes/_xyzzy+/a._b.c']?.parentId).toBe(
+      'routes/_xyzzy+/a._b',
+    )
+    expect(routes['routes/_xyzzy+/a._b']?.parentId).toBe(
+      'routes/_xyzzy+/a',
+    )
+    expect(routes['routes/_xyzzy+/a']?.parentId).toBe(
+      'root',
     )
   })
 })
