@@ -8,10 +8,11 @@ This package enables you to define your routes using the `flat-routes` conventio
 
 ## 💡 React Router v7 Support
 
-React Router v7 uses a new routing config. To ease migration from Remix, the team has published an adapter 
-package that will convert existing Remix file-based routes to the new config format.
+React Router v7 uses a [new routing config](https://remix.run/docs/en/main/start/future-flags#v3_routeconfig). To ease migration from Remix, the team has published an adapter package that will convert existing Remix file-based routes to the new config format.
 
 To use your existing file-based routing, install the adapter and update `routes.ts` to wrap your adapter. 
+
+You can also remove your previous route config from `vite.config.ts` if you had one there.
 
 ```bash
 npm install -D @react-router/remix-config-routes-adapter
@@ -23,7 +24,7 @@ npm install -D remix-flat-routes
 import { remixConfigRoutes } from "@react-router/remix-config-routes-adapter";
 import { flatRoutes } from "remix-flat-routes";
 
-export const routes = remixConfigRoutes((defineRoutes) => {
+export default remixConfigRoutes((defineRoutes) => {
   return flatRoutes("routes", defineRoutes, {/* options */});
 });
 ```
