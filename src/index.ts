@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { minimatch } from 'minimatch'
+import minimatch from 'minimatch'
 import * as path from 'path'
 import { DefineRouteFunction, RouteManifest } from './routes'
 

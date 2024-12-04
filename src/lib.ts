@@ -1,4 +1,4 @@
-import { minimatch } from 'minimatch'
+import minimatch from 'minimatch'
 import fs from 'node:fs'
 import path from 'node:path'
 import {
