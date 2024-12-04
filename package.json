@@ -39,7 +39,6 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^11.2.0",
-    "jest-environment-jsdom": "^29.7.0",
     "minimatch": "^5.1.0"
   },
   "devDependencies": {
