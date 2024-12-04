@@ -1,10 +1,7 @@
-import type {
-  DefineRouteFunction,
-  RouteManifest,
-} from '@remix-run/dev/dist/config/routes'
 import * as fs from 'fs'
-import minimatch from 'minimatch'
+import { minimatch } from 'minimatch'
 import * as path from 'path'
+import { DefineRouteFunction, RouteManifest } from './routes'
 
 type RouteInfo = {
   id: string
@@ -47,14 +44,14 @@ export type DefineRoutesFunction = (
   callback: (route: DefineRouteFunction) => void,
 ) => any
 
+export { flatRoutes }
 export type {
+  DefineRouteChildren,
   DefineRouteFunction,
   DefineRouteOptions,
-  DefineRouteChildren,
-  RouteManifest,
   RouteInfo,
+  RouteManifest,
 }
-export { flatRoutes }
 
 const defaultOptions: FlatRoutesOptions = {
   appDir: 'app',

@@ -1,7 +1,7 @@
-import { createRoutesFromFolders } from '@remix-run/v1-route-convention'
 import * as fs from 'fs'
 import * as path from 'path'
 import { type RouteManifest } from './index'
+import { createRoutesFromFolders } from './lib'
 import { defineRoutes } from './routes'
 
 export type RoutingConvention = 'flat-files' | 'flat-folders' | 'hybrid'
