@@ -2,7 +2,7 @@
 
 ## v0.7.0
 
-- 🔨 Removes requirement of @remix-run dependenices [#144] [#138]
+- 🔨 Removes requirement of @remix-run dependencies [#144] [#138]
 
 - 📦 Update dependencies to the latest stable version
 
