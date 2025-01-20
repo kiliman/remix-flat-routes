@@ -1,7 +1,7 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -512,19 +512,24 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://kiliman.dev/"><img src="https://avatars.githubusercontent.com/u/47168?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kiliman</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=kiliman" title="Code">💻</a> <a href="https://github.com/kiliman/remix-mount-routes/commits?author=kiliman" title="Documentation">📖</a></td>
-    <td align="center"><a href="http://remix.run/"><img src="https://avatars.githubusercontent.com/u/100200?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ryan Florence</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=ryanflorence" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://blp.is/"><img src="https://avatars.githubusercontent.com/u/967145?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brandon Pittman</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Documentation">📖</a> <a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/machour"><img src="https://avatars.githubusercontent.com/u/304450?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mehdi Achour</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=machour" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/falegh"><img src="https://avatars.githubusercontent.com/u/49175237?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Fidel González</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=falegh" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://www.linkedin.com/in/andrewihaines"><img src="https://avatars.githubusercontent.com/u/785641?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Haines</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=haines" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/wonu"><img src="https://avatars.githubusercontent.com/u/9602236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wonu Lee</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=wonu" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://about.me/knisterpeter"><img src="https://avatars.githubusercontent.com/u/327445?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Wolf</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=KnisterPeter" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/sarat1669"><img src="https://avatars.githubusercontent.com/u/11179580?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sarat Chandra Balla</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=sarat1669" title="Code">💻</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://kiliman.dev/"><img src="https://avatars.githubusercontent.com/u/47168?v=4?s=100" width="100px;" alt="Kiliman"/><br /><sub><b>Kiliman</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=kiliman" title="Code">💻</a> <a href="https://github.com/kiliman/remix-mount-routes/commits?author=kiliman" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://remix.run/"><img src="https://avatars.githubusercontent.com/u/100200?v=4?s=100" width="100px;" alt="Ryan Florence"/><br /><sub><b>Ryan Florence</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=ryanflorence" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://blp.is/"><img src="https://avatars.githubusercontent.com/u/967145?v=4?s=100" width="100px;" alt="Brandon Pittman"/><br /><sub><b>Brandon Pittman</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Documentation">📖</a> <a href="https://github.com/kiliman/remix-mount-routes/commits?author=brandonpittman" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/machour"><img src="https://avatars.githubusercontent.com/u/304450?v=4?s=100" width="100px;" alt="Mehdi Achour"/><br /><sub><b>Mehdi Achour</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=machour" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/falegh"><img src="https://avatars.githubusercontent.com/u/49175237?v=4?s=100" width="100px;" alt="Fidel González"/><br /><sub><b>Fidel González</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=falegh" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/andrewihaines"><img src="https://avatars.githubusercontent.com/u/785641?v=4?s=100" width="100px;" alt="Andrew Haines"/><br /><sub><b>Andrew Haines</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=haines" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/wonu"><img src="https://avatars.githubusercontent.com/u/9602236?v=4?s=100" width="100px;" alt="Wonu Lee"/><br /><sub><b>Wonu Lee</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=wonu" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://about.me/knisterpeter"><img src="https://avatars.githubusercontent.com/u/327445?v=4?s=100" width="100px;" alt="Markus Wolf"/><br /><sub><b>Markus Wolf</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=KnisterPeter" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sarat1669"><img src="https://avatars.githubusercontent.com/u/11179580?v=4?s=100" width="100px;" alt="Sarat Chandra Balla"/><br /><sub><b>Sarat Chandra Balla</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=sarat1669" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/brookslybrand"><img src="https://avatars.githubusercontent.com/u/12396812?v=4?s=100" width="100px;" alt="Brooks Lybrand"/><br /><sub><b>Brooks Lybrand</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=brookslybrand" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/intsanerarity"><img src="https://avatars.githubusercontent.com/u/149149100?v=4?s=100" width="100px;" alt="Steven Lahmann"/><br /><sub><b>Steven Lahmann</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=intsanerarity" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mikkpokk"><img src="https://avatars.githubusercontent.com/u/14272312?v=4?s=100" width="100px;" alt="Mikk Pokk"/><br /><sub><b>Mikk Pokk</b></sub></a><br /><a href="https://github.com/kiliman/remix-mount-routes/commits?author=mikkpokk" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->

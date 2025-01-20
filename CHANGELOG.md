@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.7.0
+
+- 🔨 Removes requirement of @remix-run dependencies [#144] [#138]
+
+- 📦 Update dependencies to the latest stable version
+
 ## v0.6.5
 
 - 🐛 Check if remix.config.js exists before using during migration [#121]
