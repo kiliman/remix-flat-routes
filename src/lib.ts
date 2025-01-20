@@ -8,11 +8,11 @@ import {
   RouteManifest,
 } from './routes'
 
-let paramPrefixChar = '$' as const
-let escapeStart = '[' as const
-let escapeEnd = ']' as const
-let optionalStart = '(' as const
-let optionalEnd = ')' as const
+const paramPrefixChar = '$' as const
+const escapeStart = '[' as const
+const escapeEnd = ']' as const
+const optionalStart = '(' as const
+const optionalEnd = ')' as const
 
 let routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 
@@ -327,27 +327,28 @@ function isSegmentSeparator(checkChar: string | undefined) {
 }
 
 function getParentRouteIds(routeIds: string[]): Record<string, string | undefined> {
-    // We could use Array objects directly below, but Map is more performant, 
-    // especially for larger arrays of routeIds, 
-    // due to the faster lookups provided by the Map data structure.
-    const routeIdMap = new Map<string, string>();
-    for (const routeId of routeIds) {
-        routeIdMap.set(routeId, routeId);
+  // We could use Array objects directly below, but Map is more performant, 
+  // especially for larger arrays of routeIds, 
+  // due to the faster lookups provided by the Map data structure.
+  const routeIdMap = new Map<string, string>();
+  for (const routeId of routeIds) {
+    routeIdMap.set(routeId, routeId);
+  }
+
+  const parentRouteIdMap = new Map<string, string | undefined>();
+  for (const [childRouteId, _] of routeIdMap) {
+    let parentRouteId: string | undefined = undefined;
+    for (const [potentialParentId, _] of routeIdMap) {
+      if (childRouteId.startsWith(`${potentialParentId}/`)) {
+        parentRouteId = potentialParentId;
+        break;
+      }
     }
 
-    const parentRouteIdMap = new Map<string, string | undefined>();
-    for (const [childRouteId, _] of routeIdMap) {
-        let parentRouteId: string | undefined = undefined;
-        for (const [potentialParentId, _] of routeIdMap) {
-            if (childRouteId.startsWith(`${potentialParentId}/`)) {
-                parentRouteId = potentialParentId;
-                break;
-            }
-        }
-        parentRouteIdMap.set(childRouteId, parentRouteId);
-    }
+    parentRouteIdMap.set(childRouteId, parentRouteId);
+  }
 
-    return Object.fromEntries(parentRouteIdMap);
+  return Object.fromEntries(parentRouteIdMap);
 }
 
 function byLongestFirst(a: string, b: string): number {
