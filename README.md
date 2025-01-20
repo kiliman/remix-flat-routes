@@ -14,16 +14,16 @@ package that will convert existing Remix file-based routes to the new config for
 To use your existing file-based routing, install the adapter and update `routes.ts` to wrap your adapter. 
 
 ```bash
-npm install -D @react-router/remix-config-routes-adapter
+npm install -D @react-router/remix-routes-option-adapter
 npm install -D remix-flat-routes
 ```
 
 ```ts
 // app/routes.ts
-import { remixConfigRoutes } from "@react-router/remix-config-routes-adapter";
+import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
 import { flatRoutes } from "remix-flat-routes";
 
-export const routes = remixConfigRoutes((defineRoutes) => {
+export const routes = remixRoutesOptionAdapter((defineRoutes) => {
   return flatRoutes("routes", defineRoutes, {/* options */});
 });
 ```
