@@ -92,6 +92,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "brookslybrand",
+      "name": "Brooks Lybrand",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12396812?v=4",
+      "profile": "https://github.com/brookslybrand",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "intsanerarity",
+      "name": "Steven Lahmann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/149149100?v=4",
+      "profile": "https://github.com/intsanerarity",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mikkpokk",
+      "name": "Mikk Pokk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14272312?v=4",
+      "profile": "https://github.com/mikkpokk",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
