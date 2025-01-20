@@ -7,3 +7,5 @@ dist
 app
 .DS_Store
 .vscode
+.idea
+tsconfig.tsbuildinfo
