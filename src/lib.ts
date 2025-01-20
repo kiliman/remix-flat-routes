@@ -61,6 +61,9 @@ export function createRoutesFromFolders(
   } = options
 
   let appRoutesDirectory = path.join(appDirectory, routesDirectory)
+  if (!fs.existsSync(appRoutesDirectory)) {
+    throw new Error(`Routes directory not found: ${appRoutesDirectory}`)
+  }
   let files: { [routeId: string]: string } = {}
 
   // First, find all route modules in app/routes
@@ -326,13 +329,24 @@ function isSegmentSeparator(checkChar: string | undefined) {
 function getParentRouteIds(
   routeIds: string[],
 ): Record<string, string | undefined> {
-  return routeIds.reduce<Record<string, string | undefined>>(
-    (parentRouteIds, childRouteId) => ({
-      ...parentRouteIds,
-      [childRouteId]: routeIds.find(id => childRouteId.startsWith(`${id}/`)),
-    }),
-    {},
-  )
+  const routeIdMap = new Map<string, string>()
+  for (const routeId of routeIds) {
+    routeIdMap.set(routeId, routeId)
+  }
+
+  const parentRouteIds: Record<string, string | undefined> = {}
+  for (const childRouteId of routeIds) {
+    let parentRouteId: string | undefined = undefined
+    for (const [potentialParentId, _] of routeIdMap) {
+      if (childRouteId.startsWith(`${potentialParentId}/`)) {
+        parentRouteId = potentialParentId
+        break
+      }
+    }
+    parentRouteIds[childRouteId] = parentRouteId
+  }
+
+  return parentRouteIds
 }
 
 function byLongestFirst(a: string, b: string): number {

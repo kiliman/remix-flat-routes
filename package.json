@@ -45,8 +45,6 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
-    "@react-router/dev": "^7.0.2",
-    "@react-router/remix-config-routes-adapter": "^7.0.0-pre.2",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
     "@types/minimatch": "^5.1.2",
@@ -69,6 +67,6 @@
     "testEnvironment": "jsdom"
   },
   "peerDependencies": {
-    "react-router": "^7.0.2"
+    "react-router": "^7.0.0"
   }
 }
