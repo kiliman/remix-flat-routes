@@ -1,6 +1,6 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Package for generating routes using flat convention",
   "main": "dist/index.js",
   "bin": {
@@ -68,6 +68,6 @@
     "testEnvironment": "jsdom"
   },
   "peerDependencies": {
-    "react-router": "^7.0.0"
+    "react-router": "^7"
   }
 }
