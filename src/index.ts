@@ -324,7 +324,7 @@ export function getRouteSegments(
   // name has already been normalized to use / as path separator
 
   // replace `+/_.` with `_+/`
-  // this supports ability to to specify parent folder will not be a layout
+  // this supports ability to specify parent folder will not be a layout
   // _public+/_.about.tsx => _public_.about.tsx
 
   if (/\+\/_\./.test(name)) {
