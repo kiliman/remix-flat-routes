@@ -1,5 +1,5 @@
 {
-  "projectName": "remix-mount-routes",
+  "projectName": "remix-flat-routes",
   "projectOwner": "kiliman",
   "repoType": "github",
   "repoHost": "https://github.com",
@@ -89,6 +89,33 @@
       "name": "Sarat Chandra Balla",
       "avatar_url": "https://avatars.githubusercontent.com/u/11179580?v=4",
       "profile": "https://github.com/sarat1669",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "brookslybrand",
+      "name": "Brooks Lybrand",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12396812?v=4",
+      "profile": "https://github.com/brookslybrand",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "intsanerarity",
+      "name": "Steven Lahmann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/149149100?v=4",
+      "profile": "https://github.com/intsanerarity",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mikkpokk",
+      "name": "Mikk Pokk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14272312?v=4",
+      "profile": "https://github.com/mikkpokk",
       "contributions": [
         "code"
       ]

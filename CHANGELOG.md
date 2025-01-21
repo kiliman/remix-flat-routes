@@ -1,13 +1,24 @@
 # CHANGELOG
 
+## v0.7.1
+
+Minor fixes. Full changes in PR [#147](https://github.com/kiliman/remix-flat-routes/pull/147)
+- 🐛 Use `peerDependency` `react-router: ^7` instead of `^7.0.0`
+- 🐛 Fix contributors `projectName` and typo inside `src/index.ts`
+
+## v0.7.0
+
+- 🔨 Removes requirement of @remix-run dependencies [#144](https://github.com/kiliman/remix-flat-routes/pull/144) [#138](https://github.com/kiliman/remix-flat-routes/issues/138)
+
+- 📦 Update dependencies to the latest stable version
+
 ## v0.6.5
 
-- 🐛 Check if remix.config.js exists before using during migration [#121]
+- 🐛 Check if remix.config.js exists before using during migration [#121](https://github.com/kiliman/remix-flat-routes/issues/121)
 
 ## v0.6.4
 
 - 🐛 Import remix.config to use `ignoredRouteFiles` setting [#93](https://github.com/kiliman/remix-flat-routes/issue/93)
-
 - ✨ feat: Follow symlinks [#90](https://github.com/kiliman/remix-flat-routes/pull/90)
 
 ## v0.6.2

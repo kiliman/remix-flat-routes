@@ -1,6 +1,6 @@
-import { defineRoutes } from '@remix-run/dev/dist/config/routes'
 import type { RouteManifest } from '../src/index'
 import flatRoutes from '../src/index'
+import { defineRoutes } from '../src/routes'
 
 describe('define routes', () => {
   it('should define routes for flat-files', () => {
