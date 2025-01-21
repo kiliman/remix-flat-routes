@@ -25,6 +25,8 @@
   },
   "keywords": [
     "remix",
+    "react-router",
+    "flat-routes",
     "routing-convention"
   ],
   "author": {
