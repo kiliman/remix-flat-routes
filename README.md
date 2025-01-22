@@ -241,7 +241,28 @@ npm install -D remix-flat-routes
 
 ## ⚙️ Configuration
 
-Update your _remix.config.js_ file and use the custom routes config option.
+Update your _vite.config.ts_ file and use custom routes config option.
+
+```ts
+import { vitePlugin as remix } from '@remix-run/dev'
+import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { flatRoutes } from 'remix-flat-routes'
+
+export default defineConfig({
+  plugins: [
+    remix({ 
+      routes(defineRoutes) {
+        return flatRoutes('routes', defineRoutes)
+      }, 
+    }),
+    tsconfigPaths(),
+    // ...
+  ]
+})
+```
+
+In case you're not using Vite, update your _remix.config.js_ file and use the custom routes config option.
 
 ```ts
 const { flatRoutes } = require('remix-flat-routes')
@@ -529,7 +550,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sarat1669"><img src="https://avatars.githubusercontent.com/u/11179580?v=4?s=100" width="100px;" alt="Sarat Chandra Balla"/><br /><sub><b>Sarat Chandra Balla</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=sarat1669" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/brookslybrand"><img src="https://avatars.githubusercontent.com/u/12396812?v=4?s=100" width="100px;" alt="Brooks Lybrand"/><br /><sub><b>Brooks Lybrand</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=brookslybrand" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/intsanerarity"><img src="https://avatars.githubusercontent.com/u/149149100?v=4?s=100" width="100px;" alt="Steven Lahmann"/><br /><sub><b>Steven Lahmann</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=intsanerarity" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mikkpokk"><img src="https://avatars.githubusercontent.com/u/14272312?v=4?s=100" width="100px;" alt="Mikk Pokk"/><br /><sub><b>Mikk Pokk</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=mikkpokk" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mikkpokk"><img src="https://avatars.githubusercontent.com/u/14272312?v=4?s=100" width="100px;" alt="Mikk Pokk"/><br /><sub><b>Mikk Pokk</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=mikkpokk" title="Code">💻</a> <a href="https://github.com/kiliman/remix-flat-routes/commits?author=mikkpokk" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
