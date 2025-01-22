@@ -24,7 +24,14 @@ import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adap
 import { flatRoutes } from "remix-flat-routes";
 
 export const routes = remixRoutesOptionAdapter((defineRoutes) => {
-  return flatRoutes("routes", defineRoutes, {/* options */});
+  return flatRoutes("routes", defineRoutes, {
+    ignoredRouteFiles: ['**/.*'], // Ignore dot files (like .DS_Store)
+    //appDir: 'app',
+    //routeDir: 'routes',
+    //basePath: '/',
+    //paramPrefixChar: '$',
+    //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+  });
 });
 ```
 
@@ -253,7 +260,14 @@ export default defineConfig({
   plugins: [
     remix({ 
       routes(defineRoutes) {
-        return flatRoutes('routes', defineRoutes)
+        return flatRoutes('routes', defineRoutes, {
+          ignoredRouteFiles: ['**/.*'], // Ignore dot files (like .DS_Store)
+          //appDir: 'app',
+          //routeDir: 'routes',
+          //basePath: '/',
+          //paramPrefixChar: '$',
+          //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+        })
       }, 
     }),
     tsconfigPaths(),
@@ -275,7 +289,14 @@ module.exports = {
   // default remix convention from picking up routes
   ignoredRouteFiles: ['**/*'],
   routes: async defineRoutes => {
-    return flatRoutes('routes', defineRoutes)
+    return flatRoutes('routes', defineRoutes, {
+      ignoredRouteFiles: ['**/.*'], // Ignore dot files (like .DS_Store)
+      //appDir: 'app',
+      //routeDir: 'routes',
+      //basePath: '/',
+      //paramPrefixChar: '$',
+      //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+    })
   },
 }
 ```
