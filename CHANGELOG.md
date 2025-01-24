@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.7.2
+
+Full changes in PR [#148](https://github.com/kiliman/remix-flat-routes/pull/148)
+- 🐛 Allow escaping underscore on route file.
+- 🔨 Make peer dependency `react-router` optional
+- ✨ Add test to verify special character escape cases.
+
 ## v0.7.1
 
 Minor fixes. Full changes in PR [#147](https://github.com/kiliman/remix-flat-routes/pull/147)
@@ -9,7 +16,6 @@ Minor fixes. Full changes in PR [#147](https://github.com/kiliman/remix-flat-rou
 ## v0.7.0
 
 - 🔨 Removes requirement of @remix-run dependencies [#144](https://github.com/kiliman/remix-flat-routes/pull/144) [#138](https://github.com/kiliman/remix-flat-routes/issues/138)
-
 - 📦 Update dependencies to the latest stable version
 
 ## v0.6.5
