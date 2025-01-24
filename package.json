@@ -1,6 +1,6 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Package for generating routes using flat convention",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -80,5 +80,10 @@
   },
   "peerDependencies": {
     "react-router": "^7"
+  },
+  "peerDependenciesMeta": {
+    "react-router": {
+      "optional": true
+    }
   }
 }

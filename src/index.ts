@@ -296,6 +296,24 @@ export function createRoutePath(
       segment = segment.slice(0, -1)
     }
 
+    // remove outer square brackets
+    if (segment.includes('[') && segment.includes(']')) {
+      let output = ''
+      let depth = 0
+
+      for (const char of segment) {
+        if (char === '[' && depth === 0) {
+          depth++
+        } else if (char === ']' && depth > 0) {
+          depth--
+        } else {
+          output += char
+        }
+      }
+
+      segment = output
+    }
+
     // handle param segments: $ => *, $id => :id
     if (segment.startsWith(paramPrefixChar)) {
       if (segment === paramPrefixChar) {
@@ -433,10 +451,8 @@ export function getRouteSegments(
           break
         } else if (char === '[') {
           subState = 'ESCAPE'
-          break
         } else if (char === ']') {
           subState = 'NORMAL'
-          break
         }
         routeSegment += char
         break

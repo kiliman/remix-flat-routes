@@ -2,6 +2,12 @@ import type { RouteManifest } from '../src/index'
 import flatRoutes from '../src/index'
 import { defineRoutes } from '../src/routes'
 
+type ExpectedValues = {
+  id: string,
+  path: string | undefined,
+  parentId?: string,
+}
+
 describe('define routes', () => {
   it('should define routes for flat-files', () => {
     const flatFiles = [
@@ -412,6 +418,7 @@ describe('define folders for flat-files', () => {
     )
   })
 })
+
 describe('define folders for flat-files with overridden nested folder character', () => {
   it('should define routes for flat-files with folders', () => {
     const flatFolders = [
@@ -491,7 +498,7 @@ describe('support routeRegex', () => {
       '$lang.$ref.$.tsx',
       '_index.tsx',
       'healthcheck.tsx',
-       '_auth+/forgot-password.tsx',
+      '_auth+/forgot-password.tsx',
       '_auth+/login.tsx',
       '_public+/_layout.tsx',
       '_public+/index.tsx',
@@ -517,7 +524,7 @@ describe('support routeRegex', () => {
       '$lang.$ref.$.tsx',
       '_index.tsx',
       'healthcheck.tsx',
-       '_auth+/forgot-password.tsx',
+      '_auth+/forgot-password.tsx',
       '_auth+/login.tsx',
       '_public+/_layout.tsx',
       '_public+/index.tsx',
@@ -533,5 +540,52 @@ describe('support routeRegex', () => {
       routeRegex: (options) => /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
     expect(routes).toMatchSnapshot()
+  })
+})
+
+describe('is able to escape special characters', () => {
+  it('should escape underscore', () => {
+    const routesWithExpectedValues: Record<string, ExpectedValues> = {
+      '[__].tsx': {
+        id: 'routes/[__]',
+        path: '__',
+        parentId: 'root',
+      },
+      '[_].tsx': {
+        id: 'routes/[_]',
+        path: '_',
+        parentId: 'root',
+      },
+      '_layout+/[___].tsx': {
+        id: 'routes/_layout+/[___]',
+        path: '___',
+        parentId: 'root',
+      },
+      '_layout+/parent.[__].tsx': {
+        id: 'routes/_layout+/parent.[__]',
+        path: 'parent/__',
+        parentId: 'root',
+      },
+    }
+
+    const routesArrayInput = Object.keys(routesWithExpectedValues) as Array<keyof typeof routesWithExpectedValues>
+
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(routesArrayInput),
+    })
+
+    routesArrayInput.forEach(key => {
+      const route = routesWithExpectedValues[key]
+
+      expect(routes?.[route.id]).toBeDefined()
+
+      expect(routes?.[route.id]?.path).toBe(
+          route.path,
+      )
+
+      expect(routes?.[route.id]?.parentId).toBe(
+          route.parentId,
+      )
+    })
   })
 })
