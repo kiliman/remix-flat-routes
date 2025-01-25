@@ -1,4 +1,5 @@
 import * as path from 'path'
+import { warn } from 'console'
 
 type RouteConfig = {
   file: string
@@ -7,6 +8,7 @@ type RouteConfig = {
   index: boolean
 }
 
+warn('\x1b[41m', '⤭ migrate.test.ts is incomplete!')
 describe('migrate default routes to flat-files', () => {
   // route, expected
   const routes: [RouteConfig, string][] = [
