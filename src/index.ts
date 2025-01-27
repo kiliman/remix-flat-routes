@@ -29,7 +29,7 @@ export type VisitFilesFunction = (
   baseDir?: string,
 ) => void
 
-type routeRegexType = RegExp | ((options: FlatRoutesOptions) => RegExp);
+type routeRegexType = RegExp | ((options: FlatRoutesOptions) => RegExp)
 
 export type FlatRoutesOptions = {
   appDir?: string
@@ -38,7 +38,7 @@ export type FlatRoutesOptions = {
   basePath?: string
   visitFiles?: VisitFilesFunction
   paramPrefixChar?: string
-  nestedFolderChar?: string;
+  nestedFolderChar?: string
   ignoredRouteFiles?: string[]
   routeRegex?: routeRegexType
 }
@@ -61,11 +61,17 @@ const defaultOptions: FlatRoutesOptions = {
   routeDir: 'routes',
   basePath: '/',
   paramPrefixChar: '$',
-  nestedFolderChar: "+",
+  nestedFolderChar: '+',
   routeRegex: options => {
-    const { nestedFolderChar } = options;
-    return new RegExp(`(([${nestedFolderChar}][\\/\\\\][^\\/\\\\:?*]+)|[\\/\\\\]((index|route|layout|page)|(_[^\\/\\\\:?*]+)|([^\\/\\\\:?*]+\\.route)))\\.(ts|tsx|js|jsx|md|mdx)$$`);
-  }
+    const nestedFolderChar = (options.nestedFolderChar as string).replace(
+      /[.*+\-?^${}()|[\]\\]/g,
+      '\\$&',
+    )
+
+    return new RegExp(
+      `(([${nestedFolderChar}][\\/\\\\][^\\/\\\\:?*]+)|[\\/\\\\]((index|route|layout|page)|(_[^\\/\\\\:?*]+)|([^\\/\\\\:?*]+\\.route)))\\.(ts|tsx|js|jsx|md|mdx)$$`,
+    )
+  },
 }
 const defaultDefineRoutes = undefined
 
@@ -128,7 +134,10 @@ function _flatRoutes(
   }
   let visitFiles = options.visitFiles ?? defaultVisitFiles
   // let routeRegex = options.routeRegex ?? defaultOptions.routeRegex!
-  const routeRegex = getRouteRegex(options.routeRegex ?? defaultOptions.routeRegex!, options);
+  const routeRegex = getRouteRegex(
+    options.routeRegex ?? defaultOptions.routeRegex!,
+    options,
+  )
 
   for (let routeDir of routeDirs) {
     visitFiles(path.join(appDir, routeDir), file => {
@@ -202,7 +211,6 @@ function _flatRoutes(
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 const serverRegex = /\.server\.(ts|tsx|js|jsx|md|mdx)$/
 
-
 export function isRouteModuleFile(
   filename: string,
   routeRegex: RegExp,
@@ -224,22 +232,31 @@ export function isRouteModuleFile(
 }
 
 const memoizedRegex = (() => {
-  const cache: { [key: string]: RegExp } = {};
+  const cache: { [key: string]: RegExp } = {}
 
   return (input: string): RegExp => {
     if (input in cache) {
-      return cache[input];
+      return cache[input]
     }
 
-    const newRegex = new RegExp(input);
-    cache[input] = newRegex;
+    const newRegex = new RegExp(input)
+    cache[input] = newRegex
 
-    return newRegex;
-  };
-})();
+    return newRegex
+  }
+})()
 
-export function isIndexRoute(routeId: string, options: FlatRoutesOptions): boolean {
-  const indexRouteRegex = memoizedRegex(`((^|[.]|[${options.nestedFolderChar}]\\/)(index|_index))(\\/[^\\/]+)?$|(\\/_?index\\/)`);
+export function isIndexRoute(
+  routeId: string,
+  options: FlatRoutesOptions,
+): boolean {
+  const nestedFolderChar = (options.nestedFolderChar as string).replace(
+    /[.*+\-?^${}()|[\]\\]/g,
+    '\\$&',
+  )
+  const indexRouteRegex = memoizedRegex(
+    `((^|[.]|[${nestedFolderChar}]\\/)(index|_index))(\\/[^\\/]+)?$|(\\/_?index\\/)`,
+  )
   return indexRouteRegex.test(routeId)
 }
 
@@ -355,7 +372,7 @@ export function getRouteSegments(
   name: string,
   index: boolean,
   paramPrefixChar: string = '$',
-  nestedFolderChar: string = "+",
+  nestedFolderChar: string = '+',
 ) {
   let routeSegments: string[] = []
   let i = 0
@@ -366,21 +383,23 @@ export function getRouteSegments(
 
   // name has already been normalized to use / as path separator
 
-  const escapedNestedFolderChar = nestedFolderChar.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+  const escapedNestedFolderChar = nestedFolderChar.replace(
+    /[.*+\-?^${}()|[\]\\]/g,
+    '\\$&',
+  )
 
-  const combinedRegex = new RegExp(`${escapedNestedFolderChar}[/\\\\]`, "g");
-  const testRegex = new RegExp(`${escapedNestedFolderChar}[/\\\\]`);
+  const combinedRegex = new RegExp(`${escapedNestedFolderChar}[/\\\\]`, 'g')
+  const testRegex = new RegExp(`${escapedNestedFolderChar}[/\\\\]`)
   const replacePattern = `${escapedNestedFolderChar}/_\\.`
-  const replaceRegex = new RegExp(replacePattern);
+  const replaceRegex = new RegExp(replacePattern)
 
   // replace `+/_.` with `_+/`
   // this supports ability to specify parent folder will not be a layout
   // _public+/_.about.tsx => _public_.about.tsx
 
   if (replaceRegex.test(name)) {
-    const replaceRegexGlobal = new RegExp(replacePattern, 'g');
-    name = name.replace(replaceRegexGlobal, `_${nestedFolderChar}/`);
-
+    const replaceRegexGlobal = new RegExp(replacePattern, 'g')
+    name = name.replace(replaceRegexGlobal, `_${nestedFolderChar}/`)
   }
 
   // replace `+/` with `.`
@@ -388,10 +407,9 @@ export function getRouteSegments(
   // _public+/about.tsx => _public.about.tsx
   //
   if (testRegex.test(name)) {
-    name = name.replace(combinedRegex, ".");
+    name = name.replace(combinedRegex, '.')
 
-
-    hasPlus = true;
+    hasPlus = true
   }
 
   let hasFolder = /\//.test(name)
@@ -511,9 +529,14 @@ function stripFileExtension(file: string) {
   return file.replace(/\.[a-z0-9]+$/i, '')
 }
 
-const getRouteRegex = (regexOrOptions: routeRegexType, options: FlatRoutesOptions): RegExp => {
+const getRouteRegex = (
+  regexOrOptions: routeRegexType,
+  options: FlatRoutesOptions,
+): RegExp => {
   if (regexOrOptions instanceof RegExp) {
-    return regexOrOptions;
+    return regexOrOptions
   }
-  return regexOrOptions(options);
+  // extract options without routeRegex to avoid recursion
+  const {routeRegex, ...optionsWithoutRouteRegex} = options
+  return regexOrOptions(optionsWithoutRouteRegex)
 }
