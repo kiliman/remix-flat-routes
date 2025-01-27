@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "dist/cjs"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "src/cli.ts", "src/lib.ts", "src/migrate.ts"]
+}
