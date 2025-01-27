@@ -3,38 +3,26 @@
   "version": "0.8.1",
   "description": "Package for generating routes using flat convention",
   "type": "module",
-  "main": "dist/esm/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "bin": {
-    "migrate-flat-routes": "dist/esm/cli.js"
+    "migrate-flat-routes": "dist/cli.cjs"
   },
   "files": [
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
+    "dist",
     "README.md",
     "CHANGELOG.md"
   ],
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build:cjs": "tsc --project tsconfig.build.cjs.json",
-    "build:esm": "tsc --project tsconfig.build.json",
-    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build": "tsup",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "prepare": "npm run typecheck && npm run build",
     "typecheck": "tsc -b",
-    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cjs/cli.js"
+    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cli.cjs"
   },
   "keywords": [
     "remix",
@@ -76,6 +64,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
+    "tsup": "^8.3.6",
     "typescript": "^5.7.2"
   },
   "jest": {
