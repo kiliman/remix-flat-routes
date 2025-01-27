@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "migrate-flat-routes": "dist/cli.js"
+    "migrate-flat-routes": "dist/esm/cli.js"
   },
   "files": [
     "dist/**/*.js",
@@ -26,15 +26,15 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build:cjs": "tsc --project tsconfig.build.json --module CommonJS --outDir dist/cjs",
-    "build:esm": "tsc --project tsconfig.build.json --module ES2022 --outDir dist/esm",
+    "build:cjs": "tsc --project tsconfig.build.cjs.json",
+    "build:esm": "tsc --project tsconfig.build.json",
     "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "prepare": "npm run typecheck && npm run build",
     "typecheck": "tsc -b",
-    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cli.js"
+    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/esm/cli.js"
   },
   "keywords": [
     "remix",
@@ -89,5 +89,8 @@
     "react-router": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=16.6.0"
   }
 }
