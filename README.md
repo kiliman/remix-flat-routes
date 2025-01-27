@@ -30,7 +30,8 @@ export const routes = remixRoutesOptionAdapter((defineRoutes) => {
     //routeDir: 'routes',
     //basePath: '/',
     //paramPrefixChar: '$',
-    //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+    //nestedDirectoryChar: '+',
+    //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
   });
 });
 ```
@@ -266,7 +267,8 @@ export default defineConfig({
           //routeDir: 'routes',
           //basePath: '/',
           //paramPrefixChar: '$',
-          //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+          //nestedDirectoryChar: '+',
+          //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
         })
       }, 
     }),
@@ -295,7 +297,8 @@ module.exports = {
       //routeDir: 'routes',
       //basePath: '/',
       //paramPrefixChar: '$',
-      //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+      //nestedDirectoryChar: '+',
+      //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
   },
 }
@@ -312,12 +315,13 @@ function flatRoutes(
 
 type FlatRoutesOptions = {
   appDir?: string // optional app directory (defaults to app)
+  routeDir?: string | string[] // optional routes directory (default to routes)
   basePath?: string // optional base path (default is '/')
   paramPrefixChar?: string // optional param prefix (default is '$')
-  nestedFolderChar?: string // optional nested folder character for hybrid-routes (default is '+')
+  nestedDirectoryChar?: string // optional nested folder character for hybrid-routes (default is '+')
   ignoredRouteFiles?: string[] // optional files to ignore as routes (same as Remix config option)
   visitFiles?: VisitFilesFunction // optional visitor (useful for tests to provide files without file system)
-  routeRegex?: RegExp | ((options: FlatRoutesOptions) => RegExp); // optional route regex or function returning a regex to identify files that define routes
+  routeRegex?: RegExp; // optional route regex to identify files that define routes
 }
 ```
 
