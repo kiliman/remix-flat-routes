@@ -314,7 +314,7 @@ describe('use optional segments', () => {
     const files = ['_folder-/parent.(child).tsx']
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(files),
-      nestedFolderChar: '-',
+      nestedDirectoryChar: '-',
     })
     expect(routes['routes/_folder-/parent.(child)']!.path!).toBe(
       'parent/child?',
@@ -435,7 +435,7 @@ describe('define folders for flat-files with overridden nested folder character'
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
-      nestedFolderChar: '-',
+      nestedDirectoryChar: '-',
     })
     expect(routes).toMatchSnapshot()
   })
@@ -448,7 +448,7 @@ describe('define folders for flat-files with overridden nested folder character'
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
-      nestedFolderChar: '-',
+      nestedDirectoryChar: '-',
     })
     expect(routes['routes/faculty-/_.login']?.parentId).toBe('root')
   })
@@ -460,7 +460,7 @@ describe('define folders for flat-files with overridden nested folder character'
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
-      nestedFolderChar: '-',
+      nestedDirectoryChar: '-',
     })
     expect(routes['routes/_public-/parent.child/index']?.path).toBe(
       'parent/child',
@@ -479,7 +479,7 @@ describe('define folders for flat-files with overridden nested folder character'
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFolders),
-      nestedFolderChar: '-',
+      nestedDirectoryChar: '-',
     })
     expect(routes['routes/_public-/parent.child']?.path).toBe('parent/child')
     expect(routes['routes/_public-/parent.child.grandchild']?.parentId).toBe(
@@ -491,7 +491,33 @@ describe('define folders for flat-files with overridden nested folder character'
   })
 })
 describe('support routeRegex', () => {
-  it('should accept a regex', () => {
+  it('should accept a dynamic regex', () => {
+    const flatFiles = [
+      '$lang.$ref.tsx',
+      '$lang.$ref._index.tsx',
+      '$lang.$ref.$.tsx',
+      '_index.tsx',
+      'healthcheck.tsx',
+      '_auth+/forgot-password.tsx',
+      '_auth+/login.tsx',
+      '_public+/_layout.tsx',
+      '_public+/index.tsx',
+      '_public+/about.tsx',
+      '_public+/contact[.jpg].tsx',
+      'users+/_layout.tsx',
+      'users+/route.tsx',
+      'users+/$userId.tsx',
+      'users+/$userId_.edit.tsx',
+    ]
+    const routes = flatRoutes('routes', defineRoutes, {
+      visitFiles: visitFilesFromArray(flatFiles),
+      routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+
+    })
+    expect(routes).toMatchSnapshot()
+  })
+
+  it('should accept a static regex', () => {
     const flatFiles = [
       '$lang.$ref.tsx',
       '$lang.$ref._index.tsx',
@@ -513,31 +539,6 @@ describe('support routeRegex', () => {
       visitFiles: visitFilesFromArray(flatFiles),
       routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
 
-    })
-    expect(routes).toMatchSnapshot()
-  })
-
-  it('should accept a function that returns a regex', () => {
-    const flatFiles = [
-      '$lang.$ref.tsx',
-      '$lang.$ref._index.tsx',
-      '$lang.$ref.$.tsx',
-      '_index.tsx',
-      'healthcheck.tsx',
-      '_auth+/forgot-password.tsx',
-      '_auth+/login.tsx',
-      '_public+/_layout.tsx',
-      '_public+/index.tsx',
-      '_public+/about.tsx',
-      '_public+/contact[.jpg].tsx',
-      'users+/_layout.tsx',
-      'users+/route.tsx',
-      'users+/$userId.tsx',
-      'users+/$userId_.edit.tsx',
-    ]
-    const routes = flatRoutes('routes', defineRoutes, {
-      visitFiles: visitFilesFromArray(flatFiles),
-      routeRegex: (options) => /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
     expect(routes).toMatchSnapshot()
   })

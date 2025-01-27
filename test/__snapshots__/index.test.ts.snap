@@ -758,7 +758,7 @@ exports[`define routes should support markdown routes as flat-folders 1`] = `
 }
 `;
 
-exports[`support routeRegex should accept a function that returns a regex 1`] = `
+exports[`support routeRegex should accept a dynamic regex 1`] = `
 {
   "routes/$lang.$ref": {
     "caseSensitive": undefined,
@@ -883,7 +883,7 @@ exports[`support routeRegex should accept a function that returns a regex 1`] = 
 }
 `;
 
-exports[`support routeRegex should accept a regex 1`] = `
+exports[`support routeRegex should accept a static regex 1`] = `
 {
   "routes/$lang.$ref": {
     "caseSensitive": undefined,
