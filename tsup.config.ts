@@ -7,11 +7,19 @@ export default defineConfig(() => {
     clean: true,
   }
 
+  const indexCommonOptions = {
+    entry: ['src/index.ts'],
+  }
+
   return [{
     ...commonOptions,
-    entry: ['src/index.ts'],
-    format: ['cjs', 'esm'], // TODO: consider removing cjs support. Vite expects ESM anyway and v1 remix compiler can use serverDependenciesToBundle option
+    ...indexCommonOptions,
+    format: 'esm',
     dts: true, // Generate declaration file (.d.ts)
+  }, {
+    ...commonOptions,
+    ...indexCommonOptions,
+    format: 'cjs', // TODO: consider removing cjs support. Vite expects ESM anyway and v1 remix compiler can use serverDependenciesToBundle option
   }, {
     ...commonOptions,
     entry: ['src/cli.ts'],
