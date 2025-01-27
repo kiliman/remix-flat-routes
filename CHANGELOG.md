@@ -1,10 +1,13 @@
 # CHANGELOG
 
+## v0.8.3
+- 🔨 Don't compile unnecessary files during the build
+
 ## v0.8.2
-- 🐛 fix bug of `npx migrate-flat-routes` due to ESM/CJS build
+- 🐛 Fix bug of `npx migrate-flat-routes` due to ESM/CJS build
 
 ## v0.8.1
-- 🐛 addressed bug of `npx migrate-flat-routes` due to ESM/CJS build
+- 🐛 Addresses bug of `npx migrate-flat-routes` due to ESM/CJS build
 
 ## v0.8.0 - v0.8.2
 
