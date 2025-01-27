@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "migrate-flat-routes": "dist/esm/cli.js"
+    "migrate-flat-routes": "dist/cjs/cli.js"
   },
   "files": [
     "dist/**/*.js",
@@ -34,7 +34,7 @@
     "contributors:generate": "all-contributors generate",
     "prepare": "npm run typecheck && npm run build",
     "typecheck": "tsc -b",
-    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/esm/cli.js"
+    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cjs/cli.js"
   },
   "keywords": [
     "remix",
