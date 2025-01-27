@@ -24,7 +24,9 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc --project tsconfig.build.cjs.json && tsc --project tsconfig.build.esm.json",
+    "build:cjs": "tsc --project tsconfig.build.json --module CommonJS --outDir dist/cjs",
+    "build:esm": "tsc --project tsconfig.build.json --module ES2022 --outDir dist/esm",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
