@@ -9,7 +9,7 @@
 ## v0.8.1
 - 🐛 Addresses bug of `npx migrate-flat-routes` due to ESM/CJS build
 
-## v0.8.0 - v0.8.2
+## v0.8.0
 
 Full changes in PR [#70](https://github.com/kiliman/remix-flat-routes/pull/70)
 - ✨New option `nestedDirectoryChar` introduced [#57](https://github.com/kiliman/remix-flat-routes/issues/57) [#106](https://github.com/kiliman/remix-flat-routes/issues/106)
