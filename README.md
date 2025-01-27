@@ -30,7 +30,8 @@ export const routes = remixRoutesOptionAdapter((defineRoutes) => {
     //routeDir: 'routes',
     //basePath: '/',
     //paramPrefixChar: '$',
-    //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+    //nestedDirectoryChar: '+',
+    //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
   });
 });
 ```
@@ -117,7 +118,7 @@ app/routes-hybrid
 
 ### Nested folders with `flat-files` convention (✨ New in v0.5.1)
 
-To create a folder but treat it as flat-file, just append the `+`to the folder name.
+To create a folder but treat it as flat-file, just append the default nested folder character `+` to the folder name.  You can override this character in the options.  
 
 ```
 _auth+/forgot-password.tsx => _auth.forgot-password.tsx
@@ -266,7 +267,8 @@ export default defineConfig({
           //routeDir: 'routes',
           //basePath: '/',
           //paramPrefixChar: '$',
-          //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+          //nestedDirectoryChar: '+',
+          //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
         })
       }, 
     }),
@@ -295,7 +297,8 @@ module.exports = {
       //routeDir: 'routes',
       //basePath: '/',
       //paramPrefixChar: '$',
-      //routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+      //nestedDirectoryChar: '+',
+      //routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
   },
 }
@@ -312,10 +315,13 @@ function flatRoutes(
 
 type FlatRoutesOptions = {
   appDir?: string // optional app directory (defaults to app)
+  routeDir?: string | string[] // optional routes directory (default to routes)
   basePath?: string // optional base path (default is '/')
   paramPrefixChar?: string // optional param prefix (default is '$')
-  ignoredRouteFiles?: string[] // optional files to ingore as routes (same as Remix config option)
+  nestedDirectoryChar?: string // optional nested folder character for hybrid-routes (default is '+')
+  ignoredRouteFiles?: string[] // optional files to ignore as routes (same as Remix config option)
   visitFiles?: VisitFilesFunction // optional visitor (useful for tests to provide files without file system)
+  routeRegex?: RegExp; // optional route regex to identify files that define routes
 }
 ```
 

@@ -1,8 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": false
+    "module": "ESNext",
+    "outDir": "dist/esm",
+    "noEmit": false,
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "src/cli.ts", "src/lib.ts", "src/migrate.ts"]
 }

@@ -36,6 +36,7 @@ export type FlatRoutesOptions = {
   basePath?: string
   visitFiles?: VisitFilesFunction
   paramPrefixChar?: string
+  nestedDirectoryChar?: string
   ignoredRouteFiles?: string[]
   routeRegex?: RegExp
 }
@@ -58,8 +59,8 @@ const defaultOptions: FlatRoutesOptions = {
   routeDir: 'routes',
   basePath: '/',
   paramPrefixChar: '$',
-  routeRegex:
-    /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+  nestedDirectoryChar: '+',
+  routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
 }
 const defaultDefineRoutes = undefined
 
@@ -121,7 +122,10 @@ function _flatRoutes(
     throw new Error('You must provide a defineRoutes function')
   }
   let visitFiles = options.visitFiles ?? defaultVisitFiles
-  let routeRegex = options.routeRegex ?? defaultOptions.routeRegex!
+  const routeRegex = getRouteRegex(
+    options.routeRegex ?? defaultOptions.routeRegex!,
+    options.nestedDirectoryChar ?? defaultOptions.nestedDirectoryChar!,
+  )
 
   for (let routeDir of routeDirs) {
     visitFiles(path.join(appDir, routeDir), file => {
@@ -187,14 +191,13 @@ function _flatRoutes(
       }
     }
   }
+
   let routes = defineRoutes(defineNestedRoutes)
   return routes
 }
 
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx']
 const serverRegex = /\.server\.(ts|tsx|js|jsx|md|mdx)$/
-const indexRouteRegex =
-  /((^|[.]|[+]\/)(index|_index))(\/[^\/]+)?$|(\/_?index\/)/
 
 export function isRouteModuleFile(
   filename: string,
@@ -216,7 +219,32 @@ export function isRouteModuleFile(
   return false
 }
 
-export function isIndexRoute(routeId: string): boolean {
+const memoizedRegex = (() => {
+  const cache: { [key: string]: RegExp } = {}
+
+  return (input: string): RegExp => {
+    if (input in cache) {
+      return cache[input]
+    }
+
+    const newRegex = new RegExp(input)
+    cache[input] = newRegex
+
+    return newRegex
+  }
+})()
+
+export function isIndexRoute(
+  routeId: string,
+  options: FlatRoutesOptions,
+): boolean {
+  const nestedDirectoryChar = (options.nestedDirectoryChar as string).replace(
+    /[.*+\-?^${}()|[\]\\]/g,
+    '\\$&',
+  )
+  const indexRouteRegex = memoizedRegex(
+    `((^|[.]|[${nestedDirectoryChar}]\\/)(index|_index))(\\/[^\\/]+)?$|(\\/_?index\\/)`,
+  )
   return indexRouteRegex.test(routeId)
 }
 
@@ -228,11 +256,12 @@ export function getRouteInfo(
   let filePath = normalizeSlashes(path.join(routeDir, file))
   let routeId = createRouteId(filePath)
   let routeIdWithoutRoutes = routeId.slice(routeDir.length + 1)
-  let index = isIndexRoute(routeIdWithoutRoutes)
+  let index = isIndexRoute(routeIdWithoutRoutes, options)
   let routeSegments = getRouteSegments(
     routeIdWithoutRoutes,
     index,
     options.paramPrefixChar,
+    options.nestedDirectoryChar,
   )
   let routePath = createRoutePath(routeSegments, index, options)
   let routeInfo = {
@@ -331,6 +360,7 @@ export function getRouteSegments(
   name: string,
   index: boolean,
   paramPrefixChar: string = '$',
+  nestedDirectoryChar: string = '+',
 ) {
   let routeSegments: string[] = []
   let i = 0
@@ -341,22 +371,35 @@ export function getRouteSegments(
 
   // name has already been normalized to use / as path separator
 
+  const escapedNestedDirectoryChar = nestedDirectoryChar.replace(
+    /[.*+\-?^${}()|[\]\\]/g,
+    '\\$&',
+  )
+
+  const combinedRegex = new RegExp(`${escapedNestedDirectoryChar}[/\\\\]`, 'g')
+  const testRegex = new RegExp(`${escapedNestedDirectoryChar}[/\\\\]`)
+  const replacePattern = `${escapedNestedDirectoryChar}/_\\.`
+  const replaceRegex = new RegExp(replacePattern)
+
   // replace `+/_.` with `_+/`
   // this supports ability to specify parent folder will not be a layout
   // _public+/_.about.tsx => _public_.about.tsx
 
-  if (/\+\/_\./.test(name)) {
-    name = name.replace(/\+\/_\./g, '_+/')
+  if (replaceRegex.test(name)) {
+    const replaceRegexGlobal = new RegExp(replacePattern, 'g')
+    name = name.replace(replaceRegexGlobal, `_${nestedDirectoryChar}/`)
   }
 
   // replace `+/` with `.`
   // this supports folders for organizing flat-files convention
   // _public+/about.tsx => _public.about.tsx
   //
-  if (/\+\//.test(name)) {
-    name = name.replace(/\+\//g, '.')
+  if (testRegex.test(name)) {
+    name = name.replace(combinedRegex, '.')
+
     hasPlus = true
   }
+
   let hasFolder = /\//.test(name)
   // if name has plus folder, but we still have regular folders
   // then treat ending route as flat-folders
@@ -440,6 +483,7 @@ export function getRouteSegments(
 }
 
 const pathSeparatorRegex = /[\/\\.]/
+
 function isPathSeparator(char: string) {
   return pathSeparatorRegex.test(char)
 }
@@ -471,4 +515,18 @@ export function normalizeSlashes(file: string) {
 
 function stripFileExtension(file: string) {
   return file.replace(/\.[a-z0-9]+$/i, '')
+}
+
+const getRouteRegex = (
+  RegexRequiresNestedDirReplacement: RegExp,
+  nestedDirectoryChar: string,
+): RegExp => {
+  nestedDirectoryChar = nestedDirectoryChar.replace(
+    /[.*+\-?^${}()|[\]\\]/g,
+    '\\$&',
+  )
+
+  return new RegExp(
+    RegexRequiresNestedDirReplacement.source.replace('\\${nestedDirectoryChar}', `[${nestedDirectoryChar}]`),
+  )
 }

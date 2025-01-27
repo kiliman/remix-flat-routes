@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.8.0
+
+Full changes in PR [#70](https://github.com/kiliman/remix-flat-routes/pull/70)
+- ✨New option `nestedDirectoryChar` introduced [#57](https://github.com/kiliman/remix-flat-routes/issues/57) [#106](https://github.com/kiliman/remix-flat-routes/issues/106)
+- ✨ESM support added
+
 ## v0.7.2
 
 Full changes in PR [#148](https://github.com/kiliman/remix-flat-routes/pull/148)

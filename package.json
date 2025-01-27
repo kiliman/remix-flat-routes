@@ -1,10 +1,21 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Package for generating routes using flat convention",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
-    "migrate-flat-routes": "dist/cli.js"
+    "migrate-flat-routes": "dist/cjs/cli.js"
   },
   "files": [
     "dist/**/*.js",
@@ -15,13 +26,15 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc --project tsconfig.build.json --module CommonJS --outDir ./dist",
+    "build:cjs": "tsc --project tsconfig.build.cjs.json",
+    "build:esm": "tsc --project tsconfig.build.json",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "test": "jest",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "prepare": "npm run typecheck && npm run build",
     "typecheck": "tsc -b",
-    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cli.js"
+    "migrate": "rm -rf ./app/flat-files ./app/flat-folders && npm run build && node ./dist/cjs/cli.js"
   },
   "keywords": [
     "remix",
@@ -76,5 +89,8 @@
     "react-router": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=16.6.0"
   }
 }
