@@ -1,9 +1,9 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Package for generating routes using flat convention",
   "type": "module",
-  "main": "dist/cjs/index.js",
+  "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "exports": {
@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "migrate-flat-routes": "dist/cjs/cli.js"
+    "migrate-flat-routes": "dist/esm/cli.js"
   },
   "files": [
     "dist/**/*.js",
