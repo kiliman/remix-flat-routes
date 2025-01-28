@@ -1,6 +1,6 @@
 {
   "name": "remix-flat-routes",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Package for generating routes using flat convention",
   "type": "module",
   "main": "dist/index.cjs",

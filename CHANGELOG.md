@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.8.4
+- 🐛 Remove unnecessary trailing slash from path [#130](https://github.com/kiliman/remix-flat-routes/issues/130)
+
 ## v0.8.3
 - 🔨 Don't compile unnecessary files during the build
 
