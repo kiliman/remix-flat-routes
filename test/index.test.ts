@@ -3,9 +3,17 @@ import flatRoutes from '../src/index'
 import { defineRoutes } from '../src/routes'
 
 type ExpectedValues = {
-  id: string,
-  path: string | undefined,
-  parentId?: string,
+  id: string
+  path: string | undefined
+  parentId?: string
+}
+
+type RouteMapInfo = {
+  id: string
+  path: string
+  file: string
+  index?: boolean
+  children: string[]
 }
 
 describe('define routes', () => {
@@ -133,6 +141,7 @@ describe('define routes', () => {
     })
     expect(routes).toMatchSnapshot()
   })
+
   it('should support markdown routes as flat-files', () => {
     const flatFiles = ['docs.tsx', 'docs.readme.md']
     const routes = flatRoutes('routes', defineRoutes, {
@@ -140,6 +149,7 @@ describe('define routes', () => {
     })
     expect(routes).toMatchSnapshot()
   })
+
   it('should support markdown routes as flat-folders', () => {
     const flatFolders = ['docs/_layout.tsx', 'docs/readme.route.mdx']
     const routes = flatRoutes('routes', defineRoutes, {
@@ -147,66 +157,29 @@ describe('define routes', () => {
     })
     expect(routes).toMatchSnapshot()
   })
-})
 
-function visitFilesFromArray(files: string[]) {
-  return (_dir: string, visitor: (file: string) => void, _baseDir?: string) => {
-    files.forEach(file => {
-      visitor(file)
-    })
-  }
-}
-
-type RouteMapInfo = {
-  id: string
-  path: string
-  file: string
-  index?: boolean
-  children: string[]
-}
-
-function dumpRoutes(routes: RouteManifest) {
-  const routeMap = new Map<string, RouteMapInfo>()
-  const rootRoute: RouteMapInfo = {
-    id: 'root',
-    path: '',
-    file: 'root.tsx',
-    index: false,
-    children: [],
-  }
-  routeMap.set('root', rootRoute)
-  Object.entries(routes).forEach(([name, route]) => {
-    if (!route.parentId) return
-    const parent = routeMap.get(route.parentId)
-    if (parent) {
-      parent.children.push(name)
+  it('should not contain unnecessary trailing slash on path', () => {
+    const routesWithExpectedValues: Record<string, ExpectedValues> = {
+      '_login+/_layout.tsx': {
+        id: 'routes/_login+/_layout',
+        path: undefined,
+        parentId: 'root',
+      },
+      '_login+/login.tsx': {
+        id: 'routes/_login+/login',
+        path: 'login',
+        parentId: 'routes/_login+/_layout',
+      },
+      '_login+/register+/_index.tsx': {
+        id: 'routes/_login+/register+/_index',
+        path: 'register',
+        parentId: 'routes/_login+/_layout',
+      },
     }
-    routeMap.set(name, {
-      id: name,
-      path: route.path!,
-      file: route.file,
-      index: route.index,
-      children: [],
-    })
+
+    generateFlatRoutesAndVerifyResultWithExpected(routesWithExpectedValues)
   })
-  const dump = (route: RouteMapInfo, indent: string) => {
-    const getPath = (path?: string) => (path ? `path="${path}" ` : '')
-    const getIndex = (index?: boolean) => (index ? 'index ' : '')
-    output += `${indent}<Route ${getIndex(route.index)}${getPath(
-      route.path,
-    )}file="${route.file}"${route.children ? '' : ' /'}>\n`
-    if (route.children.length) {
-      route.children.forEach((childId: string) => {
-        dump(routeMap.get(childId)!, indent + '  ')
-      })
-      output += `${indent}</Route>\n`
-    }
-  }
-  let output = '<Routes>\n'
-  dump(routeMap.get('root')!, '  ')
-  output += '</Routes>\n'
-  console.log(output)
-}
+})
 
 describe('define ignored routes', () => {
   const ignoredRouteFiles = ['**/.*', '**/*.css', '**/*.test.{js,jsx,ts,tsx}']
@@ -511,8 +484,8 @@ describe('support routeRegex', () => {
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFiles),
-      routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
-
+      routeRegex:
+        /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
     expect(routes).toMatchSnapshot()
   })
@@ -537,8 +510,8 @@ describe('support routeRegex', () => {
     ]
     const routes = flatRoutes('routes', defineRoutes, {
       visitFiles: visitFilesFromArray(flatFiles),
-      routeRegex: /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
-
+      routeRegex:
+        /(([+][\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
     })
     expect(routes).toMatchSnapshot()
   })
@@ -569,24 +542,79 @@ describe('is able to escape special characters', () => {
       },
     }
 
-    const routesArrayInput = Object.keys(routesWithExpectedValues) as Array<keyof typeof routesWithExpectedValues>
-
-    const routes = flatRoutes('routes', defineRoutes, {
-      visitFiles: visitFilesFromArray(routesArrayInput),
-    })
-
-    routesArrayInput.forEach(key => {
-      const route = routesWithExpectedValues[key]
-
-      expect(routes?.[route.id]).toBeDefined()
-
-      expect(routes?.[route.id]?.path).toBe(
-          route.path,
-      )
-
-      expect(routes?.[route.id]?.parentId).toBe(
-          route.parentId,
-      )
-    })
+    generateFlatRoutesAndVerifyResultWithExpected(routesWithExpectedValues)
   })
 })
+
+function dumpRoutes(routes: RouteManifest) {
+  const routeMap = new Map<string, RouteMapInfo>()
+  const rootRoute: RouteMapInfo = {
+    id: 'root',
+    path: '',
+    file: 'root.tsx',
+    index: false,
+    children: [],
+  }
+  routeMap.set('root', rootRoute)
+  Object.entries(routes).forEach(([name, route]) => {
+    if (!route.parentId) return
+    const parent = routeMap.get(route.parentId)
+    if (parent) {
+      parent.children.push(name)
+    }
+    routeMap.set(name, {
+      id: name,
+      path: route.path!,
+      file: route.file,
+      index: route.index,
+      children: [],
+    })
+  })
+  const dump = (route: RouteMapInfo, indent: string) => {
+    const getPath = (path?: string) => (path ? `path="${path}" ` : '')
+    const getIndex = (index?: boolean) => (index ? 'index ' : '')
+    output += `${indent}<Route ${getIndex(route.index)}${getPath(
+      route.path,
+    )}file="${route.file}"${route.children ? '' : ' /'}>\n`
+    if (route.children.length) {
+      route.children.forEach((childId: string) => {
+        dump(routeMap.get(childId)!, indent + '  ')
+      })
+      output += `${indent}</Route>\n`
+    }
+  }
+  let output = '<Routes>\n'
+  dump(routeMap.get('root')!, '  ')
+  output += '</Routes>\n'
+  console.log(output)
+}
+
+function visitFilesFromArray(files: string[]) {
+  return (_dir: string, visitor: (file: string) => void, _baseDir?: string) => {
+    files.forEach(file => {
+      visitor(file)
+    })
+  }
+}
+
+function generateFlatRoutesAndVerifyResultWithExpected(
+  routesWithExpectedValues: Record<string, ExpectedValues>,
+) {
+  const routesArrayInput = Object.keys(routesWithExpectedValues) as Array<
+    keyof typeof routesWithExpectedValues
+  >
+
+  const routes = flatRoutes('routes', defineRoutes, {
+    visitFiles: visitFilesFromArray(routesArrayInput),
+  })
+
+  routesArrayInput.forEach(key => {
+    const route = routesWithExpectedValues[key]
+
+    expect(routes?.[route.id]).toBeDefined()
+
+    expect(routes?.[route.id]?.path).toBe(route.path)
+
+    expect(routes?.[route.id]?.parentId).toBe(route.parentId)
+  })
+}
