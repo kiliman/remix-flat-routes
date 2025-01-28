@@ -339,6 +339,11 @@ export function createRoutePath(
   if (basePath !== '/') {
     result = basePath + result
   }
+
+  if (result.endsWith('/')) {
+    result = result.slice(0, -1)
+  }
+
   return result || undefined
 }
 
