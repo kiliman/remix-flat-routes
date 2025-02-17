@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.8.5
+- 🔨 Don't require react-router >=7 if installed; today's version is still kind of independent of react-router.
+
 ## v0.8.4
 - 🐛 Remove unnecessary trailing slash from path [#130](https://github.com/kiliman/remix-flat-routes/issues/130)
 
