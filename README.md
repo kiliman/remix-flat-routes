@@ -36,7 +36,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
 });
 ```
 
-**$\color{#FF0000}{NOTE}$:** If you deploy using Vercel, you may need to replace `nestedDirectoryChar: '+'` inside _app/routes.tsx_ with a different character that is not reserved by Vercel. Make sure to also replace the `+` character in route directories and files afterward.
+🔴 **NOTE:** 🔴 If you deploy using Vercel, you may need to replace `nestedDirectoryChar: '+'` inside _app/routes.tsx_ with a different character that is not reserved by Vercel. Make sure to also replace the `+` character in route directories and files afterward.
 
 ## ✨🎉 New in v0.5.0
 
