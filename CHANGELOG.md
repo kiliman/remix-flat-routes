@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.8.6
+- 🔒 Upgrade `minimatch` to v11 to fix denial-of-service advisories GHSA-3ppc-4f35-3m26, GHSA-7r86-cg39-jmmj, GHSA-23c5-xmqv-rm74 and GHSA-g3hv-75wg-m249 (thanks [@bradbyte](https://github.com/bradbyte)!) [#160](https://github.com/kiliman/remix-flat-routes/pull/160)
+- 🔨 `engines.node` is now `>=20`, matching what `minimatch` has required since 0.7.0 [#161](https://github.com/kiliman/remix-flat-routes/pull/161)
+- 📦 Update dependencies and remove unused dev dependencies [#161](https://github.com/kiliman/remix-flat-routes/pull/161) [#162](https://github.com/kiliman/remix-flat-routes/pull/162) [#163](https://github.com/kiliman/remix-flat-routes/pull/163) [#164](https://github.com/kiliman/remix-flat-routes/pull/164)
+
 ## v0.8.5
 - 🔨 Don't require react-router >=7 if installed; today's version is still kind of independent of react-router.
 
