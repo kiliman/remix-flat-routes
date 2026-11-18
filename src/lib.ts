@@ -326,29 +326,31 @@ function isSegmentSeparator(checkChar: string | undefined) {
   return ['/', '.', path.win32.sep].includes(checkChar)
 }
 
-function getParentRouteIds(routeIds: string[]): Record<string, string | undefined> {
-  // We could use Array objects directly below, but Map is more performant, 
-  // especially for larger arrays of routeIds, 
+function getParentRouteIds(
+  routeIds: string[],
+): Record<string, string | undefined> {
+  // We could use Array objects directly below, but Map is more performant,
+  // especially for larger arrays of routeIds,
   // due to the faster lookups provided by the Map data structure.
-  const routeIdMap = new Map<string, string>();
+  const routeIdMap = new Map<string, string>()
   for (const routeId of routeIds) {
-    routeIdMap.set(routeId, routeId);
+    routeIdMap.set(routeId, routeId)
   }
 
-  const parentRouteIdMap = new Map<string, string | undefined>();
+  const parentRouteIdMap = new Map<string, string | undefined>()
   for (const [childRouteId, _] of routeIdMap) {
-    let parentRouteId: string | undefined = undefined;
+    let parentRouteId: string | undefined = undefined
     for (const [potentialParentId, _] of routeIdMap) {
       if (childRouteId.startsWith(`${potentialParentId}/`)) {
-        parentRouteId = potentialParentId;
-        break;
+        parentRouteId = potentialParentId
+        break
       }
     }
 
-    parentRouteIdMap.set(childRouteId, parentRouteId);
+    parentRouteIdMap.set(childRouteId, parentRouteId)
   }
 
-  return Object.fromEntries(parentRouteIdMap);
+  return Object.fromEntries(parentRouteIdMap)
 }
 
 function byLongestFirst(a: string, b: string): number {
