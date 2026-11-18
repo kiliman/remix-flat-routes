@@ -1,0 +1,64 @@
+# Checks every PR and push to main; publishes to npm when a v* tag is pushed.
+#
+# Publishing uses npm trusted publishing (OIDC): npmjs.com trusts this workflow
+# file by name, so no npm token is stored anywhere. Renaming this file breaks
+# publishing until the trusted publisher on npmjs.com is updated to match.
+name: publish
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20 is the package's engines.node floor. tsup 9 (dev only) asks for
+        # Node ^22.18, but it builds on 20 too, so the floor is checked end to end.
+        node-version: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      # --ignore-scripts: `prepare` would typecheck and build before the steps below do.
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  publish:
+    needs: check
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # mints the OIDC token npm exchanges for publish rights
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Trusted publishing needs npm >= 11.5.1, which Node 24 bundles. No
+      # package cache: npm warns against caching in release builds.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Tag matches package.json version
+        run: |
+          version="v$(node -p 'require("./package.json").version')"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      # Built above, so skip the lifecycle scripts (prepare would rebuild).
+      - run: npm --version && npm publish --ignore-scripts
