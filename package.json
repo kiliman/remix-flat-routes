@@ -42,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^11.2.0",
-    "minimatch": "^10.0.1"
+    "minimatch": "^11.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -50,7 +50,6 @@
     "@babel/preset-typescript": "^7.26.0",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
-    "@types/minimatch": "^5.1.2",
     "@types/node": "^22.10.1",
     "all-contributors-cli": "^6.26.1",
     "babel-jest": "^29.7.0",
