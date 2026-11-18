@@ -98,8 +98,14 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/68867795?v=4",
       "profile": "https://github.com/ZipBrandon",
       "contributions": ["code", "doc"]
+    },
+    {
+      "login": "bradbyte",
+      "name": "BradByte",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9825605?v=4",
+      "profile": "https://github.com/bradbyte",
+      "contributions": ["code"]
     }
   ],
   "contributorsPerLine": 7
 }
-
