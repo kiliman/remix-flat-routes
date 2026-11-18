@@ -1,7 +1,7 @@
 # Remix Flat Routes
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This package enables you to define your routes using the `flat-routes` convention. This is based on the [gist](https://gist.github.com/ryanflorence/0dcc52c2332c2f6e1b52925195f87baf) by Ryan Florence
@@ -578,6 +578,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/intsanerarity"><img src="https://avatars.githubusercontent.com/u/149149100?v=4&size=100" width="100px" height="100px" alt="Steven Lahmann"/><br /><sub><b>Steven Lahmann</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=intsanerarity" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mikkpokk"><img src="https://avatars.githubusercontent.com/u/14272312?v=4&size=100" width="100px" height="100px" alt="Mikk Pokk"/><br /><sub><b>Mikk Pokk</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=mikkpokk" title="Code">💻</a> <a href="https://github.com/kiliman/remix-flat-routes/commits?author=mikkpokk" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ZipBrandon"><img src="https://avatars.githubusercontent.com/u/68867795?v=4&size=100" width="100px" height="100px" alt="Brandon"/><br /><sub><b>Brandon</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=ZipBrandon" title="Code">💻</a> <a href="https://github.com/kiliman/remix-flat-routes/commits?author=ZipBrandon" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bradbyte"><img src="https://avatars.githubusercontent.com/u/9825605?v=4&size=100" width="100px" height="100px" alt="BradByte"/><br /><sub><b>BradByte</b></sub></a><br /><a href="https://github.com/kiliman/remix-flat-routes/commits?author=bradbyte" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
