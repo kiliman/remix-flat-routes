@@ -60,7 +60,8 @@ const defaultOptions: FlatRoutesOptions = {
   basePath: '/',
   paramPrefixChar: '$',
   nestedDirectoryChar: '+',
-  routeRegex: /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
+  routeRegex:
+    /((\${nestedDirectoryChar}[\/\\][^\/\\:?*]+)|[\/\\]((index|route|layout|page)|(_[^\/\\:?*]+)|([^\/\\:?*]+\.route)))\.(ts|tsx|js|jsx|md|mdx)$$/,
 }
 const defaultDefineRoutes = undefined
 
@@ -532,6 +533,9 @@ const getRouteRegex = (
   )
 
   return new RegExp(
-    RegexRequiresNestedDirReplacement.source.replace('\\${nestedDirectoryChar}', `[${nestedDirectoryChar}]`),
+    RegexRequiresNestedDirReplacement.source.replace(
+      '\\${nestedDirectoryChar}',
+      `[${nestedDirectoryChar}]`,
+    ),
   )
 }
