@@ -48,7 +48,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.19.43",
-    "all-contributors-cli": "^7.0.2",
+    "all-contributors-cli": "^7.0.3",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
     "prettier": "^3.10.1",
